@@ -59,7 +59,7 @@ const HomePage: React.FC = () => {
               <Button
                 onClick={connectWallet}
                 className="!rounded-button bg-green-500 text-white border-none hover:bg-green-600 flex items-center cursor-pointer whitespace-nowrap"
-                icon={<i className="fas fa-wallet mr-2 custom-green-icon"></i>}
+                icon={<i className="fas fa-wallet mr-2"></i>}
               >
                 {isWalletConnected ? "Wallet Connected" : "Connect Wallet"}
               </Button>
@@ -119,12 +119,12 @@ const HomePage: React.FC = () => {
       <div className="bg-white py-8">
         <div className="w-full px-4">
           <div className="bg-white shadow-lg rounded-xl p-6 -mt-16 relative z-20 mx-16">
-            <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex flex-row gap-4">
               <Input
-                size="large"
+                size="middle"
                 placeholder="Search for jobs..."
                 prefix={<SearchOutlined className="text-gray-400" />}
-                className="flex-grow border-gray-300 rounded-lg"
+                className="w-100 border-gray-300 rounded-lg"
               />
               <Input
                 size="large"
@@ -217,8 +217,8 @@ const HomePage: React.FC = () => {
                 1
               </div>
               <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow h-full">
-                <div className="text-green-500 mb-4 text-3xl">
-                  <i className="fas fa-wallet custom-green-icon"></i>
+                <div className="text-white mb-4 text-3xl">
+                  <i className="fas fa-wallet"></i>
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-3">
                   Connect Wallet
