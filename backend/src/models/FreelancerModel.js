@@ -19,4 +19,4 @@ const FreelancerSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.module("Freelancer", FreelancerSchema)
+module.exports = mongoose.model("Freelancer", FreelancerSchema)
