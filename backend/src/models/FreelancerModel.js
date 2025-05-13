@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const FreelancerSchema = new mongooese.Schema({
+const FreelancerSchema = new mongoose.Schema({
     wallet: {
         type: String,
         required: true,
