@@ -1,29 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Input, Statistic, Card, Tag, Divider } from "antd";
 import {
   SearchOutlined,
   ArrowRightOutlined,
   StarFilled,
 } from "@ant-design/icons";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 // Import Ant Design styles
 import "antd/dist/reset.css";
 // Import Tailwind CSS
 import "../styles/index.css";
+// Import wallet styles
+import "../styles/wallet.css";
 
 const HomePage: React.FC = () => {
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
-
-  const connectWallet = async () => {
-    try {
-      // This is a mock implementation
-      // In a real application, you would use Phantom wallet's API
-      console.log("Connecting to Phantom wallet...");
-      setIsWalletConnected(true);
-    } catch (error) {
-      console.error("Error connecting to wallet:", error);
-    }
-  };
-
   return (
     <div className="min-h-screen w-full bg-black">
       {/* Navigation Bar */}
@@ -56,13 +46,7 @@ const HomePage: React.FC = () => {
               </div>
             </div>
             <div>
-              <Button
-                onClick={connectWallet}
-                className="!rounded-button bg-green-500 text-white border-none hover:bg-green-600 flex items-center cursor-pointer whitespace-nowrap"
-                icon={<i className="fas fa-wallet mr-2"></i>}
-              >
-                {isWalletConnected ? "Wallet Connected" : "Connect Wallet"}
-              </Button>
+              <WalletMultiButton />
             </div>
           </div>
         </div>
@@ -213,11 +197,11 @@ const HomePage: React.FC = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="bg-indigo-100 text-indigo-600 w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+              <div className="bg-black text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                 1
               </div>
               <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow h-full">
-                <div className="text-white mb-4 text-3xl">
+                <div className="text-green-500 mb-4 text-3xl">
                   <i className="fas fa-wallet"></i>
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-3">
@@ -230,7 +214,7 @@ const HomePage: React.FC = () => {
               </div>
             </div>
             <div className="text-center">
-              <div className="bg-indigo-100 text-indigo-600 w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+              <div className="bg-black text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                 2
               </div>
               <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow h-full">
@@ -247,7 +231,7 @@ const HomePage: React.FC = () => {
               </div>
             </div>
             <div className="text-center">
-              <div className="bg-indigo-100 text-indigo-600 w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+              <div className="bg-black text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                 3
               </div>
               <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow h-full">
@@ -264,7 +248,7 @@ const HomePage: React.FC = () => {
               </div>
             </div>
             <div className="text-center">
-              <div className="bg-indigo-100 text-indigo-600 w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+              <div className="bg-black text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                 4
               </div>
               <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow h-full">
