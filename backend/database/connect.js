@@ -19,7 +19,7 @@ async function run() {
 
     const db = client.db("lancelotDB");
 
-    // Optional: Create collections (Mongo will auto-create on first insert too)
+    // Optional: Ensure collections exist
     const collections = await db.listCollections().toArray();
     const existing = collections.map(col => col.name);
 
@@ -34,15 +34,6 @@ async function run() {
       }
     }
 
-    // Insert a test freelancer
-    const freelancers = db.collection("freelancers");
-    await freelancers.insertOne({
-      wallet: "SoL4nA111Freelancer123",
-      username: "test_freelancer",
-      skills: ["web3", "smart contracts"],
-      rating: 5,
-    });
-    console.log("✅ Inserted sample freelancer");
   } catch (err) {
     console.error("❌ Error:", err);
   } finally {
