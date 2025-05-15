@@ -6,6 +6,7 @@ import {
   StarFilled,
 } from "@ant-design/icons";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { useWallet } from "@solana/wallet-adapter-react";
 // Import Ant Design styles
 import "antd/dist/reset.css";
 // Import Tailwind CSS
@@ -14,6 +15,8 @@ import "../styles/index.css";
 import "../styles/wallet.css";
 
 const HomePage: React.FC = () => {
+  const { connected } = useWallet();
+
   return (
     <div className="min-h-screen w-full bg-black">
       {/* Navigation Bar */}
@@ -77,13 +80,12 @@ const HomePage: React.FC = () => {
                 The future of work is decentralized.
               </p>
               <div className="flex flex-wrap gap-4 px-4">
-                <Button
-                  type="primary"
-                  size="large"
-                  className="!rounded-button bg-green-500 text-white border-none hover:bg-green-600 text-lg h-12 px-8 flex items-center cursor-pointer whitespace-nowrap"
-                >
-                  Start Earning <ArrowRightOutlined className="ml-2" />
-                </Button>
+                <WalletMultiButton className="!bg-green-500 !rounded-[30px] !border-none !p-0 !h-12 !px-8 !text-lg !text-white hover:!bg-green-600 !flex !items-center !transform-none hover:!translate-y-0">
+                  <span>
+                    {connected ? "Wallet Connected" : "Start Earning"}
+                  </span>
+                  <ArrowRightOutlined className="ml-2" />
+                </WalletMultiButton>
                 <Button
                   size="large"
                   className="!rounded-button bg-transparent text-white border-2 border-white hover:bg-green-500 hover:text-white text-lg h-12 px-8 flex items-center cursor-pointer whitespace-nowrap transition-all"
