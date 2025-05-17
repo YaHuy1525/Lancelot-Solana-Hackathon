@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 import { Button, Input, Statistic, Card, Tag, Divider } from "antd";
 import {
   SearchOutlined,
@@ -25,12 +26,12 @@ const HomePage: React.FC = () => {
             </div>
             <div className="hidden md:block">
               <div className="flex items-center space-x-8">
-                <a
-                  href="#"
+                <Link
+                  to="/browse-job"
                   className="text-gray-400 hover:text-white font-medium cursor-pointer whitespace-nowrap"
                 >
                   Browse Jobs
-                </a>
+                </Link>
                 <a
                   href="#"
                   className="text-gray-400 hover:text-white font-medium cursor-pointer whitespace-nowrap"
@@ -38,7 +39,7 @@ const HomePage: React.FC = () => {
                   Post Work
                 </a>
                 <a
-                  href="#"
+                  href="#how-it-work"
                   className="text-gray-400 hover:text-white font-medium cursor-pointer whitespace-nowrap"
                 >
                   How It Works
@@ -184,7 +185,7 @@ const HomePage: React.FC = () => {
       </div>
 
       {/* How It Works Section */}
-      <div className="py-20 bg-white w-full">
+      <div id="how-it-work" className="py-20 bg-white w-full">
         <div className="w-full px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">

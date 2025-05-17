@@ -16,10 +16,12 @@
     "@solana/wallet-adapter-react": "^0.15.38",
     "@solana/wallet-adapter-react-ui": "^0.9.38",
     "@solana/web3.js": "^1.98.2",
+    "@types/react-router-dom": "^5.3.3",
     "@types/swiper": "^6.0.0",
     "antd": "^5.25.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^7.6.0",
     "swiper": "^11.2.6"
   },
   "devDependencies": {
