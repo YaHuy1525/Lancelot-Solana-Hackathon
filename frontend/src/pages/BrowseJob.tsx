@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Input, Statistic, Card, Tag, Divider } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   SearchOutlined,
   ArrowRightOutlined,
@@ -13,316 +13,255 @@ import "antd/dist/reset.css";
 import "../styles/index.css";
 // Import wallet styles
 import "../styles/wallet.css";
+// Import components
+import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
+import SearchSection from "../components/SearchSection";
+import JobDetailsModal from "../components/JobDetailsModal";
+
+interface Job {
+  title: string;
+  skills: string[];
+  budget: string;
+  rating: number;
+  image: string;
+}
 
 const BrowseJob: React.FC = () => {
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [skills, setSkills] = useState("");
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    // Initialize jobs data
+    const initialJobs: Job[] = [
+      {
+        title: "Solana dApp Developer",
+        skills: ["Rust", "Solana", "React"],
+        budget: "2.5-4.0 SOL",
+        rating: 4.9,
+        image:
+          "https://readdy.ai/api/search-image?query=Abstract%20digital%20representation%20of%20blockchain%20development%20with%20code%20elements%20and%20Solana%20logo%2C%20professional%20tech%20illustration%20with%20clean%20minimal%20background%2C%20high%20quality%203D%20render%20with%20subtle%20lighting&width=400&height=250&seq=2&orientation=landscape",
+      },
+      {
+        title: "NFT Collection Designer",
+        skills: ["Illustration", "NFT", "Blockchain"],
+        budget: "3.0-5.0 SOL",
+        rating: 4.8,
+        image:
+          "https://readdy.ai/api/search-image?query=Modern%20digital%20art%20creation%20studio%20with%20NFT%20artwork%20displays%2C%20professional%20creative%20workspace%20with%20digital%20tablets%20and%20screens%20showing%20colorful%20abstract%20designs%2C%20clean%20minimal%20background%20with%20subtle%20lighting&width=400&height=250&seq=3&orientation=landscape",
+      },
+      {
+        title: "Smart Contract Auditor",
+        skills: ["Security", "Solidity", "Audit"],
+        budget: "5.0-8.0 SOL",
+        rating: 5.0,
+        image:
+          "https://readdy.ai/api/search-image?query=Cybersecurity%20concept%20with%20digital%20locks%20and%20code%20inspection%2C%20professional%20tech%20security%20visualization%20with%20blockchain%20elements%2C%20clean%20minimal%20background%20with%20blue%20digital%20elements&width=400&height=250&seq=4&orientation=landscape",
+      },
+      {
+        title: "Web3 Marketing Specialist",
+        skills: ["Marketing", "Discord", "Web3"],
+        budget: "2.0-3.5 SOL",
+        rating: 4.7,
+        image:
+          "https://readdy.ai/api/search-image?query=Digital%20marketing%20workspace%20with%20analytics%20dashboards%20and%20social%20media%20elements%2C%20professional%20marketing%20visualization%20with%20cryptocurrency%20symbols%2C%20clean%20minimal%20background%20with%20subtle%20lighting&width=400&height=250&seq=5&orientation=landscape",
+      },
+      //add new from here
+      {
+        title: "Smart Contract Developer",
+        skills: ["Solidity", "Ethereum", "Web3.js", "Hardhat"],
+        budget: "2.5-4.0 SOL",
+        rating: 4.9,
+        image:
+          "https://readdy.ai/api/search-image?query=Modern%20blockchain%20development%20workspace%20with%20multiple%20screens%20showing%20smart%20contract%20code%20and%20crypto%20trading%20charts%2C%20clean%20minimal%20desk%20setup%20with%20advanced%20monitoring%20tools%2C%20professional%20Web3%20development%20environment%20with%20soft%20lighting&width=600&height=400&seq=1&orientation=landscape",
+      },
+      {
+        title: "DeFi Protocol Engineer",
+        skills: ["Rust", "Solana", "DeFi", "TokenEconomics"],
+        budget: "2.5-4.0 SOL",
+        rating: 4.9,
+        image:
+          "https://readdy.ai/api/search-image?query=Decentralized%20finance%20workspace%20with%20multiple%20monitors%20displaying%20DeFi%20protocols%20and%20yield%20farming%20analytics%2C%20modern%20tech%20office%20with%20blockchain%20architecture%20diagrams%2C%20professional%20development%20setup%20with%20ambient%20lighting&width=600&height=400&seq=2&orientation=landscape",
+      },
+      {
+        title: "NFT Platform Developer",
+        skills: ["ERC721", "IPFS", "React", "Node.js"],
+        budget: "2.5-4.0 SOL",
+        rating: 4.9,
+        image:
+          "https://readdy.ai/api/search-image?query=NFT%20development%20workspace%20with%20digital%20art%20and%20smart%20contract%20code%20on%20displays%2C%20modern%20creative%20tech%20environment%2C%20professional%20NFT%20platform%20development%20setup%20with%20soft%20natural%20lighting&width=600&height=400&seq=3&orientation=landscape",
+      },
+      {
+        title: "Blockchain Security Engineer",
+        skills: ["Security Auditing", "Solidity", "MetaMask", "DeFi"],
+        budget: "2.5-4.0 SOL",
+        rating: 4.9,
+        image:
+          "https://readdy.ai/api/search-image?query=Blockchain%20security%20workspace%20with%20security%20analysis%20tools%20and%20vulnerability%20scanning%20displays%2C%20modern%20cybersecurity%20office%20environment%2C%20professional%20security%20testing%20setup%20with%20ambient%20lighting&width=600&height=400&seq=4&orientation=landscape",
+      },
+      {
+        title: "Web3 Frontend Developer",
+        skills: ["React", "ethers.js", "Web3-React", "TypeScript"],
+        budget: "2.5-4.0 SOL",
+        rating: 4.9,
+        image:
+          "https://readdy.ai/api/search-image?query=Web3%20frontend%20development%20workspace%20with%20dApp%20interfaces%20and%20blockchain%20integration%20code%2C%20modern%20tech%20office%20with%20clean%20design%20mockups%2C%20professional%20development%20environment%20with%20soft%20lighting&width=600&height=400&seq=5&orientation=landscape",
+      },
+      {
+        title: "DAO Developer",
+        skills: ["Governance", "Smart Contracts", "Snapshot", "Aragon"],
+        budget: "2.5-4.0 SOL",
+        rating: 4.9,
+        image:
+          "https://readdy.ai/api/search-image?query=DAO%20development%20workspace%20with%20governance%20dashboards%20and%20voting%20mechanism%20displays%2C%20modern%20decentralized%20organization%20office%2C%20professional%20blockchain%20workspace%20with%20ambient%20lighting&width=600&height=400&seq=6&orientation=landscape",
+      },
+      {
+        title: "Layer 2 Protocol Engineer",
+        skills: ["Optimism", "zkSync", "Polygon", "Scaling"],
+        budget: "2.5-4.0 SOL",
+        rating: 4.9,
+        image:
+          "https://readdy.ai/api/search-image?query=Layer%202%20blockchain%20development%20workspace%20with%20scaling%20solution%20architectures%20and%20optimization%20code%2C%20modern%20tech%20office%20with%20network%20diagrams%2C%20professional%20development%20setup%20with%20soft%20lighting&width=600&height=400&seq=7&orientation=landscape",
+      },
+      {
+        title: "Cross-chain Bridge Developer",
+        skills: ["Polkadot", "Cosmos", "Bridge Protocols", "Rust"],
+        budget: "2.5-4.0 SOL",
+        rating: 4.9,
+        image:
+          "https://readdy.ai/api/search-image?query=Cross-chain%20development%20workspace%20with%20multiple%20blockchain%20network%20displays%20and%20bridge%20protocol%20diagrams%2C%20modern%20tech%20environment%20with%20interoperability%20visualizations%2C%20professional%20workspace%20with%20ambient%20lighting&width=600&height=400&seq=8&orientation=landscape",
+      },
+    ];
+
+    // Load jobs from localStorage and combine with initial jobs
+    const savedJobs = JSON.parse(localStorage.getItem("jobs") || "[]");
+    const allJobs = [...initialJobs, ...savedJobs];
+    setJobs(allJobs);
+
+    // Handle search parameters from URL
+    const searchParams = new URLSearchParams(location.search);
+    const searchTerm = searchParams.get("search") || "";
+    const skills = searchParams.get("skills") || "";
+
+    if (searchTerm || skills) {
+      handleSearch(searchTerm, skills);
+    }
+  }, [location.search]);
+
+  const handleSearch = (searchTerm: string, skills: string) => {
+    setSearchTerm(searchTerm);
+    setSkills(skills);
+  };
+
+  const handleJobClick = (job: Job) => {
+    setSelectedJob(job);
+    setIsModalVisible(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+    setSelectedJob(null);
+  };
+
+  const handleEnroll = (job: Job) => {
+    // TODO: Implement enrollment logic
+    console.log("Enrolling in job:", job.title);
+    handleModalClose();
+  };
+
+  const filteredJobs = jobs.filter((job) => {
+    const matchesSearch = job.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesSkills =
+      !skills ||
+      job.skills.some((skill) =>
+        skill.toLowerCase().includes(skills.toLowerCase())
+      );
+    return matchesSearch && matchesSkills;
+  });
+
   return (
     <div className="min-h-screen w-full bg-black">
-      {/* Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 bg-black shadow-md z-50">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center">
-              <a className="text-2xl font-bold text-white" href="/">Lancelot</a>
-            </div>
-            <div className="hidden md:block">
-              <div className="flex items-center space-x-8">
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white font-medium cursor-pointer whitespace-nowrap"
-                >
-                  Browse Jobs
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white font-medium cursor-pointer whitespace-nowrap"
-                >
-                  Post Work
-                </a>
-                <Link
-                  to="/#how-it-work"
-                  className="text-gray-400 hover:text-white font-medium cursor-pointer whitespace-nowrap"
-                >
-                  How It Works
-                </Link>
-              </div>
-            </div>
-            <div>
-              <WalletMultiButton />
-            </div>
-          </div>
-        </div>
-      </nav>
-
-    
-      {/* Hero Section */}
-      <div className="pt-16 relative overflow-hidden">
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage:
-              "url('https://readdy.ai/api/search-image?query=A%20minimalist%20black%20and%20white%20digital%20landscape%20with%20subtle%20geometric%20patterns%20and%20clean%20lines%2C%20modern%20professional%20aesthetic%20with%20abstract%20elements%20creating%20depth%20and%20dimension%2C%20high%20contrast%20monochromatic%20design&width=1440&height=600&seq=1&orientation=landscape')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 to-transparent"></div>
-        </div>
-        <div className="w-full px-4 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-24">
-            <div className="flex flex-col justify-center">
-              <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-4 px-4">
-                Web3 Freelancing, <br />
-                Powered by Solana
-              </h1>
-              <p className="text-xl text-gray-300 mb-8 px-4">
-                Connect, Create, and Get Paid in Crypto. <br />
-                The future of work is decentralized.
-              </p>
-              <div className="flex flex-wrap gap-4 px-4">
-                <Button
-                  type="primary"
-                  size="large"
-                  className="!rounded-button bg-green-500 text-white border-none hover:bg-green-600 text-lg h-12 px-8 flex items-center cursor-pointer whitespace-nowrap"
-                >
-                  Start Earning <ArrowRightOutlined className="ml-2" />
-                </Button>
-                <Button
-                  size="large"
-                  className="!rounded-button bg-transparent text-white border-2 border-white hover:bg-green-500 hover:text-white text-lg h-12 px-8 flex items-center cursor-pointer whitespace-nowrap transition-all"
-                >
-                  Learn More
-                </Button>
-              </div>
-            </div>
-            <div className="hidden md:flex items-center justify-center">
-              {/* This is intentionally left empty as the background image serves as the right column content */}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Search Section */}
-      <div className="bg-white py-8">
-        <div className="w-full px-4">
-          <div className="bg-white shadow-lg rounded-xl p-6 -mt-16 relative z-20 mx-16">
-            <div className="flex flex-row gap-4">
-              <Input
-                size="middle"
-                placeholder="Search for jobs..."
-                prefix={<SearchOutlined className="text-gray-400" />}
-                className="w-100 border-gray-300 rounded-lg"
-              />
-              <Input
-                size="large"
-                placeholder="Skills"
-                prefix={
-                  <i className="fas fa-code text-gray-400 mr-2 custom-green-icon"></i>
-                }
-                className="md:w-64 border-gray-300 rounded-lg"
-              />
-              <Button
-                type="primary"
-                size="large"
-                className="!rounded-button bg-green-500 border-none hover:bg-green-600 h-10 px-8 flex items-center justify-center cursor-pointer whitespace-nowrap"
-              >
-                Search
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Navbar />
+      <Hero />
+      <SearchSection onSearch={handleSearch} jobs={jobs} />
 
       {/* Featured Jobs Section */}
-            <div className="py-20 bg-white w-full">
-              <div className="max-w-6xl mx-auto px-4">
-                <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide"
-                  style={{ WebkitOverflowScrolling: "touch" , scrollbarWidth: "none" }}>
-                  {[
-                    {
-                      title: "Solana dApp Developer",
-                      skills: ["Rust", "Solana", "React"],
-                      budget: "2.5-4.0 SOL",
-                      rating: 4.9,
-                      image:
-                        "https://readdy.ai/api/search-image?query=Abstract%20digital%20representation%20of%20blockchain%20development%20with%20code%20elements%20and%20Solana%20logo%2C%20professional%20tech%20illustration%20with%20clean%20minimal%20background%2C%20high%20quality%203D%20render%20with%20subtle%20lighting&width=400&height=250&seq=2&orientation=landscape",
-                      description:
-                        "A Solana dApp developer is responsible for building decentralized applications on the Solana blockchain. They work with Rust and React to create user-friendly interfaces and ensure seamless interaction with smart contracts.",
-                    },
-                    {
-                      title: "NFT Collection Designer",
-                      skills: ["Illustration", "NFT", "Blockchain"],
-                      budget: "3.0-5.0 SOL",
-                      rating: 4.8,
-                      image:
-                        "https://readdy.ai/api/search-image?query=Modern%20digital%20art%20creation%20studio%20with%20NFT%20artwork%20displays%2C%20professional%20creative%20workspace%20with%20digital%20tablets%20and%20screens%20showing%20colorful%20abstract%20designs%2C%20clean%20minimal%20background%20with%20subtle%20lighting&width=400&height=250&seq=3&orientation=landscape",
-                      description: 
-                        "An NFT collection designer creates unique digital assets for non-fungible tokens. They focus on artistic design, ensuring that each piece is visually appealing and meets the standards of the blockchain community.",
-                      },
-                    {
-                      title: "Smart Contract Auditor",
-                      skills: ["Security", "Solidity", "Audit"],
-                      budget: "5.0-8.0 SOL",
-                      rating: 5.0,
-                      image:
-                        "https://readdy.ai/api/search-image?query=Cybersecurity%20concept%20with%20digital%20locks%20and%20code%20inspection%2C%20professional%20tech%20security%20visualization%20with%20blockchain%20elements%2C%20clean%20minimal%20background%20with%20blue%20digital%20elements&width=400&height=250&seq=4&orientation=landscape",
-                      description:
-                        "A smart contract auditor reviews and analyzes smart contracts for vulnerabilities and security flaws. They ensure that the code is robust, efficient, and free from potential exploits, providing peace of mind to developers and users alike.",
-                      },
-                    {
-                      title: "Web3 Marketing Specialist",
-                      skills: ["Marketing", "Discord", "Web3"],
-                      budget: "2.0-3.5 SOL",
-                      rating: 4.7,
-                      image:
-                        "https://readdy.ai/api/search-image?query=Digital%20marketing%20workspace%20with%20analytics%20dashboards%20and%20social%20media%20elements%2C%20professional%20marketing%20visualization%20with%20cryptocurrency%20symbols%2C%20clean%20minimal%20background%20with%20subtle%20lighting&width=400&height=250&seq=5&orientation=landscape",
-                      description: 
-                        "A Web3 marketing specialist focuses on promoting decentralized applications and blockchain projects. They utilize social media, community engagement, and innovative marketing strategies to reach target audiences and drive adoption.",
-                      },
-                    {
-                      title: "Smart Contract Developer",
-                      skills: ["Solidity", "Ethereum", "Web3.js", "Hardhat"],
-                      budget: "2.5-4.0 SOL",
-                      rating: 4.9,
-                      image:
-                        "https://readdy.ai/api/search-image?query=Modern%20blockchain%20development%20workspace%20with%20multiple%20screens%20showing%20smart%20contract%20code%20and%20crypto%20trading%20charts%2C%20clean%20minimal%20desk%20setup%20with%20advanced%20monitoring%20tools%2C%20professional%20Web3%20development%20environment%20with%20soft%20lighting&width=600&height=400&seq=1&orientation=landscape",
-                      description:
-                        "A smart contract developer specializes in writing and deploying smart contracts on blockchain platforms. They use programming languages like Solidity to create secure and efficient contracts that automate processes and transactions.",
-                      },
-                    {
-                      title: "DeFi Protocol Engineer",
-                      skills: ["Rust", "Solana", "DeFi", "TokenEconomics"],
-                      budget: "2.5-4.0 SOL",
-                      rating: 4.9,
-                      image:
-                        "https://readdy.ai/api/search-image?query=Decentralized%20finance%20workspace%20with%20multiple%20monitors%20displaying%20DeFi%20protocols%20and%20yield%20farming%20analytics%2C%20modern%20tech%20office%20with%20blockchain%20architecture%20diagrams%2C%20professional%20development%20setup%20with%20ambient%20lighting&width=600&height=400&seq=2&orientation=landscape",
-                      description:
-                        "A DeFi protocol engineer designs and develops decentralized finance applications. They work on creating innovative financial products, ensuring security, and optimizing performance within the blockchain ecosystem.",
-                      },
-                    {
-                      title: "NFT Platform Developer",
-                      skills: ["ERC721", "IPFS", "React", "Node.js"],
-                      budget: "2.5-4.0 SOL",
-                      rating: 4.9,
-                      image:
-                        "https://readdy.ai/api/search-image?query=NFT%20development%20workspace%20with%20digital%20art%20and%20smart%20contract%20code%20on%20displays%2C%20modern%20creative%20tech%20environment%2C%20professional%20NFT%20platform%20development%20setup%20with%20soft%20natural%20lighting&width=600&height=400&seq=3&orientation=landscape",
-                      description:
-                        "An NFT platform developer creates and maintains platforms for minting, trading, and managing non-fungible tokens. They ensure seamless user experiences and robust backend systems to support high transaction volumes.",
-                      },
-                    {
-                      title: "Blockchain Security Engineer",
-                      skills: ["Security Auditing", "Solidity", "MetaMask", "DeFi"],
-                      budget: "2.5-4.0 SOL",
-                      rating: 4.9,
-                      image:
-                        "https://readdy.ai/api/search-image?query=Blockchain%20security%20workspace%20with%20security%20analysis%20tools%20and%20vulnerability%20scanning%20displays%2C%20modern%20cybersecurity%20office%20environment%2C%20professional%20security%20testing%20setup%20with%20ambient%20lighting&width=600&height=400&seq=4&orientation=landscape",                    
-                      description:
-                        "A blockchain security engineer focuses on securing blockchain applications and networks. They conduct audits, identify vulnerabilities, and implement security measures to protect against attacks and ensure data integrity.",
-                      },
-                    {
-                      title: "Web3 Frontend Developer",
-                      skills: ["React", "ethers.js", "Web3-React", "TypeScript"],
-                      budget: "2.5-4.0 SOL",
-                      rating: 4.9,
-                      image:
-                        "https://readdy.ai/api/search-image?query=Web3%20frontend%20development%20workspace%20with%20dApp%20interfaces%20and%20blockchain%20integration%20code%2C%20modern%20tech%20office%20with%20clean%20design%20mockups%2C%20professional%20development%20environment%20with%20soft%20lighting&width=600&height=400&seq=5&orientation=landscape",                  
-                      description:
-                        "A Web3 frontend developer specializes in creating user interfaces for decentralized applications. They use frameworks like React and libraries like ethers.js to build responsive and interactive web applications that connect to blockchain networks.",
-                      },
-                    {
-                      title: "DAO Developer",
-                      skills: ["Governance", "Smart Contracts", "Snapshot", "Aragon"],
-                      budget: "2.5-4.0 SOL",
-                      rating: 4.9,
-                      image:
-                        "https://readdy.ai/api/search-image?query=DAO%20development%20workspace%20with%20governance%20dashboards%20and%20voting%20mechanism%20displays%2C%20modern%20decentralized%20organization%20office%2C%20professional%20blockchain%20workspace%20with%20ambient%20lighting&width=600&height=400&seq=6&orientation=landscape",               
-                      description:
-                        "A DAO developer focuses on building decentralized autonomous organizations. They create governance models, smart contracts, and voting mechanisms to enable community-driven decision-making and resource allocation.",
-                      },
-                    {
-                      title: "Layer 2 Protocol Engineer",
-                      skills: ["Optimism", "zkSync", "Polygon", "Scaling"], 
-                      budget: "2.5-4.0 SOL",
-                      rating: 4.9,
-                      image:
-                        "https://readdy.ai/api/search-image?query=Layer%202%20blockchain%20development%20workspace%20with%20scaling%20solution%20architectures%20and%20optimization%20code%2C%20modern%20tech%20office%20with%20network%20diagrams%2C%20professional%20development%20setup%20with%20soft%20lighting&width=600&height=400&seq=7&orientation=landscape",                    
-                      description:
-                        "A Layer 2 protocol engineer specializes in developing solutions that enhance the scalability and performance of blockchain networks. They work on technologies like rollups and sidechains to improve transaction throughput and reduce costs.",
-                      },
-                    {
-                      title: "Cross-chain Bridge Developer",
-                      skills: ["Polkadot", "Cosmos", "Bridge Protocols", "Rust"],
-                      budget: "2.5-4.0 SOL",
-                      rating: 4.9,
-                      image:
-                        "https://readdy.ai/api/search-image?query=Cross-chain%20development%20workspace%20with%20multiple%20blockchain%20network%20displays%20and%20bridge%20protocol%20diagrams%2C%20modern%20tech%20environment%20with%20interoperability%20visualizations%2C%20professional%20workspace%20with%20ambient%20lighting&width=600&height=400&seq=8&orientation=landscape",
-                      description:
-                        "A cross-chain bridge developer focuses on creating solutions that enable interoperability between different blockchain networks. They work on protocols that facilitate asset transfers and communication across chains, enhancing the overall blockchain ecosystem.",
-                    },
-                  ].map((job, index) => (
-                    <div
-                      className="flex-shrink-0 snap-center "
-                      style={{ width: "calc(25% - 24px)" }} 
-                    >
-                      <div className="relative group h-full">
-                      <Card
-                        key={index} 
-                        hoverable
-                        style= {{ height: "100%" }}
-                        cover={
-                          <div className="h-48 overflow-hidden">
-                            <img
-                              alt={job.title}
-                              src={job.image}
-                              className="w-full h-full object-cover object-top"
-                            />
-                          </div>
-                        }
-                        className="shadow-sm hover:shadow-md transition-shadow min-h-[340px] flex flex-col justify-between"
+      <div className="py-20 bg-white w-full">
+        <div className="w-full px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {filteredJobs.map((job, index) => (
+              <Card
+                key={index}
+                hoverable
+                onClick={() => handleJobClick(job)}
+                cover={
+                  <div className="h-48 overflow-hidden">
+                    <img
+                      alt={job.title}
+                      src={job.image}
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </div>
+                }
+                className="shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col h-full"
+                bodyStyle={{
+                  flex: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <div className="flex-grow">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    {job.title}
+                  </h3>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {job.skills.map((skill, idx) => (
+                      <Tag
+                        key={idx}
+                        className="rounded-full px-3 py-1 bg-gray-100 text-gray-800"
                       >
-                        <h3 className="text-lg font-bold text-gray-900 mb-2">
-                          {job.title}
-                        </h3>
-                          {job.skills.map((skill, idx) => (
-                            <Tag
-                              key={idx}
-                              className="rounded-full px-3 py-1 bg-gray-100 text-gray-800"
-                            >
-                              {skill}
-                            </Tag>
-                          ))}
-                        
-                        <div className="flex justify-between items-center mb-4">
-                          <div className="flex items-center text-gray-600">
-                            <i className="fas fa-coins text-yellow-500 mr-2 custom-green-icon"></i>
-                            {job.budget}
-                          </div>
-                          <div className="flex items-center text-gray-600">
-                            <StarFilled className="text-yellow-500 mr-1" />
-                            {job.rating}
-                          </div>
-                        </div>
-                        {/* Description Overlay */}
-                          <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center text-center px-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 rounded-xl">
-                            <span className="text-white text-base pointer-events-auto">
-                              {job.description || "No description provided."}
-                            </span>
-                          </div>
-                        
-                        {/* Button always at the bottom */}
-                        <Button
-                          type="primary"
-                          block
-                          className="!rounded-button bg-green-500 border-none hover:bg-green-600 cursor-pointer whitespace-nowrap"
-                        >
-                          Apply Now
-                        </Button>
-                      </Card>
-                      </div>
+                        {skill}
+                      </Tag>
+                    ))}
+                  </div>
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="flex items-center text-gray-600">
+                      <i className="fas fa-coins text-yellow-500 mr-2 custom-green-icon"></i>
+                      {job.budget}
                     </div>
-                  ))}
+                    <div className="flex items-center text-gray-600">
+                      <StarFilled className="text-yellow-500 mr-1" />
+                      {job.rating}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+                <Button
+                  type="primary"
+                  block
+                  className="!rounded-button bg-green-500 border-none hover:bg-green-600 cursor-pointer whitespace-nowrap mt-auto"
+                >
+                  View Details
+                </Button>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Job Details Modal */}
+      <JobDetailsModal
+        job={selectedJob}
+        visible={isModalVisible}
+        onClose={handleModalClose}
+        onEnroll={handleEnroll}
+      />
 
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-300 py-16 w-full">
@@ -361,7 +300,7 @@ const BrowseJob: React.FC = () => {
                 </a>
               </div>
             </div>
-            
+
             <div>
               <h3 className="text-white text-lg font-bold mb-4">Resources</h3>
               <ul className="space-y-2">
