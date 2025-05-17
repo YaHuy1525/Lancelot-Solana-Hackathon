@@ -22,7 +22,7 @@ const HomePage: React.FC = () => {
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center">
-              <div className="text-2xl font-bold text-white">Lancelot</div>
+              <a className="text-2xl font-bold text-white" href="/">Lancelot</a>
             </div>
             <div className="hidden md:block">
               <div className="flex items-center space-x-8">

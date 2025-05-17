@@ -22,7 +22,7 @@ const BrowseJob: React.FC = () => {
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center">
-              <div className="text-2xl font-bold text-white">Lancelot</div>
+              <a className="text-2xl font-bold text-white" href="/">Lancelot</a>
             </div>
             <div className="hidden md:block">
               <div className="flex items-center space-x-8">
@@ -134,16 +134,9 @@ const BrowseJob: React.FC = () => {
 
       {/* Featured Jobs Section */}
             <div className="py-20 bg-white w-full">
-              <div className="w-full px-4">
-                {/* <div className="flex justify-between items-center mb-12">
-                  <Button
-                    type="link"
-                    className="text-green-500 hover:text-green-600 font-medium flex items-center cursor-pointer whitespace-nowrap"
-                  >
-                    View All <ArrowRightOutlined className="ml-1" />
-                  </Button>
-                </div> */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="max-w-6xl mx-auto px-4">
+                <div className="flex overflow-x-auto gap-6 pb-4 snap-x snap-mandatory scrollbar-hide"
+                  style={{ WebkitOverflowScrolling: "touch" , scrollbarWidth: "none" }}>
                   {[
                     {
                       title: "Solana dApp Developer",
@@ -177,7 +170,6 @@ const BrowseJob: React.FC = () => {
                       image:
                         "https://readdy.ai/api/search-image?query=Digital%20marketing%20workspace%20with%20analytics%20dashboards%20and%20social%20media%20elements%2C%20professional%20marketing%20visualization%20with%20cryptocurrency%20symbols%2C%20clean%20minimal%20background%20with%20subtle%20lighting&width=400&height=250&seq=5&orientation=landscape",
                     },
-                    //add new from here
                     {
                       title: "Smart Contract Developer",
                       skills: ["Solidity", "Ethereum", "Web3.js", "Hardhat"],
@@ -239,51 +231,57 @@ const BrowseJob: React.FC = () => {
                         "https://readdy.ai/api/search-image?query=Cross-chain%20development%20workspace%20with%20multiple%20blockchain%20network%20displays%20and%20bridge%20protocol%20diagrams%2C%20modern%20tech%20environment%20with%20interoperability%20visualizations%2C%20professional%20workspace%20with%20ambient%20lighting&width=600&height=400&seq=8&orientation=landscape",
                     },
                   ].map((job, index) => (
-                    <Card
-                      key={index}
-                      hoverable
-                      cover={
-                        <div className="h-48 overflow-hidden">
-                          <img
-                            alt={job.title}
-                            src={job.image}
-                            className="w-full h-full object-cover object-top"
-                          />
-                        </div>
-                      }
-                      className="shadow-sm hover:shadow-md transition-shadow"
+                    <div
+                      className="flex-shrink-0 snap-center "
+                      style={{ width: "calc(25% - 24px)" }} 
                     >
-                      <h3 className="text-lg font-bold text-gray-900 mb-2">
-                        {job.title}
-                      </h3>
-                      <div className="flex flex-wrap gap-2 mb-3">
-                        {job.skills.map((skill, idx) => (
-                          <Tag
-                            key={idx}
-                            className="rounded-full px-3 py-1 bg-gray-100 text-gray-800"
-                          >
-                            {skill}
-                          </Tag>
-                        ))}
-                      </div>
-                      <div className="flex justify-between items-center mb-4">
-                        <div className="flex items-center text-gray-600">
-                          <i className="fas fa-coins text-yellow-500 mr-2 custom-green-icon"></i>
-                          {job.budget}
-                        </div>
-                        <div className="flex items-center text-gray-600">
-                          <StarFilled className="text-yellow-500 mr-1" />
-                          {job.rating}
-                        </div>
-                      </div>
-                      <Button
-                        type="primary"
-                        block
-                        className="!rounded-button bg-green-500 border-none hover:bg-green-600 cursor-pointer whitespace-nowrap"
+                      <Card
+                        key={index} 
+                        hoverable
+                        style= {{ height: "100%" }}
+                        cover={
+                          <div className="h-48 overflow-hidden">
+                            <img
+                              alt={job.title}
+                              src={job.image}
+                              className="w-full h-full object-cover object-top"
+                            />
+                          </div>
+                        }
+                        className="shadow-sm hover:shadow-md transition-shadow min-h-[340px] flex flex-col justify-between"
                       >
-                        Apply Now
-                      </Button>
-                    </Card>
+                        <h3 className="text-lg font-bold text-gray-900 mb-2">
+                          {job.title}
+                        </h3>
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          {job.skills.map((skill, idx) => (
+                            <Tag
+                              key={idx}
+                              className="rounded-full px-3 py-1 bg-gray-100 text-gray-800"
+                            >
+                              {skill}
+                            </Tag>
+                          ))}
+                        </div>
+                        <div className="flex justify-between items-center mb-4">
+                          <div className="flex items-center text-gray-600">
+                            <i className="fas fa-coins text-yellow-500 mr-2 custom-green-icon"></i>
+                            {job.budget}
+                          </div>
+                          <div className="flex items-center text-gray-600">
+                            <StarFilled className="text-yellow-500 mr-1" />
+                            {job.rating}
+                          </div>
+                        </div>
+                        <Button
+                          type="primary"
+                          block
+                          className="!rounded-button bg-green-500 border-none hover:bg-green-600 cursor-pointer whitespace-nowrap"
+                        >
+                          Apply Now
+                        </Button>
+                      </Card>
+                    </div>
                   ))}
                 </div>
               </div>
