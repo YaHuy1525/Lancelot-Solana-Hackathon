@@ -177,70 +177,66 @@ const BrowseJob: React.FC = () => {
                       image:
                         "https://readdy.ai/api/search-image?query=Digital%20marketing%20workspace%20with%20analytics%20dashboards%20and%20social%20media%20elements%2C%20professional%20marketing%20visualization%20with%20cryptocurrency%20symbols%2C%20clean%20minimal%20background%20with%20subtle%20lighting&width=400&height=250&seq=5&orientation=landscape",
                     },
-                    {
-                      title: "Solana dApp Developer",
-                      skills: ["Rust", "Solana", "React"],
-                      budget: "2.5-4.0 SOL",
-                      rating: 4.9,
-                      image:
-                        "https://readdy.ai/api/search-image?query=Abstract%20digital%20representation%20of%20blockchain%20development%20with%20code%20elements%20and%20Solana%20logo%2C%20professional%20tech%20illustration%20with%20clean%20minimal%20background%2C%20high%20quality%203D%20render%20with%20subtle%20lighting&width=400&height=250&seq=2&orientation=landscape",
-                    },
                     //add new from here
                     {
-                      title: "Solana dApp Developer",
-                      skills: ["Rust", "Solana", "React"],
+                      title: "Smart Contract Developer",
+                      skills: ["Solidity", "Ethereum", "Web3.js", "Hardhat"],
                       budget: "2.5-4.0 SOL",
                       rating: 4.9,
                       image:
-                        "https://readdy.ai/api/search-image?query=Abstract%20digital%20representation%20of%20blockchain%20development%20with%20code%20elements%20and%20Solana%20logo%2C%20professional%20tech%20illustration%20with%20clean%20minimal%20background%2C%20high%20quality%203D%20render%20with%20subtle%20lighting&width=400&height=250&seq=2&orientation=landscape",
+                        "https://readdy.ai/api/search-image?query=Modern%20blockchain%20development%20workspace%20with%20multiple%20screens%20showing%20smart%20contract%20code%20and%20crypto%20trading%20charts%2C%20clean%20minimal%20desk%20setup%20with%20advanced%20monitoring%20tools%2C%20professional%20Web3%20development%20environment%20with%20soft%20lighting&width=600&height=400&seq=1&orientation=landscape",
                     },
                     {
-                      title: "Solana dApp Developer",
-                      skills: ["Rust", "Solana", "React"],
+                      title: "DeFi Protocol Engineer",
+                      skills: ["Rust", "Solana", "DeFi", "TokenEconomics"],
                       budget: "2.5-4.0 SOL",
                       rating: 4.9,
                       image:
-                        "https://readdy.ai/api/search-image?query=Abstract%20digital%20representation%20of%20blockchain%20development%20with%20code%20elements%20and%20Solana%20logo%2C%20professional%20tech%20illustration%20with%20clean%20minimal%20background%2C%20high%20quality%203D%20render%20with%20subtle%20lighting&width=400&height=250&seq=2&orientation=landscape",
+                        "https://readdy.ai/api/search-image?query=Decentralized%20finance%20workspace%20with%20multiple%20monitors%20displaying%20DeFi%20protocols%20and%20yield%20farming%20analytics%2C%20modern%20tech%20office%20with%20blockchain%20architecture%20diagrams%2C%20professional%20development%20setup%20with%20ambient%20lighting&width=600&height=400&seq=2&orientation=landscape",
                     },
                     {
-                      title: "Solana dApp Developer",
-                      skills: ["Rust", "Solana", "React"],
+                      title: "NFT Platform Developer",
+                      skills: ["ERC721", "IPFS", "React", "Node.js"],
                       budget: "2.5-4.0 SOL",
                       rating: 4.9,
                       image:
-                        "https://readdy.ai/api/search-image?query=Abstract%20digital%20representation%20of%20blockchain%20development%20with%20code%20elements%20and%20Solana%20logo%2C%20professional%20tech%20illustration%20with%20clean%20minimal%20background%2C%20high%20quality%203D%20render%20with%20subtle%20lighting&width=400&height=250&seq=2&orientation=landscape",
+                        "https://readdy.ai/api/search-image?query=NFT%20development%20workspace%20with%20digital%20art%20and%20smart%20contract%20code%20on%20displays%2C%20modern%20creative%20tech%20environment%2C%20professional%20NFT%20platform%20development%20setup%20with%20soft%20natural%20lighting&width=600&height=400&seq=3&orientation=landscape",
                     },
                     {
-                      title: "Solana dApp Developer",
-                      skills: ["Rust", "Solana", "React"],
+                      title: "Blockchain Security Engineer",
+                      skills: ["Security Auditing", "Solidity", "MetaMask", "DeFi"],
                       budget: "2.5-4.0 SOL",
                       rating: 4.9,
                       image:
-                        "https://readdy.ai/api/search-image?query=Abstract%20digital%20representation%20of%20blockchain%20development%20with%20code%20elements%20and%20Solana%20logo%2C%20professional%20tech%20illustration%20with%20clean%20minimal%20background%2C%20high%20quality%203D%20render%20with%20subtle%20lighting&width=400&height=250&seq=2&orientation=landscape",
-                    },
+                        "https://readdy.ai/api/search-image?query=Blockchain%20security%20workspace%20with%20security%20analysis%20tools%20and%20vulnerability%20scanning%20displays%2C%20modern%20cybersecurity%20office%20environment%2C%20professional%20security%20testing%20setup%20with%20ambient%20lighting&width=600&height=400&seq=4&orientation=landscape",                    },
                     {
-                      title: "Solana dApp Developer",
-                      skills: ["Rust", "Solana", "React"],
+                      title: "Web3 Frontend Developer",
+                      skills: ["React", "ethers.js", "Web3-React", "TypeScript"],
                       budget: "2.5-4.0 SOL",
                       rating: 4.9,
                       image:
-                        "https://readdy.ai/api/search-image?query=Abstract%20digital%20representation%20of%20blockchain%20development%20with%20code%20elements%20and%20Solana%20logo%2C%20professional%20tech%20illustration%20with%20clean%20minimal%20background%2C%20high%20quality%203D%20render%20with%20subtle%20lighting&width=400&height=250&seq=2&orientation=landscape",
-                    },
+                        "https://readdy.ai/api/search-image?query=Web3%20frontend%20development%20workspace%20with%20dApp%20interfaces%20and%20blockchain%20integration%20code%2C%20modern%20tech%20office%20with%20clean%20design%20mockups%2C%20professional%20development%20environment%20with%20soft%20lighting&width=600&height=400&seq=5&orientation=landscape",                    },
                     {
-                      title: "Solana dApp Developer",
-                      skills: ["Rust", "Solana", "React"],
+                      title: "DAO Developer",
+                      skills: ["Governance", "Smart Contracts", "Snapshot", "Aragon"],
                       budget: "2.5-4.0 SOL",
                       rating: 4.9,
                       image:
-                        "https://readdy.ai/api/search-image?query=Abstract%20digital%20representation%20of%20blockchain%20development%20with%20code%20elements%20and%20Solana%20logo%2C%20professional%20tech%20illustration%20with%20clean%20minimal%20background%2C%20high%20quality%203D%20render%20with%20subtle%20lighting&width=400&height=250&seq=2&orientation=landscape",
-                    },
+                        "https://readdy.ai/api/search-image?query=DAO%20development%20workspace%20with%20governance%20dashboards%20and%20voting%20mechanism%20displays%2C%20modern%20decentralized%20organization%20office%2C%20professional%20blockchain%20workspace%20with%20ambient%20lighting&width=600&height=400&seq=6&orientation=landscape",                    },
                     {
-                      title: "Solana dApp Developer",
-                      skills: ["Rust", "Solana", "React"],
+                      title: "Layer 2 Protocol Engineer",
+                      skills: ["Optimism", "zkSync", "Polygon", "Scaling"], 
                       budget: "2.5-4.0 SOL",
                       rating: 4.9,
                       image:
-                        "https://readdy.ai/api/search-image?query=Abstract%20digital%20representation%20of%20blockchain%20development%20with%20code%20elements%20and%20Solana%20logo%2C%20professional%20tech%20illustration%20with%20clean%20minimal%20background%2C%20high%20quality%203D%20render%20with%20subtle%20lighting&width=400&height=250&seq=2&orientation=landscape",
+                        "https://readdy.ai/api/search-image?query=Layer%202%20blockchain%20development%20workspace%20with%20scaling%20solution%20architectures%20and%20optimization%20code%2C%20modern%20tech%20office%20with%20network%20diagrams%2C%20professional%20development%20setup%20with%20soft%20lighting&width=600&height=400&seq=7&orientation=landscape",                    },
+                    {
+                      title: "Cross-chain Bridge Developer",
+                      skills: ["Polkadot", "Cosmos", "Bridge Protocols", "Rust"],
+                      budget: "2.5-4.0 SOL",
+                      rating: 4.9,
+                      image:
+                        "https://readdy.ai/api/search-image?query=Cross-chain%20development%20workspace%20with%20multiple%20blockchain%20network%20displays%20and%20bridge%20protocol%20diagrams%2C%20modern%20tech%20environment%20with%20interoperability%20visualizations%2C%20professional%20workspace%20with%20ambient%20lighting&width=600&height=400&seq=8&orientation=landscape",
                     },
                   ].map((job, index) => (
                     <Card
