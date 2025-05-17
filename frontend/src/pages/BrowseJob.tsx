@@ -145,6 +145,8 @@ const BrowseJob: React.FC = () => {
                       rating: 4.9,
                       image:
                         "https://readdy.ai/api/search-image?query=Abstract%20digital%20representation%20of%20blockchain%20development%20with%20code%20elements%20and%20Solana%20logo%2C%20professional%20tech%20illustration%20with%20clean%20minimal%20background%2C%20high%20quality%203D%20render%20with%20subtle%20lighting&width=400&height=250&seq=2&orientation=landscape",
+                      description:
+                        "A Solana dApp developer is responsible for building decentralized applications on the Solana blockchain. They work with Rust and React to create user-friendly interfaces and ensure seamless interaction with smart contracts.",
                     },
                     {
                       title: "NFT Collection Designer",
@@ -153,7 +155,9 @@ const BrowseJob: React.FC = () => {
                       rating: 4.8,
                       image:
                         "https://readdy.ai/api/search-image?query=Modern%20digital%20art%20creation%20studio%20with%20NFT%20artwork%20displays%2C%20professional%20creative%20workspace%20with%20digital%20tablets%20and%20screens%20showing%20colorful%20abstract%20designs%2C%20clean%20minimal%20background%20with%20subtle%20lighting&width=400&height=250&seq=3&orientation=landscape",
-                    },
+                      description: 
+                        "An NFT collection designer creates unique digital assets for non-fungible tokens. They focus on artistic design, ensuring that each piece is visually appealing and meets the standards of the blockchain community.",
+                      },
                     {
                       title: "Smart Contract Auditor",
                       skills: ["Security", "Solidity", "Audit"],
@@ -161,7 +165,9 @@ const BrowseJob: React.FC = () => {
                       rating: 5.0,
                       image:
                         "https://readdy.ai/api/search-image?query=Cybersecurity%20concept%20with%20digital%20locks%20and%20code%20inspection%2C%20professional%20tech%20security%20visualization%20with%20blockchain%20elements%2C%20clean%20minimal%20background%20with%20blue%20digital%20elements&width=400&height=250&seq=4&orientation=landscape",
-                    },
+                      description:
+                        "A smart contract auditor reviews and analyzes smart contracts for vulnerabilities and security flaws. They ensure that the code is robust, efficient, and free from potential exploits, providing peace of mind to developers and users alike.",
+                      },
                     {
                       title: "Web3 Marketing Specialist",
                       skills: ["Marketing", "Discord", "Web3"],
@@ -169,7 +175,9 @@ const BrowseJob: React.FC = () => {
                       rating: 4.7,
                       image:
                         "https://readdy.ai/api/search-image?query=Digital%20marketing%20workspace%20with%20analytics%20dashboards%20and%20social%20media%20elements%2C%20professional%20marketing%20visualization%20with%20cryptocurrency%20symbols%2C%20clean%20minimal%20background%20with%20subtle%20lighting&width=400&height=250&seq=5&orientation=landscape",
-                    },
+                      description: 
+                        "A Web3 marketing specialist focuses on promoting decentralized applications and blockchain projects. They utilize social media, community engagement, and innovative marketing strategies to reach target audiences and drive adoption.",
+                      },
                     {
                       title: "Smart Contract Developer",
                       skills: ["Solidity", "Ethereum", "Web3.js", "Hardhat"],
@@ -177,7 +185,9 @@ const BrowseJob: React.FC = () => {
                       rating: 4.9,
                       image:
                         "https://readdy.ai/api/search-image?query=Modern%20blockchain%20development%20workspace%20with%20multiple%20screens%20showing%20smart%20contract%20code%20and%20crypto%20trading%20charts%2C%20clean%20minimal%20desk%20setup%20with%20advanced%20monitoring%20tools%2C%20professional%20Web3%20development%20environment%20with%20soft%20lighting&width=600&height=400&seq=1&orientation=landscape",
-                    },
+                      description:
+                        "A smart contract developer specializes in writing and deploying smart contracts on blockchain platforms. They use programming languages like Solidity to create secure and efficient contracts that automate processes and transactions.",
+                      },
                     {
                       title: "DeFi Protocol Engineer",
                       skills: ["Rust", "Solana", "DeFi", "TokenEconomics"],
@@ -185,7 +195,9 @@ const BrowseJob: React.FC = () => {
                       rating: 4.9,
                       image:
                         "https://readdy.ai/api/search-image?query=Decentralized%20finance%20workspace%20with%20multiple%20monitors%20displaying%20DeFi%20protocols%20and%20yield%20farming%20analytics%2C%20modern%20tech%20office%20with%20blockchain%20architecture%20diagrams%2C%20professional%20development%20setup%20with%20ambient%20lighting&width=600&height=400&seq=2&orientation=landscape",
-                    },
+                      description:
+                        "A DeFi protocol engineer designs and develops decentralized finance applications. They work on creating innovative financial products, ensuring security, and optimizing performance within the blockchain ecosystem.",
+                      },
                     {
                       title: "NFT Platform Developer",
                       skills: ["ERC721", "IPFS", "React", "Node.js"],
@@ -193,35 +205,49 @@ const BrowseJob: React.FC = () => {
                       rating: 4.9,
                       image:
                         "https://readdy.ai/api/search-image?query=NFT%20development%20workspace%20with%20digital%20art%20and%20smart%20contract%20code%20on%20displays%2C%20modern%20creative%20tech%20environment%2C%20professional%20NFT%20platform%20development%20setup%20with%20soft%20natural%20lighting&width=600&height=400&seq=3&orientation=landscape",
-                    },
+                      description:
+                        "An NFT platform developer creates and maintains platforms for minting, trading, and managing non-fungible tokens. They ensure seamless user experiences and robust backend systems to support high transaction volumes.",
+                      },
                     {
                       title: "Blockchain Security Engineer",
                       skills: ["Security Auditing", "Solidity", "MetaMask", "DeFi"],
                       budget: "2.5-4.0 SOL",
                       rating: 4.9,
                       image:
-                        "https://readdy.ai/api/search-image?query=Blockchain%20security%20workspace%20with%20security%20analysis%20tools%20and%20vulnerability%20scanning%20displays%2C%20modern%20cybersecurity%20office%20environment%2C%20professional%20security%20testing%20setup%20with%20ambient%20lighting&width=600&height=400&seq=4&orientation=landscape",                    },
+                        "https://readdy.ai/api/search-image?query=Blockchain%20security%20workspace%20with%20security%20analysis%20tools%20and%20vulnerability%20scanning%20displays%2C%20modern%20cybersecurity%20office%20environment%2C%20professional%20security%20testing%20setup%20with%20ambient%20lighting&width=600&height=400&seq=4&orientation=landscape",                    
+                      description:
+                        "A blockchain security engineer focuses on securing blockchain applications and networks. They conduct audits, identify vulnerabilities, and implement security measures to protect against attacks and ensure data integrity.",
+                      },
                     {
                       title: "Web3 Frontend Developer",
                       skills: ["React", "ethers.js", "Web3-React", "TypeScript"],
                       budget: "2.5-4.0 SOL",
                       rating: 4.9,
                       image:
-                        "https://readdy.ai/api/search-image?query=Web3%20frontend%20development%20workspace%20with%20dApp%20interfaces%20and%20blockchain%20integration%20code%2C%20modern%20tech%20office%20with%20clean%20design%20mockups%2C%20professional%20development%20environment%20with%20soft%20lighting&width=600&height=400&seq=5&orientation=landscape",                    },
+                        "https://readdy.ai/api/search-image?query=Web3%20frontend%20development%20workspace%20with%20dApp%20interfaces%20and%20blockchain%20integration%20code%2C%20modern%20tech%20office%20with%20clean%20design%20mockups%2C%20professional%20development%20environment%20with%20soft%20lighting&width=600&height=400&seq=5&orientation=landscape",                  
+                      description:
+                        "A Web3 frontend developer specializes in creating user interfaces for decentralized applications. They use frameworks like React and libraries like ethers.js to build responsive and interactive web applications that connect to blockchain networks.",
+                      },
                     {
                       title: "DAO Developer",
                       skills: ["Governance", "Smart Contracts", "Snapshot", "Aragon"],
                       budget: "2.5-4.0 SOL",
                       rating: 4.9,
                       image:
-                        "https://readdy.ai/api/search-image?query=DAO%20development%20workspace%20with%20governance%20dashboards%20and%20voting%20mechanism%20displays%2C%20modern%20decentralized%20organization%20office%2C%20professional%20blockchain%20workspace%20with%20ambient%20lighting&width=600&height=400&seq=6&orientation=landscape",                    },
+                        "https://readdy.ai/api/search-image?query=DAO%20development%20workspace%20with%20governance%20dashboards%20and%20voting%20mechanism%20displays%2C%20modern%20decentralized%20organization%20office%2C%20professional%20blockchain%20workspace%20with%20ambient%20lighting&width=600&height=400&seq=6&orientation=landscape",               
+                      description:
+                        "A DAO developer focuses on building decentralized autonomous organizations. They create governance models, smart contracts, and voting mechanisms to enable community-driven decision-making and resource allocation.",
+                      },
                     {
                       title: "Layer 2 Protocol Engineer",
                       skills: ["Optimism", "zkSync", "Polygon", "Scaling"], 
                       budget: "2.5-4.0 SOL",
                       rating: 4.9,
                       image:
-                        "https://readdy.ai/api/search-image?query=Layer%202%20blockchain%20development%20workspace%20with%20scaling%20solution%20architectures%20and%20optimization%20code%2C%20modern%20tech%20office%20with%20network%20diagrams%2C%20professional%20development%20setup%20with%20soft%20lighting&width=600&height=400&seq=7&orientation=landscape",                    },
+                        "https://readdy.ai/api/search-image?query=Layer%202%20blockchain%20development%20workspace%20with%20scaling%20solution%20architectures%20and%20optimization%20code%2C%20modern%20tech%20office%20with%20network%20diagrams%2C%20professional%20development%20setup%20with%20soft%20lighting&width=600&height=400&seq=7&orientation=landscape",                    
+                      description:
+                        "A Layer 2 protocol engineer specializes in developing solutions that enhance the scalability and performance of blockchain networks. They work on technologies like rollups and sidechains to improve transaction throughput and reduce costs.",
+                      },
                     {
                       title: "Cross-chain Bridge Developer",
                       skills: ["Polkadot", "Cosmos", "Bridge Protocols", "Rust"],
@@ -229,12 +255,15 @@ const BrowseJob: React.FC = () => {
                       rating: 4.9,
                       image:
                         "https://readdy.ai/api/search-image?query=Cross-chain%20development%20workspace%20with%20multiple%20blockchain%20network%20displays%20and%20bridge%20protocol%20diagrams%2C%20modern%20tech%20environment%20with%20interoperability%20visualizations%2C%20professional%20workspace%20with%20ambient%20lighting&width=600&height=400&seq=8&orientation=landscape",
+                      description:
+                        "A cross-chain bridge developer focuses on creating solutions that enable interoperability between different blockchain networks. They work on protocols that facilitate asset transfers and communication across chains, enhancing the overall blockchain ecosystem.",
                     },
                   ].map((job, index) => (
                     <div
                       className="flex-shrink-0 snap-center "
                       style={{ width: "calc(25% - 24px)" }} 
                     >
+                      <div className="relative group h-full">
                       <Card
                         key={index} 
                         hoverable
@@ -253,7 +282,6 @@ const BrowseJob: React.FC = () => {
                         <h3 className="text-lg font-bold text-gray-900 mb-2">
                           {job.title}
                         </h3>
-                        <div className="flex flex-wrap gap-2 mb-3">
                           {job.skills.map((skill, idx) => (
                             <Tag
                               key={idx}
@@ -262,7 +290,7 @@ const BrowseJob: React.FC = () => {
                               {skill}
                             </Tag>
                           ))}
-                        </div>
+                        
                         <div className="flex justify-between items-center mb-4">
                           <div className="flex items-center text-gray-600">
                             <i className="fas fa-coins text-yellow-500 mr-2 custom-green-icon"></i>
@@ -273,6 +301,14 @@ const BrowseJob: React.FC = () => {
                             {job.rating}
                           </div>
                         </div>
+                        {/* Description Overlay */}
+                          <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center text-center px-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 rounded-xl">
+                            <span className="text-white text-base pointer-events-auto">
+                              {job.description || "No description provided."}
+                            </span>
+                          </div>
+                        
+                        {/* Button always at the bottom */}
                         <Button
                           type="primary"
                           block
@@ -281,6 +317,7 @@ const BrowseJob: React.FC = () => {
                           Apply Now
                         </Button>
                       </Card>
+                      </div>
                     </div>
                   ))}
                 </div>
