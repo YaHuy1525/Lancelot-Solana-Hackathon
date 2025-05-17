@@ -4,9 +4,9 @@ const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 
-const freelancerRoutes = require("./routes/freelancerRoutes");
+const freelancerRoutes = require("./routes/userRoutes");
 const jobRoutes = require("./routes/jobRoutes");
-const reputationRoutes = require("./routes/reputationRoutes");
+
 
 // Load environment variables
 dotenv.config();
@@ -25,16 +25,16 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
-
+ 
 // Routes
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
 // API routes
-app.use("/api/freelancers", freelancerRoutes);
+app.use("/api/users", freelancerRoutes);
 app.use("/api/jobs", jobRoutes);
-app.use("/api/reputation", reputationRoutes);
+ 
 
 // Error handling middleware
 app.use((err, req, res, next) => {

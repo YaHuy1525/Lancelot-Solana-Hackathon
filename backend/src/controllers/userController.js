@@ -1,4 +1,4 @@
-const FreelancerModel = require('../models/FreelancerModel')
+const FreelancerModel = require('../models/userModel')
 exports.getAllFreelancers = async (req, res) => {
     try{
         const freelancers = await FreelancerModel.find()

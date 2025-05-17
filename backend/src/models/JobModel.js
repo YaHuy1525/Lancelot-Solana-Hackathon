@@ -1,54 +1,67 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const jobSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    clientWallet: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    freelancerWallet: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-    deadline: {
-      type: Date,
-    },
-    requiredSkills: {
-      type: [String],
-      default: [],
-    },
-    status: {
-      type: String,
-      enum: ["open", "in-progress", "completed", "cancelled"],
-      default: "open",
-    },
-    paymentConfirmed: {
-      type: Boolean,
-      default: false,
-    },
-    transactionHash: {
-      type: String,
-      default: "",
-    },
+// Delete existing model if it exists
+if (mongoose.models.Job) {
+  delete mongoose.connection.models["Job"];
+}
+
+const JobSchema = new mongoose.Schema({
+  client_id: {
+    type: String,
+    ref: 'User',
+    required: true
   },
-  {
-    timestamps: true,
+  freelancer_id: {
+    type: String,
+    ref: 'User',
+    default: null
+  },
+  title: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  budget_min: {
+    type: Number,
+    required: true
+  },
+  budget_max: {
+    type: Number,
+    required: true
+  },
+  category: {
+    type: String,
+    required: true
+  },
+  deadline: {
+    type: Date,
+    required: true
+  },
+  status: {
+    type: String,
+    enum: ['open', 'in_progress', 'completed', 'cancelled'],
+    default: 'open'
+  },
+  created_at: {
+    type: Date,
+    default: Date.now
   }
-);
+});
 
-module.exports = mongoose.model("Job", jobSchema);
+// Add transform to convert Date fields to ISO string when toJSON is called
+JobSchema.set('toJSON', {
+  transform: function(doc, ret) {
+    if (ret.created_at) {
+      ret.created_at = ret.created_at.toISOString();
+    }
+    if (ret.deadline) {
+      ret.deadline = ret.deadline.toISOString();
+    }
+    return ret;
+  }
+});
+
+module.exports = mongoose.model("Job", JobSchema);
