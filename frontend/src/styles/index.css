@@ -86,3 +86,7 @@ button:focus-visible {
 .custom-green-icon {
   color: #22c55e;
 }
+
+html {
+  scroll-behavior: smooth;
+}
