@@ -35,7 +35,7 @@ interface ContractFormData {
 const CreateContract: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { connected, publicKey } = useWallet();
+  const { connected } = useWallet();
   const [currentStep, setCurrentStep] = useState(0);
   const [form] = Form.useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);

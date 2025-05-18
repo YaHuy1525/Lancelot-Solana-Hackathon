@@ -24,7 +24,7 @@ interface Job {
 }
 
 const HomePage: React.FC = () => {
-  const { connected } = useWallet();
+  const {} = useWallet();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -71,8 +71,19 @@ const HomePage: React.FC = () => {
   }, []);
 
   const handleSearch = (searchTerm: string, skills: string) => {
-    // This function is no longer needed as navigation is handled in SearchSection
-    // Keeping it for backward compatibility
+    // Filter jobs based on search term and skills
+    const filteredJobs = jobs.filter((job) => {
+      const matchesSearch = job.title
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+      const matchesSkills = skills
+        ? job.skills.some((skill) =>
+            skill.toLowerCase().includes(skills.toLowerCase())
+          )
+        : true;
+      return matchesSearch && matchesSkills;
+    });
+    setJobs(filteredJobs);
   };
 
   const handleJobClick = (job: Job) => {
