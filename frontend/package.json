@@ -1,5 +1,6 @@
 {
   "name": "frontend",
+  "homepage": "https://SnowAceAlex.github.io/Lancelot-Solana-Hackathon",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,7 +8,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@ant-design/icons": "^5.6.1",
@@ -19,6 +22,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/swiper": "^6.0.0",
     "antd": "^5.25.1",
+    "gh-pages": "^6.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.6.0",
