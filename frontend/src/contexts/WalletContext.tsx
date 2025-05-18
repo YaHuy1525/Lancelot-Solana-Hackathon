@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { Connection } from "@solana/web3.js";
 import { useWallet as useSolanaWallet } from "@solana/wallet-adapter-react";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 
 interface WalletContextType {
   isConnected: boolean;

@@ -37,7 +37,7 @@ const PostWork: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>("");
 
-  const handleImageUpload = async (file: File) => {
+  const handleImageUpload = async () => {
     try {
       // Generate a sample image URL based on the job title
       const jobTitle = form.getFieldValue("title") || "blockchain";

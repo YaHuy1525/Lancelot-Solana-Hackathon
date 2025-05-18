@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Input, Statistic, Card, Tag, Divider } from "antd";
-import {
-  SearchOutlined,
-  ArrowRightOutlined,
-  StarFilled,
-} from "@ant-design/icons";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { ArrowRightOutlined, StarFilled } from "@ant-design/icons";
 import { useWallet } from "@solana/wallet-adapter-react";
 // Import Ant Design styles
 import "antd/dist/reset.css";

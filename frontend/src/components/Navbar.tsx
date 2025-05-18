@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button } from "antd";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 const Navbar: React.FC = () => {

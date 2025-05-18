@@ -9,10 +9,7 @@ import {
   Steps,
   Descriptions,
   Tag,
-  Divider,
-  message,
 } from "antd";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { StarFilled } from "@ant-design/icons";
 import Navbar from "../components/Navbar";
