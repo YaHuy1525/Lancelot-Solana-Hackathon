@@ -1,134 +1,116 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Input, Statistic, Card, Tag, Divider } from "antd";
-import {
-  SearchOutlined,
-  ArrowRightOutlined,
-  StarFilled,
-} from "@ant-design/icons";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { ArrowRightOutlined, StarFilled } from "@ant-design/icons";
+import { useWallet } from "@solana/wallet-adapter-react";
 // Import Ant Design styles
 import "antd/dist/reset.css";
 // Import Tailwind CSS
 import "../styles/index.css";
 // Import wallet styles
 import "../styles/wallet.css";
+// Import components
+import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
+import SearchSection from "../components/SearchSection";
+import JobDetailsModal from "../components/JobDetailsModal";
+
+interface Job {
+  title: string;
+  skills: string[];
+  budget: string;
+  rating: number;
+  image: string;
+}
 
 const HomePage: React.FC = () => {
+  const {} = useWallet();
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    // Initialize jobs data
+    const initialJobs: Job[] = [
+      {
+        title: "Solana dApp Developer",
+        skills: ["Rust", "Solana", "React"],
+        budget: "2.5-4.0 SOL",
+        rating: 4.9,
+        image:
+          "https://readdy.ai/api/search-image?query=Abstract%20digital%20representation%20of%20blockchain%20development%20with%20code%20elements%20and%20Solana%20logo%2C%20professional%20tech%20illustration%20with%20clean%20minimal%20background%2C%20high%20quality%203D%20render%20with%20subtle%20lighting&width=400&height=250&seq=2&orientation=landscape",
+      },
+      {
+        title: "NFT Collection Designer",
+        skills: ["Illustration", "NFT", "Blockchain"],
+        budget: "3.0-5.0 SOL",
+        rating: 4.8,
+        image:
+          "https://readdy.ai/api/search-image?query=Modern%20digital%20art%20creation%20studio%20with%20NFT%20artwork%20displays%2C%20professional%20creative%20workspace%20with%20digital%20tablets%20and%20screens%20showing%20colorful%20abstract%20designs%2C%20clean%20minimal%20background%20with%20subtle%20lighting&width=400&height=250&seq=3&orientation=landscape",
+      },
+      {
+        title: "Smart Contract Auditor",
+        skills: ["Security", "Solidity", "Audit"],
+        budget: "5.0-8.0 SOL",
+        rating: 5.0,
+        image:
+          "https://readdy.ai/api/search-image?query=Cybersecurity%20concept%20with%20digital%20locks%20and%20code%20inspection%2C%20professional%20tech%20security%20visualization%20with%20blockchain%20elements%2C%20clean%20minimal%20background%20with%20blue%20digital%20elements&width=400&height=250&seq=4&orientation=landscape",
+      },
+      {
+        title: "Web3 Marketing Specialist",
+        skills: ["Marketing", "Discord", "Web3"],
+        budget: "2.0-3.5 SOL",
+        rating: 4.7,
+        image:
+          "https://readdy.ai/api/search-image?query=Digital%20marketing%20workspace%20with%20analytics%20dashboards%20and%20social%20media%20elements%2C%20professional%20marketing%20visualization%20with%20cryptocurrency%20symbols%2C%20clean%20minimal%20background%20with%20subtle%20lighting&width=400&height=250&seq=5&orientation=landscape",
+      },
+    ];
+    setJobs(initialJobs);
+  }, []);
+
+  const handleSearch = (searchTerm: string, skills: string) => {
+    // Filter jobs based on search term and skills
+    const filteredJobs = jobs.filter((job) => {
+      const matchesSearch = job.title
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+      const matchesSkills = skills
+        ? job.skills.some((skill) =>
+            skill.toLowerCase().includes(skills.toLowerCase())
+          )
+        : true;
+      return matchesSearch && matchesSkills;
+    });
+    setJobs(filteredJobs);
+  };
+
+  const handleJobClick = (job: Job) => {
+    setSelectedJob(job);
+    setIsModalVisible(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+    setSelectedJob(null);
+  };
+
+  const handleEnroll = (job: Job) => {
+    // TODO: Implement enrollment logic
+    console.log("Enrolling in job:", job.title);
+    handleModalClose();
+  };
+
+  const handleFindWork = () => {
+    navigate("/browse-job");
+  };
+
   return (
     <div className="min-h-screen w-full bg-black">
-      {/* Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 bg-black shadow-md z-50">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center">
-              <div className="text-2xl font-bold text-white">Lancelot</div>
-            </div>
-            <div className="hidden md:block">
-              <div className="flex items-center space-x-8">
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white font-medium cursor-pointer whitespace-nowrap"
-                >
-                  Browse Jobs
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white font-medium cursor-pointer whitespace-nowrap"
-                >
-                  Post Work
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white font-medium cursor-pointer whitespace-nowrap"
-                >
-                  How It Works
-                </a>
-              </div>
-            </div>
-            <div>
-              <WalletMultiButton />
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Hero Section */}
-      <div className="pt-16 relative overflow-hidden">
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage:
-              "url('https://readdy.ai/api/search-image?query=A%20minimalist%20black%20and%20white%20digital%20landscape%20with%20subtle%20geometric%20patterns%20and%20clean%20lines%2C%20modern%20professional%20aesthetic%20with%20abstract%20elements%20creating%20depth%20and%20dimension%2C%20high%20contrast%20monochromatic%20design&width=1440&height=600&seq=1&orientation=landscape')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-black/90 to-transparent"></div>
-        </div>
-        <div className="w-full px-4 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-24">
-            <div className="flex flex-col justify-center">
-              <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-4 px-4">
-                Web3 Freelancing, <br />
-                Powered by Solana
-              </h1>
-              <p className="text-xl text-gray-300 mb-8 px-4">
-                Connect, Create, and Get Paid in Crypto. <br />
-                The future of work is decentralized.
-              </p>
-              <div className="flex flex-wrap gap-4 px-4">
-                <Button
-                  type="primary"
-                  size="large"
-                  className="!rounded-button bg-green-500 text-white border-none hover:bg-green-600 text-lg h-12 px-8 flex items-center cursor-pointer whitespace-nowrap"
-                >
-                  Start Earning <ArrowRightOutlined className="ml-2" />
-                </Button>
-                <Button
-                  size="large"
-                  className="!rounded-button bg-transparent text-white border-2 border-white hover:bg-green-500 hover:text-white text-lg h-12 px-8 flex items-center cursor-pointer whitespace-nowrap transition-all"
-                >
-                  Learn More
-                </Button>
-              </div>
-            </div>
-            <div className="hidden md:flex items-center justify-center">
-              {/* This is intentionally left empty as the background image serves as the right column content */}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Search Section */}
-      <div className="bg-white py-8">
-        <div className="w-full px-4">
-          <div className="bg-white shadow-lg rounded-xl p-6 -mt-16 relative z-20 mx-16">
-            <div className="flex flex-row gap-4">
-              <Input
-                size="middle"
-                placeholder="Search for jobs..."
-                prefix={<SearchOutlined className="text-gray-400" />}
-                className="w-100 border-gray-300 rounded-lg"
-              />
-              <Input
-                size="large"
-                placeholder="Skills"
-                prefix={
-                  <i className="fas fa-code text-gray-400 mr-2 custom-green-icon"></i>
-                }
-                className="md:w-64 border-gray-300 rounded-lg"
-              />
-              <Button
-                type="primary"
-                size="large"
-                className="!rounded-button bg-green-500 border-none hover:bg-green-600 h-10 px-8 flex items-center justify-center cursor-pointer whitespace-nowrap"
-              >
-                Search
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Navbar />
+      <Hero />
+      <SearchSection onSearch={handleSearch} jobs={jobs} showDropdown={true} />
 
       {/* Key Features Section */}
       <div className="py-20 bg-gray-50 w-full">
@@ -184,7 +166,7 @@ const HomePage: React.FC = () => {
       </div>
 
       {/* How It Works Section */}
-      <div className="py-20 bg-white w-full">
+      <div id="how-it-work" className="py-20 bg-white w-full">
         <div className="w-full px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -344,12 +326,12 @@ const HomePage: React.FC = () => {
         <div className="w-full px-4">
           <div className="flex justify-between items-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900">Featured Jobs</h2>
-            <Button
-              type="link"
+            <Link
+              to="/browse-job"
               className="text-green-500 hover:text-green-600 font-medium flex items-center cursor-pointer whitespace-nowrap"
             >
               View All <ArrowRightOutlined className="ml-1" />
-            </Button>
+            </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -389,6 +371,7 @@ const HomePage: React.FC = () => {
               <Card
                 key={index}
                 hoverable
+                onClick={() => handleJobClick(job)}
                 cover={
                   <div className="h-48 overflow-hidden">
                     <img
@@ -398,7 +381,7 @@ const HomePage: React.FC = () => {
                     />
                   </div>
                 }
-                className="shadow-sm hover:shadow-md transition-shadow"
+                className="shadow-sm hover:shadow-md transition-shadow cursor-pointer"
               >
                 <h3 className="text-lg font-bold text-gray-900 mb-2">
                   {job.title}
@@ -428,13 +411,21 @@ const HomePage: React.FC = () => {
                   block
                   className="!rounded-button bg-green-500 border-none hover:bg-green-600 cursor-pointer whitespace-nowrap"
                 >
-                  Apply Now
+                  View Details
                 </Button>
               </Card>
             ))}
           </div>
         </div>
       </div>
+
+      {/* Job Details Modal */}
+      <JobDetailsModal
+        job={selectedJob}
+        visible={isModalVisible}
+        onClose={handleModalClose}
+        onEnroll={handleEnroll}
+      />
 
       {/* Categories Section */}
       <div className="py-20 bg-gray-50 w-full">
@@ -577,6 +568,7 @@ const HomePage: React.FC = () => {
             <Button
               size="large"
               className="!rounded-button bg-green-500 text-white border-none hover:bg-green-600 text-lg h-12 px-8 flex items-center justify-center cursor-pointer whitespace-nowrap"
+              onClick={handleFindWork}
             >
               <i className="fas fa-search mr-2"></i> Find Work
             </Button>
