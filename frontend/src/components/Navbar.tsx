@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import { Scroll } from "react-scroll";
 import { Button } from "antd";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 

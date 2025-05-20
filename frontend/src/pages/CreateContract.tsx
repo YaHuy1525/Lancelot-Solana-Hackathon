@@ -9,10 +9,7 @@ import {
   Steps,
   Descriptions,
   Tag,
-  Divider,
-  message,
 } from "antd";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { StarFilled } from "@ant-design/icons";
 import Navbar from "../components/Navbar";
@@ -38,7 +35,7 @@ interface ContractFormData {
 const CreateContract: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { connected, publicKey } = useWallet();
+  const { connected } = useWallet();
   const [currentStep, setCurrentStep] = useState(0);
   const [form] = Form.useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);

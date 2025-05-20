@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input, Statistic, Card, Tag, Divider } from "antd";
-import { Link, useLocation } from "react-router-dom";
-import {
-  SearchOutlined,
-  ArrowRightOutlined,
-  StarFilled,
-} from "@ant-design/icons";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { Button, Card, Tag, Divider } from "antd";
+import { useLocation } from "react-router-dom";
+import { StarFilled } from "@ant-design/icons";
 // Import Ant Design styles
 import "antd/dist/reset.css";
 // Import Tailwind CSS
@@ -367,10 +362,10 @@ const BrowseJob: React.FC = () => {
                 Stay updated with the latest opportunities and platform news.
               </p>
               <div className="flex">
-                <Input
+                {/* <Input
                   placeholder="Your email"
                   className="rounded-l-lg border-gray-700 bg-gray-800 text-white"
-                />
+                /> */}
                 <Button
                   type="primary"
                   className="!rounded-button !rounded-l-none bg-green-500 border-none hover:bg-green-600 cursor-pointer whitespace-nowrap"
