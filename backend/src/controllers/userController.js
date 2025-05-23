@@ -1,8 +1,8 @@
-const FreelancerModel = require('../models/userModel')
-exports.getAllFreelancers = async (req, res) => {
+const UserModel = require('../models/userModel')
+exports.getAllUsers = async (req, res) => {
     try{
-        const freelancers = await FreelancerModel.find()
-        res.status(200).json(freelancers)
+        const users = await UserModel.find()
+        res.status(200).json(users)
     }
     catch (err){
         res.status(500).json({message: err.message}) 

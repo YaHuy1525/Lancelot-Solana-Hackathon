@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const freelancerController = require("../controllers/userController");
+const userController = require("../controllers/userController");
 
 // Get all freelancers
-router.get("/", freelancerController.getAllFreelancers);
+router.get("/", userController.getAllUsers);
 
 module.exports = router;
 

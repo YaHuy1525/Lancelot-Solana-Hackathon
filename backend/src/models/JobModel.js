@@ -24,31 +24,80 @@ const JobSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  budget_min: {
-    type: Number,
-    required: true
-  },
-  budget_max: {
-    type: Number,
-    required: true
-  },
-  category: {
+  responsibilities: {
     type: String,
     required: true
   },
-  deadline: {
-    type: Date,
+  requirements: {
+    type: String,
+    default: "",
+  },
+  required_skills: {
+    type: Array,
+    default: [],
+  },
+  budget: {
+    type: Number,
     required: true
+  },
+  job_type: {
+    type: String,
+    enum: ['Full-time', 'Part-time', 'Hourly', 'Project-based'],
+    default: 'Full-time',
+    required: true
+  },
+  experience_level: {
+    type: String,
+    enum: ['Entry level', 'Intermediate', 'Expert'],
+    default: 'Entry level',
+    required: true
+  },
+  duration: {
+    type: String,
+    enum: ['Less than 1 month', '1-3 months', '3-6 months', 'More than 6 months'],
+    default: 'Less than 1 month',
+    required: true
+  },
+  image: {
+    type: String,
+    default: null,
+  },
+  rating:{
+    type: Number,
+    default: 0,
+    min: 0,
+    max: 5
   },
   status: {
     type: String,
     enum: ['open', 'in_progress', 'completed', 'cancelled'],
     default: 'open'
   },
+  payment_id: {
+    type: String,
+    ref: 'Payment'
+  },
+  contract_id: {
+    type: String,
+    ref: 'Contract'
+  },
   created_at: {
     type: Date,
     default: Date.now
+  },
+  updated_at: {
+    type: Date,
+    default: Date.now
+  },
+  deadline: {
+    type: Date,
+    required: true
   }
+});
+
+JobSchema.pre('save', function(next) {
+  this.updated_at = new Date();
+  next();
 });
 
 // Add transform to convert Date fields to ISO string when toJSON is called
