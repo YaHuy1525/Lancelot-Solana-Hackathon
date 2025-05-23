@@ -4,5 +4,7 @@ const jobController = require("../controllers/JobController");
 
 // Get all jobs
 router.get("/", jobController.getAllJobs);
+// Route to delete all data (jobs + users) — call only intentionally
+router.delete('/delete-all', jobController.deleteAllData);
 
 module.exports = router;
