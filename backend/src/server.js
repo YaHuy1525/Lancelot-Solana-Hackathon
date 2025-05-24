@@ -4,9 +4,11 @@ const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 
-const freelancerRoutes = require("./routes/userRoutes");
+const userRoutes = require("./routes/userRoutes");
 const jobRoutes = require("./routes/jobRoutes");
-
+const proposalRoutes = require("./routes/proposalRoutes");
+const contractRoutes = require("./routes/contractRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 
 // Load environment variables
 dotenv.config();
@@ -32,8 +34,11 @@ app.get("/health", (req, res) => {
 });
 
 // API routes
-app.use("/api/users", freelancerRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/jobs", jobRoutes);
+app.use("/api/proposals", proposalRoutes);
+app.use("/api/contracts", contractRoutes);
+app.use("/api/payments", paymentRoutes);
  
 
 // Error handling middleware

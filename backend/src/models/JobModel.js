@@ -11,11 +11,11 @@ const JobSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  freelancer_id: {
-    type: String,
-    ref: 'User',
-    default: null
-  },
+  // freelancer_id: {
+  //   type: String,
+  //   ref: 'User',
+  //   default: null
+  // },
   title: {
     type: String,
     required: true
@@ -72,10 +72,6 @@ const JobSchema = new mongoose.Schema({
     type: String,
     enum: ['open', 'in_progress', 'completed', 'cancelled'],
     default: 'open'
-  },
-  payment_id: {
-    type: String,
-    ref: 'Payment'
   },
   contract_id: {
     type: String,

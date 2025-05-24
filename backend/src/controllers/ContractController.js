@@ -1,20 +1,55 @@
 const JobModel = require('../models/JobModel');
 const ContractModel = require('../models/ContractModel');
 const PaymentModel = require('../models/PaymentModel');
-const mongoose = require('mongoose');
 
-ContractSchema.methods.getRemainingAmount = async function() {
-    const Payment = PaymentModel;
-    
-    const paidPayments = await Payment.find({
-      job_id: this.job_id,
-      status: 'paid'
-    });
-    
-    const totalPaid = paidPayments.reduce((sum, payment) => sum + payment.amount, 0);
-    return this.agreed_budget - totalPaid;
-  };
-  
+exports.getAllContracts = async (req, res) => {
+  try{
+    const contracts = ContractModel.find();
+    res.status(200).json(contracts)
+  }
+  catch(err){
+    res.status(500).json({message: err})
+  }
+}
 
-  const contract = await ContractModel.findById(contractId);
-  const remaining = await contract.getRemainingAmount();
+exports.getContractById = async (req, res) => {
+  try{
+    const contract = ContractModel.findById(req.params.id);
+    res.status(200).json(contract)
+  }
+  catch(err){
+    res.status(500).json({message: err})
+  }
+}
+
+exports.getUserContracts = async (req, res) => {
+  try{
+    const contracts = ContractModel.find({user_id: req.params.id});
+    res.status(200).json(contracts)
+  }
+  catch(err){
+    res.status(500).json({message: err})
+  }
+}
+
+exports.deleteContract = async (req, res) => {
+  try{
+    const contract = ContractModel.find({contract_id: req.params.id}).deleteOne()
+    res.status(200).json(contract + 'has been deleted')
+  }
+  catch(err){
+    res.status(500).json({message: err})
+  }
+}
+
+// exporupdateContract = async (req, res) => {
+//   try{
+//     const contract = ContractModel.find({contract_id: req.params.id}).updateOne(req.body)
+//     res.status(200).json(contract + 'has been updated')
+//   }
+//   catch(err){
+//     res.status(500).json({message: err})
+//   }
+// }
+
+module.exports = exports

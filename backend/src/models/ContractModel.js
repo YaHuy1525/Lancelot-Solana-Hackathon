@@ -89,7 +89,7 @@ ContractSchema.methods.getRemainingAmount = async function() {
     });
     
     const totalPaid = paidPayments.reduce((sum, payment) => sum + payment.amount, 0);
-    return this.agreed_budget - totalPaid;
+    return this.amount - totalPaid;
 };
 
 module.exports = mongoose.model("Contract", ContractSchema);
