@@ -15,7 +15,12 @@ import Hero from "../components/Hero";
 import SearchSection from "../components/SearchSection";
 import JobDetailsModal from "../components/JobDetailsModal";
 
-interface Job {
+import jobService from "../services/jobService";
+import type { Job as BackendJob } from "../services/jobService";
+
+// Modal Job type (from JobDetailsModal)
+interface ModalJob {
+  _id: string; // Added to pass to CreateContract
   title: string;
   skills: string[];
   budget: string;
@@ -23,130 +28,66 @@ interface Job {
   image: string;
 }
 
+/**
+ * UI-specific job type for this page.
+ * - Keeps all BackendJob properties (including budget as number)
+ * - Adds image (string), skills (string[]), and budgetDisplay (string) for UI
+ */
+type UIJob = BackendJob & {
+  image: string;
+  skills: string[];
+  budgetDisplay: string;
+};
+
 const BrowseJob: React.FC = () => {
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [jobs, setJobs] = useState<UIJob[]>([]);
+  const [selectedJob, setSelectedJob] = useState<ModalJob | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [skills, setSkills] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const location = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Initialize jobs data
-    const initialJobs: Job[] = [
-      {
-        title: "Solana dApp Developer",
-        skills: ["Rust", "Solana", "React"],
-        budget: "0.3-0.5 SOL",
-        rating: 4.9,
-        image:
-          "https://readdy.ai/api/search-image?query=Abstract%20digital%20representation%20of%20blockchain%20development%20with%20code%20elements%20and%20Solana%20logo%2C%20professional%20tech%20illustration%20with%20clean%20minimal%20background%2C%20high%20quality%203D%20render%20with%20subtle%20lighting&width=400&height=250&seq=2&orientation=landscape",
-      },
-      {
-        title: "NFT Collection Designer",
-        skills: ["Illustration", "NFT", "Blockchain"],
-        budget: "0.4-0.7 SOL",
-        rating: 4.8,
-        image:
-          "https://readdy.ai/api/search-image?query=Modern%20digital%20art%20creation%20studio%20with%20NFT%20artwork%20displays%2C%20professional%20creative%20workspace%20with%20digital%20tablets%20and%20screens%20showing%20colorful%20abstract%20designs%2C%20clean%20minimal%20background%20with%20subtle%20lighting&width=400&height=250&seq=3&orientation=landscape",
-      },
-      {
-        title: "Smart Contract Auditor",
-        skills: ["Security", "Solidity", "Audit"],
-        budget: "0.6-1.0 SOL",
-        rating: 5.0,
-        image:
-          "https://readdy.ai/api/search-image?query=Cybersecurity%20concept%20with%20digital%20locks%20and%20code%20inspection%2C%20professional%20tech%20security%20visualization%20with%20blockchain%20elements%2C%20clean%20minimal%20background%20with%20blue%20digital%20elements&width=400&height=250&seq=4&orientation=landscape",
-      },
-      {
-        title: "Web3 Marketing Specialist",
-        skills: ["Marketing", "Discord", "Web3"],
-        budget: "0.3-0.6 SOL",
-        rating: 4.7,
-        image:
-          "https://readdy.ai/api/search-image?query=Digital%20marketing%20workspace%20with%20analytics%20dashboards%20and%20social%20media%20elements%2C%20professional%20marketing%20visualization%20with%20cryptocurrency%20symbols%2C%20clean%20minimal%20background%20with%20subtle%20lighting&width=400&height=250&seq=5&orientation=landscape",
-      },
-      //add new from here
-      {
-        title: "Smart Contract Developer",
-        skills: ["Solidity", "Ethereum", "Web3.js", "Hardhat"],
-        budget: "0.4-0.8 SOL",
-        rating: 4.9,
-        image:
-          "https://readdy.ai/api/search-image?query=Modern%20blockchain%20development%20workspace%20with%20multiple%20screens%20showing%20smart%20contract%20code%20and%20crypto%20trading%20charts%2C%20clean%20minimal%20desk%20setup%20with%20advanced%20monitoring%20tools%2C%20professional%20Web3%20development%20environment%20with%20soft%20lighting&width=600&height=400&seq=1&orientation=landscape",
-      },
-      {
-        title: "DeFi Protocol Engineer",
-        skills: ["Rust", "Solana", "DeFi", "TokenEconomics"],
-        budget: "0.5-0.9 SOL",
-        rating: 4.9,
-        image:
-          "https://readdy.ai/api/search-image?query=Decentralized%20finance%20workspace%20with%20multiple%20monitors%20displaying%20DeFi%20protocols%20and%20yield%20farming%20analytics%2C%20modern%20tech%20office%20with%20blockchain%20architecture%20diagrams%2C%20professional%20development%20setup%20with%20ambient%20lighting&width=600&height=400&seq=2&orientation=landscape",
-      },
-      {
-        title: "NFT Platform Developer",
-        skills: ["ERC721", "IPFS", "React", "Node.js"],
-        budget: "0.4-0.7 SOL",
-        rating: 4.9,
-        image:
-          "https://readdy.ai/api/search-image?query=NFT%20development%20workspace%20with%20digital%20art%20and%20smart%20contract%20code%20on%20displays%2C%20modern%20creative%20tech%20environment%2C%20professional%20NFT%20platform%20development%20setup%20with%20soft%20natural%20lighting&width=600&height=400&seq=3&orientation=landscape",
-      },
-      {
-        title: "Blockchain Security Engineer",
-        skills: ["Security Auditing", "Solidity", "MetaMask", "DeFi"],
-        budget: "0.6-1.0 SOL",
-        rating: 4.9,
-        image:
-          "https://readdy.ai/api/search-image?query=Blockchain%20security%20workspace%20with%20security%20analysis%20tools%20and%20vulnerability%20scanning%20displays%2C%20modern%20cybersecurity%20office%20environment%2C%20professional%20security%20testing%20setup%20with%20ambient%20lighting&width=600&height=400&seq=4&orientation=landscape",
-      },
-      {
-        title: "Web3 Frontend Developer",
-        skills: ["React", "ethers.js", "Web3-React", "TypeScript"],
-        budget: "0.3-0.6 SOL",
-        rating: 4.9,
-        image:
-          "https://readdy.ai/api/search-image?query=Web3%20frontend%20development%20workspace%20with%20dApp%20interfaces%20and%20blockchain%20integration%20code%2C%20modern%20tech%20office%20with%20clean%20design%20mockups%2C%20professional%20development%20environment%20with%20soft%20lighting&width=600&height=400&seq=5&orientation=landscape",
-      },
-      {
-        title: "DAO Developer",
-        skills: ["Governance", "Smart Contracts", "Snapshot", "Aragon"],
-        budget: "0.4-0.8 SOL",
-        rating: 4.9,
-        image:
-          "https://readdy.ai/api/search-image?query=DAO%20development%20workspace%20with%20governance%20dashboards%20and%20voting%20mechanism%20displays%2C%20modern%20decentralized%20organization%20office%2C%20professional%20blockchain%20workspace%20with%20ambient%20lighting&width=600&height=400&seq=6&orientation=landscape",
-      },
-      {
-        title: "Layer 2 Protocol Engineer",
-        skills: ["Optimism", "zkSync", "Polygon", "Scaling"],
-        budget: "0.5-0.9 SOL",
-        rating: 4.9,
-        image:
-          "https://readdy.ai/api/search-image?query=Layer%202%20blockchain%20development%20workspace%20with%20scaling%20solution%20architectures%20and%20optimization%20code%2C%20modern%20tech%20office%20with%20network%20diagrams%2C%20professional%20development%20setup%20with%20soft%20lighting&width=600&height=400&seq=7&orientation=landscape",
-      },
-      {
-        title: "Cross-chain Bridge Developer",
-        skills: ["Polkadot", "Cosmos", "Bridge Protocols", "Rust"],
-        budget: "0.4-0.7 SOL",
-        rating: 4.9,
-        image:
-          "https://readdy.ai/api/search-image?query=Cross-chain%20development%20workspace%20with%20multiple%20blockchain%20network%20displays%20and%20bridge%20protocol%20diagrams%2C%20modern%20tech%20environment%20with%20interoperability%20visualizations%2C%20professional%20workspace%20with%20ambient%20lighting&width=600&height=400&seq=8&orientation=landscape",
-      },
-    ];
+    setLoading(true);
+    setError(null);
 
-    // Load jobs from localStorage and combine with initial jobs
-    const savedJobs = JSON.parse(localStorage.getItem("jobs") || "[]");
-    const allJobs = [...initialJobs, ...savedJobs];
-    setJobs(allJobs);
+    jobService
+      .browsejob()
+      .then((backendJobs) => {
+        console.log("Fetched backendJobs:", backendJobs); // Log raw data
+        // Map backend jobs to UIJob type
+        const mappedJobs: UIJob[] = backendJobs.map((job) => ({
+          ...job,
+          image:
+            job.image ||
+            "https://readdy.ai/api/search-image?query=blockchain%20job&width=400&height=250",
+          skills: ((job as any).required_skills || job.skills || []),
+          budgetDisplay: typeof job.budget === "number" ? `${job.budget} SOL` : "N/A",
+        }));
+        console.log("Mapped UI jobs:", mappedJobs); // Log mapped data
+        setJobs(mappedJobs);
 
-    // Handle search parameters from URL
-    const searchParams = new URLSearchParams(location.search);
-    const searchTerm = searchParams.get("search") || "";
-    const skills = searchParams.get("skills") || "";
+        // Handle search parameters from URL
+        const searchParams = new URLSearchParams(location.search);
+        const searchTerm = searchParams.get("search") || "";
+        const skills = searchParams.get("skills") || "";
 
-    if (searchTerm || skills) {
-      handleSearch(searchTerm, skills);
-    }
+        if (searchTerm || skills) {
+          handleSearch(searchTerm, skills);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching or mapping jobs:", err); // Log the actual error
+        setError("Failed to fetch jobs from server. Check console for details.");
+        setJobs([]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+    // eslint-disable-next-line
   }, [location.search]);
 
   const handleSearch = (searchTerm: string, skills: string) => {
@@ -154,8 +95,17 @@ const BrowseJob: React.FC = () => {
     setSkills(skills);
   };
 
-  const handleJobClick = (job: Job) => {
-    setSelectedJob(job);
+  const handleJobClick = (job: UIJob) => {
+    // Map UIJob to ModalJob type
+    const modalJob: ModalJob = {
+      _id: job._id, // Pass the original job ID
+      title: job.title,
+      skills: job.skills,
+      budget: job.budgetDisplay,
+      rating: job.rating,
+      image: job.image,
+    };
+    setSelectedJob(modalJob);
     setIsModalVisible(true);
   };
 
@@ -164,7 +114,7 @@ const BrowseJob: React.FC = () => {
     setSelectedJob(null);
   };
 
-  const handleEnroll = (job: Job) => {
+  const handleEnroll = (job: ModalJob) => {
     // TODO: Implement enrollment logic
     console.log("Enrolling in job:", job.title);
     handleModalClose();
@@ -176,7 +126,7 @@ const BrowseJob: React.FC = () => {
       .includes(searchTerm.toLowerCase());
     const matchesSkills =
       !skills ||
-      job.skills.some((skill) =>
+      job.skills.some((skill: string) =>
         skill.toLowerCase().includes(skills.toLowerCase())
       );
     return matchesSearch && matchesSkills;
@@ -186,68 +136,85 @@ const BrowseJob: React.FC = () => {
     <div className="min-h-screen w-full bg-black">
       <Navbar />
       <Hero />
-      <SearchSection onSearch={handleSearch} jobs={jobs} />
+      <SearchSection
+        onSearch={handleSearch}
+        jobs={jobs.map((job) => ({
+          title: job.title,
+          skills: job.skills,
+          budget: job.budgetDisplay,
+          rating: job.rating,
+          image: job.image,
+        }))}
+      />
 
       {/* Featured Jobs Section */}
       <div className="py-20 bg-white w-full">
         <div className="w-full px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filteredJobs.map((job, index) => (
-              <Card
-                key={index}
-                hoverable
-                onClick={() => handleJobClick(job)}
-                cover={
-                  <div className="h-48 overflow-hidden">
-                    <img
-                      alt={job.title}
-                      src={job.image}
-                      className="w-full h-full object-cover object-top"
-                    />
-                  </div>
-                }
-                className="shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col h-full"
-                bodyStyle={{
-                  flex: 1,
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <div className="flex-grow">
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    {job.title}
-                  </h3>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {job.skills.map((skill, idx) => (
-                      <Tag
-                        key={idx}
-                        className="rounded-full px-3 py-1 bg-gray-100 text-gray-800"
-                      >
-                        {skill}
-                      </Tag>
-                    ))}
-                  </div>
-                  <div className="flex justify-between items-center mb-4">
-                    <div className="flex items-center text-gray-600">
-                      <i className="fas fa-coins text-yellow-500 mr-2 custom-green-icon"></i>
-                      {job.budget}
+          {loading ? (
+            <div className="text-center py-10 text-lg text-gray-700">Loading jobs...</div>
+          ) : error ? (
+            <div className="text-center py-10 text-lg text-red-500">{error}</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {filteredJobs.map((job, index) => (
+                <Card
+                  key={job._id || index}
+                  hoverable
+                  onClick={() => handleJobClick(job)}
+                  cover={
+                    <div className="h-48 overflow-hidden">
+                      <img
+                        alt={job.title}
+                        src={job.image}
+                        className="w-full h-full object-cover object-top"
+                      />
                     </div>
-                    <div className="flex items-center text-gray-600">
-                      <StarFilled className="text-yellow-500 mr-1" />
-                      {job.rating}
-                    </div>
-                  </div>
-                </div>
-                <Button
-                  type="primary"
-                  block
-                  className="!rounded-button bg-green-500 border-none hover:bg-green-600 cursor-pointer whitespace-nowrap mt-auto"
+                  }
+                  className="shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col h-full"
+                  styles={{
+                    body: {
+                      flex: 1,
+                      display: "flex",
+                      flexDirection: "column",
+                    },
+                  }}
                 >
-                  View Details
-                </Button>
-              </Card>
-            ))}
-          </div>
+                  <div className="flex-grow">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">
+                      {job.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {job.skills.map((skill: string, idx: number) => (
+                        <Tag
+                          key={idx}
+                          className="rounded-full px-3 py-1 bg-gray-100 text-gray-800"
+                        >
+                          {skill}
+                        </Tag>
+                      ))}
+                    </div>
+                    <div className="flex justify-between items-center mb-4">
+                      <div className="flex items-center text-gray-600">
+                        <i className="fas fa-coins text-yellow-500 mr-2 custom-green-icon"></i>
+                        {job.budgetDisplay}
+                      </div>
+                      <div className="flex items-center text-gray-600">
+                        <StarFilled className="text-yellow-500 mr-1" />
+                        {job.rating}
+                      </div>
+                    </div>
+                  </div>
+                  <Button
+                    type="primary"
+                    block
+                    className="!rounded-button bg-green-500 border-none hover:bg-green-600 cursor-pointer whitespace-nowrap mt-auto"
+                  >
+                    View Details
+                  </Button>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

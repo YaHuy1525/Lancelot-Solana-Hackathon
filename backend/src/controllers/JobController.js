@@ -96,6 +96,8 @@ exports.deleteJob = async (req, res) => {
 exports.postJob = async (req, res) => {
   try{
     const{
+      job_id,
+      deadline,
       title,
       description,
       responsibilities,
@@ -109,6 +111,8 @@ exports.postJob = async (req, res) => {
       client_id,
     } = req.body;
     const job = new JobModel({
+      job_id,
+      deadline,
       title,
       description,
       responsibilities,

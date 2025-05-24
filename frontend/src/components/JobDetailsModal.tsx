@@ -3,7 +3,8 @@ import { Modal, Button, Tag, Divider } from "antd";
 import { StarFilled } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
-interface Job {
+interface Job { // This is the type used by JobDetailsModal internally and for its props
+  _id: string; // Added to align with ModalJob and for navigation state
   title: string;
   skills: string[];
   budget: string;

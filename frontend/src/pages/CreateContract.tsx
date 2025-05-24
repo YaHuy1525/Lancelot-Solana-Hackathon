@@ -14,11 +14,13 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { StarFilled } from "@ant-design/icons";
 import Navbar from "../components/Navbar";
 import WalletConnectionAlert from "../components/WalletConnectionAlert";
+import proposalService, { type ProposalFormData } from "../services/proposalService"; // Import proposal service
 
 const { TextArea } = Input;
 const { Step } = Steps;
 
-interface Job {
+interface Job { // This is the type for jobDetails received from navigation state
+  _id: string; // Added to access the job's ID
   title: string;
   skills: string[];
   budget: string;
@@ -35,7 +37,7 @@ interface ContractFormData {
 const CreateContract: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { connected } = useWallet();
+  const { connected, publicKey } = useWallet(); // Get publicKey for freelancerId
   const [currentStep, setCurrentStep] = useState(0);
   const [form] = Form.useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,15 +51,28 @@ const CreateContract: React.FC = () => {
   }
 
   const handleSubmit = async (values: ContractFormData) => {
+    if (!publicKey || !jobDetails?._id) {
+      notification.error({
+        message: "Application Failed",
+        description: "User not connected or job details are missing.",
+      });
+      return;
+    }
+
     try {
       setIsSubmitting(true);
-      // TODO: Implement smart contract creation logic here
-      console.log("Creating contract with values:", values);
 
-      // Simulate contract creation
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const proposalData: ProposalFormData = {
+        jobId: jobDetails._id,
+        freelancerId: publicKey.toString(),
+        proposalText: values.proposal,
+        estimatedTime: values.estimatedTime,
+        availability: values.availability,
+      };
 
-      // Show success notification
+      console.log("Submitting proposal with data:", proposalData);
+      await proposalService.createProposal(proposalData);
+
       notification.success({
         message: "Application Submitted Successfully!",
         description:

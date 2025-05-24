@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useWallet } from "@solana/wallet-adapter-react";
 import Navbar from "../components/Navbar";
 import WalletConnectionAlert from "../components/WalletConnectionAlert";
+import jobService from "../services/jobService";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -27,7 +28,8 @@ interface JobFormData {
   jobType: string;
   experienceLevel: string;
   duration: string;
-  image: any;
+  image?: string;
+  clientId?: string;
 }
 
 const PostWork: React.FC = () => {
@@ -64,24 +66,21 @@ const PostWork: React.FC = () => {
       const defaultImage =
         "https://readdy.ai/api/search-image?query=Abstract%20digital%20representation%20of%20blockchain%20development%20with%20code%20elements%20and%20Solana%20logo%2C%20professional%20tech%20illustration%20with%20clean%20minimal%20background%2C%20high%20quality%203D%20render%20with%20subtle%20lighting&width=400&height=250&seq=2&orientation=landscape";
 
-      const newJob = {
+      const jobData: JobFormData = {
         title: values.title,
         description: values.description,
         responsibilities: values.responsibilities,
         requirements: values.requirements,
         skills: values.skills,
-        budget: `${values.budget} SOL`,
+        budget: values.budget,
         jobType: values.jobType,
         experienceLevel: values.experienceLevel,
         duration: values.duration,
         image: imageUrl || defaultImage,
-        rating: 0,
+        clientId: publicKey.toString(),
       };
 
-      // TODO: Implement blockchain transaction to create job
-      // For now, we'll store it in localStorage
-      const existingJobs = JSON.parse(localStorage.getItem("jobs") || "[]");
-      localStorage.setItem("jobs", JSON.stringify([...existingJobs, newJob]));
+      await jobService.createJob(jobData);
 
       message.success("Job posted successfully!");
       navigate("/browse-job");
@@ -215,8 +214,8 @@ const PostWork: React.FC = () => {
                 <Select size="large" placeholder="Select job type">
                   <Option value="Full-time">Full-time</Option>
                   <Option value="Part-time">Part-time</Option>
-                  <Option value="Contract">Contract</Option>
-                  <Option value="Freelance">Freelance</Option>
+                  <Option value="Hourly">Hourly</Option>
+                  <Option value="Project-based">Project-based</Option>
                 </Select>
               </Form.Item>
             </div>
@@ -230,7 +229,7 @@ const PostWork: React.FC = () => {
                 ]}
               >
                 <Select size="large" placeholder="Select experience level">
-                  <Option value="Entry">Entry Level</Option>
+                  <Option value="Entry level">Entry Level</Option>
                   <Option value="Intermediate">Intermediate</Option>
                   <Option value="Expert">Expert</Option>
                 </Select>
