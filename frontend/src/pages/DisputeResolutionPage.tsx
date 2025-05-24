@@ -291,8 +291,7 @@ const DisputeResolutionPage: React.FC = () => {
     setIsCompleted(true);
     setIsAppealed(false);
     message.success({
-      content:
-        "Case marked as completed. Thank you for using our dispute resolution system.",
+      content: "Case marked as completed.",
       duration: 5,
       style: {
         marginTop: "20vh",
