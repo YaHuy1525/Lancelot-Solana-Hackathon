@@ -17,7 +17,7 @@ const AboutPage: React.FC = () => {
       <Navbar />
 
       {/* Team section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-gray-900 to-gray-800 pt-20">
+      <div className="relative overflow-hidden from-white-900 to-white-800 pt-20">
         <header className="bg-gray-1000 text-white py-16 px-4 text-center relative ">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-center mb-5 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
             Meet out team
@@ -45,12 +45,12 @@ const AboutPage: React.FC = () => {
       {/* Project section*/}
       <div
         id="our-project"
-        className="relative overflow-hidden bg-gradient-to-r from-gray-900 to-gray-800 pt-20"
+        className="relative overflow-hidden bg-white-900 pt-20 pb-20"
       >
         <h2 className="text-4xl sm:text-5xl font-extrabold text-center mb-10 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
           Our Project
         </h2>
-        <p className="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto text-center mb-16">
+        <p className="text-lg sm:text-xl text-white-900 max-w-3xl mx-auto text-center mb-16">
           Lancelot is a decentralized freelancing platform built on the Solana
           blockchain, connecting freelancers and clients in a secure and
           efficient manner.
@@ -58,11 +58,11 @@ const AboutPage: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
           {/* Card 1 */}
-          <div className="relative bg-gray-900 border border-gray-1000 rounded-xl p-6 shadow-md hover:shadow-cyan-500/30 transition-shadow duration-300">
-            <h3 className="text-xl font-bold mb-3 text-white">
+          <div className="relative bg-white-900 border border-black-200 rounded-xl p-6 shadow-md hover:shadow-cyan-500/30 transition-shadow duration-300">
+            <h3 className="text-xl font-bold text-white">
               Decentralized Platform
             </h3>
-            <p className="text-gray-400">
+            <p className="text-gray-1100">
               Leverages blockchain for transparency and security in all
               transactions.
             </p>
@@ -70,11 +70,11 @@ const AboutPage: React.FC = () => {
           </div>
 
           {/* Card 2 */}
-          <div className="relative bg-gray-900 border border-gray-1000 rounded-xl p-6 shadow-md hover:shadow-cyan-500/30 transition-shadow duration-300">
-            <h3 className="text-xl font-bold mb-3 text-white">
+          <div className="relative bg-white-900 border border-gray-1000 rounded-xl p-6 shadow-md hover:shadow-cyan-500/30 transition-shadow duration-300">
+            <h3 className="text-xl font-bold text-white pb-6">
               Smart Contracts
             </h3>
-            <p className="text-gray-400">
+            <p className="text-gray-1100">
               Automates agreements between freelancers and clients for trustless
               execution.
             </p>
@@ -82,22 +82,22 @@ const AboutPage: React.FC = () => {
           </div>
 
           {/* Card 3 */}
-          <div className="relative bg-gray-900 border border-gray-1000 rounded-xl p-6 shadow-md hover:shadow-cyan-500/30 transition-shadow duration-300">
-            <h3 className="text-xl font-bold mb-3 text-white">
+          <div className="relative bg-white-900 border border-gray-1000 rounded-xl p-6 shadow-md hover:shadow-cyan-500/30 transition-shadow duration-300">
+            <h3 className="text-xl font-bold mb-3 text-white pb-6">
               Fast Transactions
             </h3>
-            <p className="text-gray-400">
+            <p className="text-gray-1100">
               Powered by Solana for lightning-speed execution and minimal fees.
             </p>
             <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-cyan-400/10 to-purple-500/10 opacity-0 hover:opacity-100 transition duration-300 pointer-events-none" />
           </div>
 
           {/* Card 4 */}
-          <div className="relative bg-gray-900 border border-gray-1000 rounded-xl p-6 shadow-md hover:shadow-cyan-500/30 transition-shadow duration-300">
-            <h3 className="text-xl font-bold mb-3 text-white">
+          <div className="relative bg-white-900 border border-gray-1000 rounded-xl p-6 shadow-md hover:shadow-cyan-500/30 transition-shadow duration-300">
+            <h3 className="text-xl font-bold mb-3 text-white pb-6">
               Community Driven
             </h3>
-            <p className="text-gray-400">
+            <p className="text-gray-1100">
               Built around community values, empowering both freelancers and
               clients.
             </p>
@@ -109,7 +109,7 @@ const AboutPage: React.FC = () => {
       {/* How It Works Section */}
       <div
         id="how-it-work"
-        className="py-10 bg-gradient-to-r from-gray-900 to-gray-800 w-full pt-20"
+        className="py-10 bg-white-700 w-full pt-50"
       >
         <div className="w-full px-4 ">
           <div className="text-center mb-16">
@@ -126,7 +126,7 @@ const AboutPage: React.FC = () => {
               <div className=" bg-white text-black w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                 1
               </div>
-              <div className="relative bg-gray-900 border border-gray-1000 rounded-xl p-6 shadow-md hover:shadow-cyan-500/30 transition-shadow duration-300">
+              <div className="relative bg-black border border-gray-1000 rounded-xl p-6 shadow-md hover:shadow-green-500 transition-shadow duration-300">
                 <div className="text-green-500 mb-4 text-3xl">
                   <i className="fas fa-wallet"></i>
                 </div>
@@ -143,7 +143,7 @@ const AboutPage: React.FC = () => {
               <div className="bg-white text-black w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                 2
               </div>
-              <div className="brelative bg-gray-900 border border-gray-1000 rounded-xl p-6 shadow-md hover:shadow-cyan-500/30 transition-shadow duration-300">
+              <div className="brelative bg-black border border-gray-1000 rounded-xl p-6 shadow-md hover:shadow-green-500 transition-shadow duration-300">
                 <div className="text-green-500 mb-4 text-3xl">
                   <i className="fas fa-user-edit custom-green-icon"></i>
                 </div>
@@ -160,7 +160,7 @@ const AboutPage: React.FC = () => {
               <div className="bg-white text-black w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                 3
               </div>
-              <div className="relative bg-gray-900 border border-gray-1000 rounded-xl p-6 shadow-md hover:shadow-cyan-500/30 transition-shadow duration-300">
+              <div className="relative bg-black border border-gray-1000 rounded-xl p-6 shadow-md hover:shadow-green-500 transition-shadow duration-300">
                 <div className="text-green-500 mb-4 text-3xl">
                   <i className="fas fa-tasks custom-green-icon"></i>
                 </div>
@@ -177,7 +177,7 @@ const AboutPage: React.FC = () => {
               <div className="bg-white text-black w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
                 4
               </div>
-              <div className="relative bg-gray-900 border border-gray-1000 rounded-xl p-6 shadow-md hover:shadow-cyan-500/30 transition-shadow duration-300">
+              <div className="relative bg-black border border-gray-1000 rounded-xl p-6 shadow-md hover:shadow-green-500 transition-shadow duration-300">
                 <div className="text-green-500 mb-4 text-3xl">
                   <i className="fas fa-coins custom-green-icon"></i>
                 </div>

@@ -13,13 +13,13 @@ const teamMembers = [
   },
   {
     name: 'Minh Quan',
-    role: 'Backend Developer, Database Administrator',
+    role: 'Backend Developer & Database Administrator',
     image: Member2,
     bio: "Minh Quan is a versatile backend developer and database administrator. He specializes in optimizing database performance and ensuring data integrity, making him a key player in the team's success."
   },
   {
     name: 'Anh Khoa',
-    role: 'PO, Frontend Developer',
+    role: 'PO & Frontend Developer',
     image: Member3,
     bio: "Anh Khoa is the Product Owner and a frontend developer. He bridges the gap between the technical team and stakeholders, ensuring that the product meets user needs while also contributing to the frontend development with his design skills."
   },
@@ -44,17 +44,17 @@ const TeamCardContainer = () => {
         {teamMembers.map((member, index) => (
         <div
           key={index}
-          className="flex-1 relative overflow-hidden group transition-all duration-300"
+          className="flex-1 relative overflow-hidden group transition-all duration-300 relative"
         >
           <img
             src={member.image}
             alt={member.name}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            
           />
-
           {/* Overlay on hover */}
           <div className=" absolute inset-0 bg-black bg-opacity-60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center text-white text-center px-4">
-            <h2 className="text-lg font-bold">{member.name}</h2>
+            <h2 className="text-lg font-bold font-size-5xL text-black-900">{member.name}</h2> 
             <h3 className="text-sm">{member.role}</h3>
             <p className='text-sm'>{member.bio}</p>
           </div>
