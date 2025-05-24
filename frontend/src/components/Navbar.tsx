@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+// import { Button } from "antd";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 const Navbar: React.FC = () => {
@@ -29,12 +30,12 @@ const Navbar: React.FC = () => {
               >
                 Post Work
               </Link>
-              <Link
-                to="/#how-it-work"
-                className="text-gray-400 hover:text-white font-medium cursor-pointer whitespace-nowrap"
+              <a
+                href="/#how-it-work" 
+                className="text-gray-400 hover:text-white font-medium cursor-pointer whitespace-nowrap scroll-smooth"
               >
                 How It Works
-              </Link>
+              </a>
             </div>
           </div>
           <div>
