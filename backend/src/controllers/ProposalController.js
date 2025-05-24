@@ -1,15 +1,15 @@
-const ProposalModel = require('../models/proposalModel');
-const JobModel = require('../models/JobModel'); // To fetch job details like clientId
+const ProposalModel = require('../models/ProposalModel');
+const JobModel = require('../models/JobModel');
 
 // Create a new proposal
-exports.createProposal = async (req, res) => {
+const createProposal = async (req, res) => {
   try {
     const {
-      jobId,          // Sent from frontend (original _id of the job)
-      freelancerId,   // Sent from frontend (publicKey of the applicant)
-      proposalText,   // From form
-      estimatedTime,  // From form
-      availability    // From form
+      jobId,
+      freelancerId,
+      proposalText,
+      estimatedTime,
+      availability
     } = req.body;
 
     // Validate required fields
@@ -22,16 +22,15 @@ exports.createProposal = async (req, res) => {
     if (!job) {
       return res.status(404).json({ message: 'Job not found.' });
     }
-    const clientId = job.client_id; // Assuming client_id is stored on the job model
+    const clientId = job.client_id;
 
     const newProposal = new ProposalModel({
       jobId,
       freelancerId,
-      clientId, // Fetched from the job
+      clientId,
       proposalText,
       estimatedTime,
       availability,
-      // status defaults to 'pending'
     });
 
     const savedProposal = await newProposal.save();
@@ -48,4 +47,122 @@ exports.createProposal = async (req, res) => {
   }
 };
 
-// TODO: Add other controller functions as needed (e.g., getProposalsByJob, getProposalsByUser, updateProposalStatus)
+const getAllProposals = async (req, res) => {
+  try {
+    const proposals = await ProposalModel.find()
+      .populate('jobId', 'title description budget')
+      .populate('freelancerId', 'name');
+
+    res.status(200).json({
+      success: true,
+      data: proposals
+    });
+  } catch (error) {
+    console.error('Error fetching proposals:', error);
+    res.status(500).json({ message: 'Failed to fetch proposals', error: error.message });
+  }
+};
+// Get all proposals for a specific job
+const getProposalsByJob = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+    const proposals = await ProposalModel.find({ jobId })
+      .populate('jobId', 'title description budget')
+      .populate('freelancerId', 'name'); // Assuming you have a User model
+
+    res.status(200).json({
+      success: true,
+      data: proposals
+    });
+  } catch (error) {
+    console.error('Error fetching job proposals:', error);
+    res.status(500).json({ message: 'Failed to fetch proposals', error: error.message });
+  }
+};
+
+// Get all proposals submitted by a freelancer
+const getProposalsByFreelancer = async (req, res) => {
+  try {
+    const { freelancerId } = req.params;
+    const proposals = await ProposalModel.find({ freelancerId })
+      .populate('jobId', 'title budget')
+      .sort({ createdAt: -1 }); // Most recent first
+
+    res.status(200).json({
+      success: true,
+      data: proposals
+    });
+  } catch (error) {
+    console.error('Error fetching freelancer proposals:', error);
+    res.status(500).json({ message: 'Failed to fetch proposals', error: error.message });
+  }
+};
+
+// Update proposal status (accept/reject/withdraw)
+const updateProposalStatus = async (req, res) => {
+  try {
+    const { proposalId } = req.params;
+    const { status, clientId } = req.body;
+
+    // Validate status
+    if (!['accepted', 'rejected', 'withdrawn'].includes(status)) {
+      return res.status(400).json({ message: 'Invalid status' });
+    }
+
+    const proposal = await ProposalModel.findById(proposalId);
+    if (!proposal) {
+      return res.status(404).json({ message: 'Proposal not found' });
+    }
+
+    // Verify client is the job owner if accepting/rejecting
+    if (['accepted', 'rejected'].includes(status) && proposal.clientId !== clientId) {
+      return res.status(403).json({ message: 'Not authorized to update this proposal' });
+    }
+
+    // Update status
+    proposal.status = status;
+    proposal.updatedAt = new Date();
+    await proposal.save();
+
+    res.status(200).json({
+      success: true,
+      message: `Proposal ${status} successfully`,
+      data: proposal
+    });
+  } catch (error) {
+    console.error('Error updating proposal status:', error);
+    res.status(500).json({ message: 'Failed to update proposal status', error: error.message });
+  }
+};
+
+// Get proposal by ID
+const getProposalById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const proposal = await ProposalModel.findById(id)
+      .populate('jobId', 'title description budget')
+      .populate('freelancerId', 'name email'); // Assuming you have a User model
+
+    if (!proposal) {
+      return res.status(404).json({ message: 'Proposal not found' });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: proposal
+    });
+  } catch (error) {
+    console.error('Error fetching proposal:', error);
+    res.status(500).json({ message: 'Failed to fetch proposal', error: error.message });
+  }
+};
+
+// Export all controller functions
+module.exports = {
+  createProposal,
+  getAllProposals,
+  getProposalsByJob,
+  getProposalsByFreelancer,
+  updateProposalStatus,
+  getProposalById
+};
