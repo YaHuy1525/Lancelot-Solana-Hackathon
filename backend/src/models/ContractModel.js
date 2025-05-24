@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const PaymentModel = require('../models/PaymentModel');
 
 if (mongoose.models.Contract) {
   delete mongoose.connection.models["Contract"];
@@ -20,16 +21,7 @@ const ContractSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  contract_address: {
-    type: String,
-    required: true
-  },
-  status: {
-    type: String,
-    enum: ['pending', 'active', 'completed', 'disputed'],
-    default: 'pending'
-  },
-  terms: {
+  contract_id: {
     type: String,
     required: true
   },
@@ -37,6 +29,16 @@ const ContractSchema = new mongoose.Schema({
     type: String,
     ref: 'Payment'
   },
+  escrow_address: {
+    type: String,
+    default: null // The Solana escrow account address
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'active', 'completed', 'disputed'],
+    default: 'pending'
+  },
+
   milestones: [{
     title: {
       type: String,
@@ -63,11 +65,31 @@ const ContractSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  accepted_at: {
+    type: Date,
+    default: Date.now
+  },
+  completed_at: {
+    type: Date,
+    default: Date.now
+  },
 });
 
 ContractSchema.pre('save', function(next) {
   this.updated_at = new Date();
   next();
 });
+
+ContractSchema.methods.getRemainingAmount = async function() {
+    const Payment = PaymentModel;
+    
+    const paidPayments = await Payment.find({
+      job_id: this.job_id,
+      status: 'paid'
+    });
+    
+    const totalPaid = paidPayments.reduce((sum, payment) => sum + payment.amount, 0);
+    return this.agreed_budget - totalPaid;
+};
 
 module.exports = mongoose.model("Contract", ContractSchema);
