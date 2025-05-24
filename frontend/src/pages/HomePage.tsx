@@ -37,7 +37,7 @@ const HomePage: React.FC = () => {
       {
         title: "Solana dApp Developer",
         skills: ["Rust", "Solana", "React"],
-        budget: "2.5-4.0 SOL",
+        budget: "0.3-0.5 SOL",
         rating: 4.9,
         image:
           "https://readdy.ai/api/search-image?query=Abstract%20digital%20representation%20of%20blockchain%20development%20with%20code%20elements%20and%20Solana%20logo%2C%20professional%20tech%20illustration%20with%20clean%20minimal%20background%2C%20high%20quality%203D%20render%20with%20subtle%20lighting&width=400&height=250&seq=2&orientation=landscape",
@@ -45,7 +45,7 @@ const HomePage: React.FC = () => {
       {
         title: "NFT Collection Designer",
         skills: ["Illustration", "NFT", "Blockchain"],
-        budget: "3.0-5.0 SOL",
+        budget: "0.4-0.7 SOL",
         rating: 4.8,
         image:
           "https://readdy.ai/api/search-image?query=Modern%20digital%20art%20creation%20studio%20with%20NFT%20artwork%20displays%2C%20professional%20creative%20workspace%20with%20digital%20tablets%20and%20screens%20showing%20colorful%20abstract%20designs%2C%20clean%20minimal%20background%20with%20subtle%20lighting&width=400&height=250&seq=3&orientation=landscape",
@@ -53,7 +53,7 @@ const HomePage: React.FC = () => {
       {
         title: "Smart Contract Auditor",
         skills: ["Security", "Solidity", "Audit"],
-        budget: "5.0-8.0 SOL",
+        budget: "0.6-1.0 SOL",
         rating: 5.0,
         image:
           "https://readdy.ai/api/search-image?query=Cybersecurity%20concept%20with%20digital%20locks%20and%20code%20inspection%2C%20professional%20tech%20security%20visualization%20with%20blockchain%20elements%2C%20clean%20minimal%20background%20with%20blue%20digital%20elements&width=400&height=250&seq=4&orientation=landscape",
@@ -61,7 +61,7 @@ const HomePage: React.FC = () => {
       {
         title: "Web3 Marketing Specialist",
         skills: ["Marketing", "Discord", "Web3"],
-        budget: "2.0-3.5 SOL",
+        budget: "0.3-0.6 SOL",
         rating: 4.7,
         image:
           "https://readdy.ai/api/search-image?query=Digital%20marketing%20workspace%20with%20analytics%20dashboards%20and%20social%20media%20elements%2C%20professional%20marketing%20visualization%20with%20cryptocurrency%20symbols%2C%20clean%20minimal%20background%20with%20subtle%20lighting&width=400&height=250&seq=5&orientation=landscape",
@@ -117,7 +117,7 @@ const HomePage: React.FC = () => {
         <div className="w-full px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Why Choose SolanceWork
+              Why Choose Lancelot
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Our platform combines the best of Web3 technology with freelancing
@@ -338,7 +338,7 @@ const HomePage: React.FC = () => {
               {
                 title: "Solana dApp Developer",
                 skills: ["Rust", "Solana", "React"],
-                budget: "2.5-4.0 SOL",
+                budget: "0.3-0.5 SOL",
                 rating: 4.9,
                 image:
                   "https://readdy.ai/api/search-image?query=Abstract%20digital%20representation%20of%20blockchain%20development%20with%20code%20elements%20and%20Solana%20logo%2C%20professional%20tech%20illustration%20with%20clean%20minimal%20background%2C%20high%20quality%203D%20render%20with%20subtle%20lighting&width=400&height=250&seq=2&orientation=landscape",
@@ -346,7 +346,7 @@ const HomePage: React.FC = () => {
               {
                 title: "NFT Collection Designer",
                 skills: ["Illustration", "NFT", "Blockchain"],
-                budget: "3.0-5.0 SOL",
+                budget: "0.4-0.7 SOL",
                 rating: 4.8,
                 image:
                   "https://readdy.ai/api/search-image?query=Modern%20digital%20art%20creation%20studio%20with%20NFT%20artwork%20displays%2C%20professional%20creative%20workspace%20with%20digital%20tablets%20and%20screens%20showing%20colorful%20abstract%20designs%2C%20clean%20minimal%20background%20with%20subtle%20lighting&width=400&height=250&seq=3&orientation=landscape",
@@ -354,7 +354,7 @@ const HomePage: React.FC = () => {
               {
                 title: "Smart Contract Auditor",
                 skills: ["Security", "Solidity", "Audit"],
-                budget: "5.0-8.0 SOL",
+                budget: "0.6-1.0 SOL",
                 rating: 5.0,
                 image:
                   "https://readdy.ai/api/search-image?query=Cybersecurity%20concept%20with%20digital%20locks%20and%20code%20inspection%2C%20professional%20tech%20security%20visualization%20with%20blockchain%20elements%2C%20clean%20minimal%20background%20with%20blue%20digital%20elements&width=400&height=250&seq=4&orientation=landscape",
@@ -362,7 +362,7 @@ const HomePage: React.FC = () => {
               {
                 title: "Web3 Marketing Specialist",
                 skills: ["Marketing", "Discord", "Web3"],
-                budget: "2.0-3.5 SOL",
+                budget: "0.3-0.6 SOL",
                 rating: 4.7,
                 image:
                   "https://readdy.ai/api/search-image?query=Digital%20marketing%20workspace%20with%20analytics%20dashboards%20and%20social%20media%20elements%2C%20professional%20marketing%20visualization%20with%20cryptocurrency%20symbols%2C%20clean%20minimal%20background%20with%20subtle%20lighting&width=400&height=250&seq=5&orientation=landscape",
@@ -572,12 +572,6 @@ const HomePage: React.FC = () => {
             >
               <i className="fas fa-search mr-2"></i> Find Work
             </Button>
-            <Button
-              size="large"
-              className="!rounded-button bg-white text-black border-none hover:bg-gray-100 text-lg h-12 px-8 flex items-center justify-center cursor-pointer whitespace-nowrap"
-            >
-              <i className="fas fa-user-plus mr-2"></i> Hire Talent
-            </Button>
           </div>
         </div>
       </div>
@@ -587,97 +581,28 @@ const HomePage: React.FC = () => {
         <div className="w-full px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
             <div>
-              <h3 className="text-white text-lg font-bold mb-4">SolanceWork</h3>
+              <h3 className="text-white text-lg font-bold mb-4">Lancelot</h3>
               <p className="mb-4">
                 The premier Web3 freelancing platform powered by Solana
                 blockchain technology.
               </p>
               <div className="flex space-x-4">
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white text-xl cursor-pointer"
-                >
-                  <i className="fab fa-twitter"></i>
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white text-xl cursor-pointer"
-                >
-                  <i className="fab fa-discord"></i>
-                </a>
-                <a
-                  href="#"
+                <Link
+                  to="https://github.com/SnowAceAlex/Lancelot-Solana-Hackathon.git"
                   className="text-gray-400 hover:text-white text-xl cursor-pointer"
                 >
                   <i className="fab fa-github"></i>
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white text-xl cursor-pointer"
-                >
-                  <i className="fab fa-telegram"></i>
-                </a>
+                </Link>
               </div>
             </div>
             <div>
               <h3 className="text-white text-lg font-bold mb-4">Resources</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Documentation
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Blog
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Tutorials
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    FAQs
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Support Center
-                  </a>
-                </li>
-              </ul>
             </div>
             <div>
               <h3 className="text-white text-lg font-bold mb-4">Legal</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Terms of Service
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Cookie Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Dispute Resolution
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Security
-                  </a>
-                </li>
-              </ul>
+              <a href="#" className="hover:text-white cursor-pointer">
+                Terms of Service
+              </a>
             </div>
             <div>
               <h3 className="text-white text-lg font-bold mb-4">Subscribe</h3>
@@ -687,7 +612,7 @@ const HomePage: React.FC = () => {
               <div className="flex">
                 <Input
                   placeholder="Your email"
-                  className="rounded-l-lg border-gray-700 bg-gray-800 text-white"
+                  className="rounded-l-lg border-gray-700 bg-gray-800 text-white placeholder:text-white"
                 />
                 <Button
                   type="primary"
@@ -709,7 +634,7 @@ const HomePage: React.FC = () => {
           </div>
           <Divider className="border-gray-700 mt-12 mb-8" />
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p>© 2025 SolanceWork. All rights reserved.</p>
+            <p>© 2025 Lancelot. All rights reserved.</p>
             <p className="mt-4 md:mt-0">
               Built on <span className="text-green-500">Solana</span> blockchain
             </p>
