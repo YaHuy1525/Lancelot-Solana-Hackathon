@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   Steps,
@@ -13,9 +13,6 @@ import {
   Divider,
 } from "antd";
 import {
-  AlertOutlined,
-  FileTextOutlined,
-  TeamOutlined,
   CheckCircleOutlined,
   ClockCircleOutlined,
   UploadOutlined,
@@ -23,13 +20,9 @@ import {
 } from "@ant-design/icons";
 import Navbar from "../components/Navbar";
 
-const { Step } = Steps;
-
 const DisputeResolutionPage: React.FC = () => {
-  const { jobId } = useParams();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = React.useState(0);
-  const [showAllJury, setShowAllJury] = React.useState(false);
   const [jurySelectionStarted, setJurySelectionStarted] = React.useState(false);
   const [selectedCount, setSelectedCount] = React.useState(0);
   const [evidenceProgress, setEvidenceProgress] = React.useState(0);
@@ -366,14 +359,6 @@ const DisputeResolutionPage: React.FC = () => {
                     </span>
                   </li>
                 ))}
-                {showAllJury &&
-                  disputeData.juryMembers.slice(selectedCount).map((id) => (
-                    <li key={id} className="text-gray-700 text-sm mb-1">
-                      <span className="inline-block bg-gray-100 rounded px-2 py-1 mr-2 font-mono">
-                        {id}
-                      </span>
-                    </li>
-                  ))}
               </ul>
             </div>
           </div>
