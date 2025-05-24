@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const solanaService = require('../services/solanaService');
+const solanaService = require('../utils/solanaServices');
 
 // Test Solana connection
 router.get('/test-connection', async (req, res) => {
