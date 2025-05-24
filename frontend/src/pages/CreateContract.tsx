@@ -29,7 +29,8 @@ interface Job { // This is the type for jobDetails received from navigation stat
 }
 
 interface ContractFormData {
-  proposal: string;
+  [key: string]: any;  // Add index signature to allow string indexing
+  proposal: string;  // This will be mapped to proposalText in the API call
   estimatedTime: string;
   availability: string;
 }
@@ -65,28 +66,46 @@ const CreateContract: React.FC = () => {
       const proposalData: ProposalFormData = {
         jobId: jobDetails._id,
         freelancerId: publicKey.toString(),
-        proposalText: values.proposal,
+        proposalText: values.proposal, // This field was named 'proposal' in the form
         estimatedTime: values.estimatedTime,
         availability: values.availability,
       };
 
       console.log("Submitting proposal with data:", proposalData);
-      await proposalService.createProposal(proposalData);
+      
+      // Add validation for required fields
+      const requiredFields = {
+        jobId: proposalData.jobId,
+        freelancerId: proposalData.freelancerId,
+        proposalText: proposalData.proposalText,
+        estimatedTime: proposalData.estimatedTime,
+        availability: proposalData.availability
+      };
+      
+      const missingFields = Object.entries(requiredFields)
+        .filter(([_, value]) => !value)
+        .map(([key]) => key);
+      
+      if (missingFields.length > 0) {
+        throw new Error(`Missing required fields: ${missingFields.join(', ')}`);
+      }
+
+      const response = await proposalService.createProposal(proposalData);
+      console.log('Proposal created:', response);
 
       notification.success({
         message: "Application Submitted Successfully!",
-        description:
-          "Your application has been sent to the employer. You will be notified when they review it.",
+        description: "Your application has been sent to the employer. You will be notified when they review it.",
         duration: 5,
       });
 
       // Navigate back to browse jobs
       navigate("/browse-job");
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Error submitting proposal:', error);
       notification.error({
         message: "Application Failed",
-        description:
-          "There was an error submitting your application. Please try again.",
+        description: error.message || "There was an error submitting your application. Please try again.",
         duration: 5,
       });
     } finally {

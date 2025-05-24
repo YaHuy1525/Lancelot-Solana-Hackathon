@@ -1,15 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const proposalController = require("../controllers/ProposalController");
-// const authMiddleware = require('../middleware/auth'); // Assuming auth middleware might be added later
+// const authMiddleware = require('../middleware/auth');
 
-// POST /api/proposals - Create a new proposal
-// router.post("/", authMiddleware, proposalController.createProposal); // Example with auth
+// Apply auth middleware to all routes if needed
+// router.use(authMiddleware);
+
+// Create a new proposal
 router.post("/", proposalController.createProposal);
+router.get("/", proposalController.getAllProposals);
+// Get all proposals for a specific job
+router.get("/job/:jobId", proposalController.getProposalsByJob);
 
-// TODO: Add other routes as needed
-// GET /api/proposals/job/:jobId - Get all proposals for a specific job
-// GET /api/proposals/user/:userId - Get all proposals submitted by a user
-// PUT /api/proposals/:proposalId - Update a proposal (e.g., status by client or freelancer)
+// Get all proposals by freelancer
+router.get("/freelancer/:freelancerId", proposalController.getProposalsByFreelancer);
+
+// Get proposal by ID
+router.get("/:id", proposalController.getProposalById);
+
+// Update proposal status (accept/reject/withdraw)
+router.put("/:proposalId/status", proposalController.updateProposalStatus);
 
 module.exports = router;

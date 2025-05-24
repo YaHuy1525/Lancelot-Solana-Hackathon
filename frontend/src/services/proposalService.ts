@@ -1,7 +1,6 @@
-import api from './api'; // Assuming api.ts is your configured axios instance
+import api from './api';
 import type { AxiosResponse } from 'axios';
 
-// Interface for the data needed to create a proposal (sent to backend)
 export interface ProposalFormData {
   jobId: string;          // The _id of the job being applied for
   freelancerId: string;   // The publicKey of the applicant
@@ -10,36 +9,107 @@ export interface ProposalFormData {
   availability: string;
 }
 
-// Interface for the proposal data received from the backend
-export interface Proposal extends ProposalFormData {
+export interface Proposal extends Omit<ProposalFormData, 'jobId'> {
   _id: string;
+  jobId: {
+    _id: string;
+    title?: string;
+    description?: string;
+    budget?: number;
+  };
   clientId: string;
   status: 'pending' | 'accepted' | 'rejected' | 'withdrawn';
-  submittedAt: string; // Should be ISO date string
-  updatedAt: string;   // Should be ISO date string
+  submittedAt: string;
+  updatedAt: string;
+}
+
+interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
 }
 
 const proposalService = {
-  // Create a new proposal
+  /**
+   * Create a new proposal
+   */
   createProposal: async (proposalData: ProposalFormData): Promise<Proposal> => {
     try {
-      const response: AxiosResponse<{ success: boolean, message: string, data: Proposal }> =
-        await api.post('/proposals', proposalData); // Endpoint is /api/proposals
-
-      if (response.data.success) {
-        return response.data.data;
-      } else {
-        throw new Error(response.data.message || 'Failed to create proposal');
-      }
+      const response: AxiosResponse<ApiResponse<Proposal>> = await api.post('/proposals', proposalData);
+      return response.data.data;
     } catch (error: any) {
-      console.error('Error in proposalService.createProposal:', error);
-      const errorMessage = error.response?.data?.message || error.message || 'An unknown error occurred while creating the proposal.';
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to create proposal';
       throw new Error(errorMessage);
     }
   },
 
-  // TODO: Add other proposal service functions as needed
-  // e.g., getProposalsForJob, getProposalsByFreelancer, updateProposalStatus
+  /**
+   * Get all proposals for a specific job
+   */
+  getProposalsByJob: async (jobId: string): Promise<Proposal[]> => {
+    try {
+      const response: AxiosResponse<ApiResponse<Proposal[]>> = await api.get(`/proposals/job/${jobId}`);
+      return response.data.data;
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to fetch job proposals';
+      throw new Error(errorMessage);
+    }
+  },
+
+  /**
+   * Get all proposals submitted by a freelancer
+   */
+  getProposalsByFreelancer: async (freelancerId: string): Promise<Proposal[]> => {
+    try {
+      const response: AxiosResponse<ApiResponse<Proposal[]>> = await api.get(`/proposals/freelancer/${freelancerId}`);
+      return response.data.data;
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to fetch freelancer proposals';
+      throw new Error(errorMessage);
+    }
+  },
+
+  /**
+   * Get a single proposal by ID
+   */
+  getProposalById: async (proposalId: string): Promise<Proposal> => {
+    try {
+      const response: AxiosResponse<ApiResponse<Proposal>> = await api.get(`/proposals/${proposalId}`);
+      return response.data.data;
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to fetch proposal';
+      throw new Error(errorMessage);
+    }
+  },
+
+  /**
+   * Update proposal status (accept/reject/withdraw)
+   */
+  updateProposalStatus: async (proposalId: string, status: 'accepted' | 'rejected' | 'withdrawn', clientId?: string): Promise<Proposal> => {
+    try {
+      const response: AxiosResponse<ApiResponse<Proposal>> = await api.put(
+        `/proposals/${proposalId}/status`,
+        { status, ...(clientId && { clientId }) }
+      );
+      return response.data.data;
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to update proposal status';
+      throw new Error(errorMessage);
+    }
+  },
+
+  /**
+   * Check if a freelancer has already applied to a job
+   */
+  hasApplied: async (jobId: string, freelancerId: string): Promise<boolean> => {
+    try {
+      const proposals = await proposalService.getProposalsByFreelancer(freelancerId);
+      return proposals.some(proposal => proposal.jobId._id === jobId);
+    } catch (error) {
+      console.error('Error checking if user has applied:', error);
+      return false;
+    }
+  }
 };
 
 export default proposalService;
