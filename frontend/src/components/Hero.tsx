@@ -3,6 +3,7 @@ import { Button } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { Link } from "react-router-dom";
 
 const Hero: React.FC = () => {
   const { connected } = useWallet();
@@ -40,7 +41,9 @@ const Hero: React.FC = () => {
                 size="large"
                 className="!rounded-button bg-transparent text-white border-2 border-white hover:bg-green-500 hover:text-white text-lg h-12 px-8 flex items-center cursor-pointer whitespace-nowrap transition-all"
               >
-                Learn More
+                <Link to="/about" className="flex items-center">
+                  Learn More
+                </Link>
               </Button>
             </div>
           </div>

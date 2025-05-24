@@ -587,97 +587,28 @@ const HomePage: React.FC = () => {
         <div className="w-full px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
             <div>
-              <h3 className="text-white text-lg font-bold mb-4">SolanceWork</h3>
+              <h3 className="text-white text-lg font-bold mb-4">Lancelot</h3>
               <p className="mb-4">
                 The premier Web3 freelancing platform powered by Solana
                 blockchain technology.
               </p>
               <div className="flex space-x-4">
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white text-xl cursor-pointer"
-                >
-                  <i className="fab fa-twitter"></i>
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white text-xl cursor-pointer"
-                >
-                  <i className="fab fa-discord"></i>
-                </a>
-                <a
-                  href="#"
+                <Link
+                  to="https://github.com/SnowAceAlex/Lancelot-Solana-Hackathon.git"
                   className="text-gray-400 hover:text-white text-xl cursor-pointer"
                 >
                   <i className="fab fa-github"></i>
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white text-xl cursor-pointer"
-                >
-                  <i className="fab fa-telegram"></i>
-                </a>
+                </Link>
               </div>
             </div>
             <div>
               <h3 className="text-white text-lg font-bold mb-4">Resources</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Documentation
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Blog
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Tutorials
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    FAQs
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Support Center
-                  </a>
-                </li>
-              </ul>
             </div>
             <div>
               <h3 className="text-white text-lg font-bold mb-4">Legal</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Terms of Service
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Cookie Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Dispute Resolution
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white cursor-pointer">
-                    Security
-                  </a>
-                </li>
-              </ul>
+              <a href="#" className="hover:text-white cursor-pointer">
+                Terms of Service
+              </a>
             </div>
             <div>
               <h3 className="text-white text-lg font-bold mb-4">Subscribe</h3>
@@ -687,7 +618,7 @@ const HomePage: React.FC = () => {
               <div className="flex">
                 <Input
                   placeholder="Your email"
-                  className="rounded-l-lg border-gray-700 bg-gray-800 text-white"
+                  className="rounded-l-lg border-gray-700 bg-gray-800 text-white placeholder:text-white"
                 />
                 <Button
                   type="primary"
@@ -709,7 +640,7 @@ const HomePage: React.FC = () => {
           </div>
           <Divider className="border-gray-700 mt-12 mb-8" />
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p>© 2025 SolanceWork. All rights reserved.</p>
+            <p>© 2025 Lancelot. All rights reserved.</p>
             <p className="mt-4 md:mt-0">
               Built on <span className="text-green-500">Solana</span> blockchain
             </p>
