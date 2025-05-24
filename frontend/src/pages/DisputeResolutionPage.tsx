@@ -30,6 +30,8 @@ const DisputeResolutionPage: React.FC = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = React.useState(0);
   const [showAllJury, setShowAllJury] = React.useState(false);
+  const [jurySelectionStarted, setJurySelectionStarted] = React.useState(false);
+  const [selectedCount, setSelectedCount] = React.useState(0);
 
   // Mock data for the dispute
   const disputeData = {
@@ -53,6 +55,19 @@ const DisputeResolutionPage: React.FC = () => {
       "0xCCCC...DDDD",
     ],
   };
+
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (
+      jurySelectionStarted &&
+      selectedCount < disputeData.juryMembers.length
+    ) {
+      timer = setTimeout(() => {
+        setSelectedCount((prev) => prev + 1);
+      }, 800); // 0.8s per member for demo
+    }
+    return () => clearTimeout(timer);
+  }, [jurySelectionStarted, selectedCount, disputeData.juryMembers.length]);
 
   const steps = [
     {
@@ -132,15 +147,42 @@ const DisputeResolutionPage: React.FC = () => {
             <p className="text-gray-600">
               Randomly selecting 7 DAO token holders to form the jury
             </p>
-            <Progress percent={60} status="active" />
+            {!jurySelectionStarted ? (
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mb-2"
+                onClick={() => {
+                  setJurySelectionStarted(true);
+                  setSelectedCount(0);
+                }}
+              >
+                Start Jury Selection
+              </button>
+            ) : null}
+            <Progress
+              percent={Math.round(
+                (selectedCount / disputeData.juryMembers.length) * 100
+              )}
+              status={
+                selectedCount < disputeData.juryMembers.length
+                  ? "active"
+                  : "success"
+              }
+            />
             <div className="flex justify-between text-sm text-gray-500">
-              <span>4/7 Members Selected</span>
-              <span>Estimated time: 5 minutes</span>
+              <span>
+                {selectedCount}/{disputeData.juryMembers.length} Members
+                Selected
+              </span>
+              <span>
+                {selectedCount < disputeData.juryMembers.length
+                  ? `Selecting...`
+                  : "Selection Complete"}
+              </span>
             </div>
             <div className="mt-2">
               <h5 className="font-medium mb-1">Selected Jury Members:</h5>
               <ul>
-                {disputeData.juryMembers.slice(0, 4).map((id) => (
+                {disputeData.juryMembers.slice(0, selectedCount).map((id) => (
                   <li key={id} className="text-gray-700 text-sm mb-1">
                     <span className="inline-block bg-gray-100 rounded px-2 py-1 mr-2 font-mono">
                       {id}
@@ -148,7 +190,7 @@ const DisputeResolutionPage: React.FC = () => {
                   </li>
                 ))}
                 {showAllJury &&
-                  disputeData.juryMembers.slice(4).map((id) => (
+                  disputeData.juryMembers.slice(selectedCount).map((id) => (
                     <li key={id} className="text-gray-700 text-sm mb-1">
                       <span className="inline-block bg-gray-100 rounded px-2 py-1 mr-2 font-mono">
                         {id}
@@ -156,16 +198,6 @@ const DisputeResolutionPage: React.FC = () => {
                     </li>
                   ))}
               </ul>
-              {disputeData.juryMembers.length > 4 && (
-                <button
-                  className="text-blue-500 hover:underline text-xs mt-1"
-                  onClick={() => setShowAllJury((prev) => !prev)}
-                >
-                  {showAllJury
-                    ? "Show less"
-                    : `Show more (${disputeData.juryMembers.length - 4} more)`}
-                </button>
-              )}
             </div>
           </div>
         </Card>
