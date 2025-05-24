@@ -108,7 +108,7 @@ function calculateDeadline(createdAt, duration) {
       date.setMonth(date.getMonth() + 1);
   }
   return date;
-}
+} 
 
 exports.postJob = async (req, res) => {
   try{
