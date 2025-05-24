@@ -1,4 +1,4 @@
-import Member1 from "/public/TeamMember1.png";
+import Member1 from "/public/TeamMember1.jpg";
 import Member2 from "/public/TeamMember2.jpg";
 import Member3 from "/public/TeamMember3.jpg";
 import Member4 from "/public/TeamMember4.jpg";

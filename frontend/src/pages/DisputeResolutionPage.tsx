@@ -20,54 +20,6 @@ import {
 } from "@ant-design/icons";
 import Navbar from "../components/Navbar";
 
-// Custom hook for countdown timer
-const useCountdownTimer = (initialTimeInSeconds: number) => {
-  const [timeRemaining, setTimeRemaining] =
-    React.useState(initialTimeInSeconds);
-  const [isRunning, setIsRunning] = React.useState(true);
-
-  React.useEffect(() => {
-    let timer: NodeJS.Timeout;
-
-    if (isRunning && timeRemaining > 0) {
-      timer = setInterval(() => {
-        setTimeRemaining((prev) => {
-          if (prev <= 1) {
-            setIsRunning(false);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
-
-    return () => {
-      if (timer) clearInterval(timer);
-    };
-  }, [isRunning, timeRemaining]);
-
-  const stopTimer = () => {
-    setIsRunning(false);
-  };
-
-  const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
-
-    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
-      2,
-      "0"
-    )}:${String(remainingSeconds).padStart(2, "0")}`;
-  };
-
-  return {
-    timeRemaining: formatTime(timeRemaining),
-    stopTimer,
-    isRunning,
-  };
-};
-
 const DisputeResolutionPage: React.FC = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = React.useState(0);
@@ -86,10 +38,7 @@ const DisputeResolutionPage: React.FC = () => {
   const [resolutionDescription, setResolutionDescription] = React.useState("");
   const [isAppealed, setIsAppealed] = React.useState(false);
   const [isCompleted, setIsCompleted] = React.useState(false);
-
-  // Initialize countdown timer with 24 hours in seconds
-  const { timeRemaining, stopTimer } = useCountdownTimer(24 * 60 * 60);
-
+  
   // Mock data for the dispute
   const disputeData = {
     jobTitle: "Frontend Development",
@@ -101,7 +50,7 @@ const DisputeResolutionPage: React.FC = () => {
     totalEvidenceRequired: 3,
     votingProgress: 4,
     totalVotes: 7,
-    timeRemaining,
+    timeRemaining: "23:59:59",
     juryMembers: [
       "0xA1B2...C3D4",
       "0xE5F6...7890",
@@ -214,6 +163,51 @@ const DisputeResolutionPage: React.FC = () => {
     };
   }, [currentStep]);
 
+  // Reduce remaining time for the dispute
+//   function decrementTimeString(timeString: string): string {
+//   const [hours, minutes, seconds] = timeString.split(':').map(Number);
+//   if (seconds > 0) {
+//     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${(seconds - 1).toString().padStart(2, '0')}`;
+//   } else if (minutes > 0) {
+//     return `${hours.toString().padStart(2, '0')}:${(minutes - 1).toString().padStart(2, '0')}:59`;
+//   } else if (hours > 0) {
+//     return `${(hours - 1).toString().padStart(2, '0')}:59:59`;
+//   } else {
+//     return "00:00:00";
+//   }
+// }
+
+const [timeRemaining, setTimeRemaining] = React.useState(disputeData.timeRemaining);
+React.useEffect(() => {
+  let timer: NodeJS.Timeout | null = null;
+  if ([0, 1, 2, 3, 4].includes(currentStep)) {
+    
+    if (timer) {
+      clearInterval(timer);
+    }
+    if (currentStep === 5) {
+      handleAppealSubmit();
+    }
+    timer = setInterval(() => {
+      const [hours, minutes, seconds] = timeRemaining.split(":").map(Number);
+      if (seconds > 0) {
+        setTimeRemaining(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${(seconds - 1).toString().padStart(2, '0')}`);
+      } else if (minutes > 0) {
+        setTimeRemaining(`${hours.toString().padStart(2, '0')}:${(minutes - 1).toString().padStart(2, '0')}:59`);
+      } else if (hours > 0) {
+        setTimeRemaining(`${(hours - 1).toString().padStart(2, '0')}:59:59`);
+      } else {
+        setTimeRemaining("00:00:00");
+      }
+    }, 1000);
+  }
+  return () => {
+    clearInterval(timer);
+  };
+}, [currentStep, timeRemaining]);
+
+
+
   // Add effect for resolution phase animation
   React.useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -224,7 +218,7 @@ const DisputeResolutionPage: React.FC = () => {
       setUpdatingReputation(false);
       setRecordingOnChain(false);
       setResolutionDescription("Initializing resolution process...");
-
+      setTimeRemaining("23:59:59");
       const descriptions = [
         "Preparing to release funds...",
         "Calculating final amounts...",
@@ -273,9 +267,9 @@ const DisputeResolutionPage: React.FC = () => {
   }, [currentStep]);
 
   const handleAppealSubmit = () => {
-    stopTimer(); // Stop the timer when appeal is submitted
     setIsAppealed(true);
     setIsCompleted(false);
+    setTimeRemaining("23:59:59");
     message.success({
       content:
         "Appeal submitted successfully! The case is now under review by the DAO council.",
@@ -287,11 +281,11 @@ const DisputeResolutionPage: React.FC = () => {
   };
 
   const handleNoAppeal = () => {
-    stopTimer(); // Stop the timer when no appeal is submitted
     setIsCompleted(true);
     setIsAppealed(false);
     message.success({
-      content: "Case marked as completed.",
+      content:
+        "Case marked as completed. Thank you for using our dispute resolution system.",
       duration: 5,
       style: {
         marginTop: "20vh",
@@ -359,7 +353,7 @@ const DisputeResolutionPage: React.FC = () => {
               <Button icon={<UploadOutlined />}>Upload Evidence</Button>
             </Upload>
             <p className="text-gray-500 text-sm">
-              Time remaining: {disputeData.timeRemaining}
+              Time remaining: {timeRemaining}
             </p>
           </div>
         </Card>
@@ -599,7 +593,7 @@ const DisputeResolutionPage: React.FC = () => {
               </div>
               <div>
                 <span className="font-medium">Time Remaining:</span>{" "}
-                {disputeData.timeRemaining}
+                {timeRemaining}
               </div>
             </div>
           </Card>
