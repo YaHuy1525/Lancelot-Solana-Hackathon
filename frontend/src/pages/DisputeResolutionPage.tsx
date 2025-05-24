@@ -29,6 +29,7 @@ const DisputeResolutionPage: React.FC = () => {
   const { jobId } = useParams();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = React.useState(0);
+  const [showAllJury, setShowAllJury] = React.useState(false);
 
   // Mock data for the dispute
   const disputeData = {
@@ -42,6 +43,15 @@ const DisputeResolutionPage: React.FC = () => {
     votingProgress: 4,
     totalVotes: 7,
     timeRemaining: "23:45:12",
+    juryMembers: [
+      "0xA1B2...C3D4",
+      "0xE5F6...7890",
+      "0x1234...5678",
+      "0x9ABC...DEF0",
+      "0x2468...1357",
+      "0xAAAA...BBBB",
+      "0xCCCC...DDDD",
+    ],
   };
 
   const steps = [
@@ -126,6 +136,36 @@ const DisputeResolutionPage: React.FC = () => {
             <div className="flex justify-between text-sm text-gray-500">
               <span>4/7 Members Selected</span>
               <span>Estimated time: 5 minutes</span>
+            </div>
+            <div className="mt-2">
+              <h5 className="font-medium mb-1">Selected Jury Members:</h5>
+              <ul>
+                {disputeData.juryMembers.slice(0, 4).map((id) => (
+                  <li key={id} className="text-gray-700 text-sm mb-1">
+                    <span className="inline-block bg-gray-100 rounded px-2 py-1 mr-2 font-mono">
+                      {id}
+                    </span>
+                  </li>
+                ))}
+                {showAllJury &&
+                  disputeData.juryMembers.slice(4).map((id) => (
+                    <li key={id} className="text-gray-700 text-sm mb-1">
+                      <span className="inline-block bg-gray-100 rounded px-2 py-1 mr-2 font-mono">
+                        {id}
+                      </span>
+                    </li>
+                  ))}
+              </ul>
+              {disputeData.juryMembers.length > 4 && (
+                <button
+                  className="text-blue-500 hover:underline text-xs mt-1"
+                  onClick={() => setShowAllJury((prev) => !prev)}
+                >
+                  {showAllJury
+                    ? "Show less"
+                    : `Show more (${disputeData.juryMembers.length - 4} more)`}
+                </button>
+              )}
             </div>
           </div>
         </Card>
@@ -274,11 +314,16 @@ const DisputeResolutionPage: React.FC = () => {
             onChange={setCurrentStep}
             items={steps.map((step) => ({
               title: step.title,
-              description: step.description,
             }))}
+            className="custom-dispute-steps"
           />
 
-          {steps[currentStep].content}
+          <div className="mt-6">
+            <div className="text-gray-600 mb-4 text-lg font-medium">
+              {steps[currentStep].description}
+            </div>
+            {steps[currentStep].content}
+          </div>
         </div>
       </div>
     </div>
