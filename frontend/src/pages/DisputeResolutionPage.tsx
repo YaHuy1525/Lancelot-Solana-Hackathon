@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   Steps,
@@ -13,9 +13,6 @@ import {
   Divider,
 } from "antd";
 import {
-  AlertOutlined,
-  FileTextOutlined,
-  TeamOutlined,
   CheckCircleOutlined,
   ClockCircleOutlined,
   UploadOutlined,
@@ -23,13 +20,9 @@ import {
 } from "@ant-design/icons";
 import Navbar from "../components/Navbar";
 
-const { Step } = Steps;
-
 const DisputeResolutionPage: React.FC = () => {
-  const { jobId } = useParams();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = React.useState(0);
-  const [showAllJury, setShowAllJury] = React.useState(false);
   const [jurySelectionStarted, setJurySelectionStarted] = React.useState(false);
   const [selectedCount, setSelectedCount] = React.useState(0);
   const [evidenceProgress, setEvidenceProgress] = React.useState(0);
@@ -97,20 +90,27 @@ const DisputeResolutionPage: React.FC = () => {
         "Preparing evidence summary...",
       ];
 
-      let currentDescIndex = 0;
-
+      let progress = 0;
       timer = setInterval(() => {
-        setEvidenceProgress((prev) => {
-          if (prev >= 100) {
-            clearInterval(timer);
-            return 100;
-          }
-          return prev + 2;
-        });
+        progress += 2;
+        if (progress >= 100) {
+          clearInterval(timer);
+          setEvidenceProgress(100);
+          setEvidenceDescription(descriptions[3]);
+          return;
+        }
 
-        if (currentDescIndex < descriptions.length) {
-          setEvidenceDescription(descriptions[currentDescIndex]);
-          currentDescIndex++;
+        setEvidenceProgress(progress);
+
+        // Update description based on progress
+        if (progress < 25) {
+          setEvidenceDescription(descriptions[0]);
+        } else if (progress < 50) {
+          setEvidenceDescription(descriptions[1]);
+        } else if (progress < 75) {
+          setEvidenceDescription(descriptions[2]);
+        } else {
+          setEvidenceDescription(descriptions[3]);
         }
       }, 50);
     }
@@ -182,7 +182,6 @@ const DisputeResolutionPage: React.FC = () => {
         "Finalizing resolution...",
       ];
 
-      let currentDescIndex = 0;
       let stepTimer = 0;
 
       timer = setInterval(() => {
@@ -366,14 +365,6 @@ const DisputeResolutionPage: React.FC = () => {
                     </span>
                   </li>
                 ))}
-                {showAllJury &&
-                  disputeData.juryMembers.slice(selectedCount).map((id) => (
-                    <li key={id} className="text-gray-700 text-sm mb-1">
-                      <span className="inline-block bg-gray-100 rounded px-2 py-1 mr-2 font-mono">
-                        {id}
-                      </span>
-                    </li>
-                  ))}
               </ul>
             </div>
           </div>
