@@ -111,8 +111,8 @@ function calculateDeadline(createdAt, duration) {
 }
 
 exports.postJob = async (req, res) => {
-  try{
-    const{
+  try {
+    const {
       title,
       description,
       responsibilities,
@@ -133,6 +133,7 @@ exports.postJob = async (req, res) => {
     const deadline = calculateDeadline(createdAt, duration);
 
     const job = new JobModel({
+      job_id: jobId,
       title,
       description,
       responsibilities,
@@ -161,4 +162,3 @@ exports.postJob = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-

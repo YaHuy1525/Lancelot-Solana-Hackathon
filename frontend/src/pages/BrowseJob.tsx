@@ -50,24 +50,25 @@ const BrowseJob: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    setLoading(true);
-    setError(null);
+    const fetchJobs = async () => {
+      window.scrollTo(0, 0);
+      setLoading(true);
+      setError(null);
 
-    jobService
-      .browsejob()
-      .then((backendJobs) => {
-        console.log("Fetched backendJobs:", backendJobs); // Log raw data
+      try {
+        const backendJobs = await jobService.browsejob();
+        console.log("Fetched backendJobs:", backendJobs);
+        
         // Map backend jobs to UIJob type
         const mappedJobs: UIJob[] = backendJobs.map((job) => ({
           ...job,
-          image:
-            job.image ||
-            "https://readdy.ai/api/search-image?query=blockchain%20job&width=400&height=250",
-          skills: ((job as any).required_skills || job.skills || []),
+          image: job.image || "https://readdy.ai/api/search-image?query=blockchain%20job&width=400&height=250",
+          // Use skills if available, otherwise default to empty array
+          skills: Array.isArray(job.skills) ? job.skills : [],
           budgetDisplay: typeof job.budget === "number" ? `${job.budget} SOL` : "N/A",
         }));
-        console.log("Mapped UI jobs:", mappedJobs); // Log mapped data
+        
+        console.log("Mapped UI jobs:", mappedJobs);
         setJobs(mappedJobs);
 
         // Handle search parameters from URL
@@ -78,21 +79,41 @@ const BrowseJob: React.FC = () => {
         if (searchTerm || skills) {
           handleSearch(searchTerm, skills);
         }
-      })
-      .catch((err) => {
-        console.error("Error fetching or mapping jobs:", err); // Log the actual error
-        setError("Failed to fetch jobs from server. Check console for details.");
+      } catch (err) {
+        console.error("Error fetching or mapping jobs:", err);
+        setError("Failed to fetch jobs. Please try again later.");
         setJobs([]);
-      })
-      .finally(() => {
+      } finally {
         setLoading(false);
-      });
-    // eslint-disable-next-line
+      }
+    };
+
+    fetchJobs();
   }, [location.search]);
 
   const handleSearch = (searchTerm: string, skills: string) => {
     setSearchTerm(searchTerm);
     setSkills(skills);
+    
+    // Filter jobs based on search term and skills
+    const filteredJobs = jobs.filter(job => {
+      const matchesSearch = searchTerm === '' || 
+        job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.description.toLowerCase().includes(searchTerm.toLowerCase());
+        
+      const matchesSkills = skills === '' || 
+        job.skills.some(skill => 
+          skill.toLowerCase().includes(skills.toLowerCase())
+        );
+        
+      return matchesSearch && matchesSkills;
+    });
+    
+    setJobs(prevJobs => 
+      searchTerm === '' && skills === '' 
+        ? [...prevJobs] // Reset to original jobs if no search term or skills
+        : filteredJobs
+    );
   };
 
   const handleJobClick = (job: UIJob) => {
