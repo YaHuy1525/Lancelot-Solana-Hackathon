@@ -182,7 +182,6 @@ const DisputeResolutionPage: React.FC = () => {
         "Finalizing resolution...",
       ];
 
-      // let currentDescIndex = 0;
       let stepTimer = 0;
 
       timer = setInterval(() => {
