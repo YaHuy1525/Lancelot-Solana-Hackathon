@@ -1,12 +1,11 @@
 import React from "react";
 import { Button } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const Hero: React.FC = () => {
-  const { connected } = useWallet();
+  const navigate = useNavigate();
 
   return (
     <div className="pt-16 relative overflow-hidden">
@@ -33,10 +32,14 @@ const Hero: React.FC = () => {
               The future of work is decentralized.
             </p>
             <div className="flex flex-wrap gap-4 px-4">
-              <WalletMultiButton className="!bg-green-500 !rounded-[30px] !border-none !p-0 !h-12 !px-8 !text-lg !text-white hover:!bg-green-600 !flex !items-center !transform-none hover:!translate-y-0">
-                <span>{connected ? "Wallet Connected" : "Start Earning"}</span>
+              <Button
+                size="large"
+                className="!rounded-button !bg-green-500 text-white border-2 border-green-500 hover:!bg-green-500 hover:text-white text-lg h-12 px-8 flex items-center cursor-pointer whitespace-nowrap transition-all"
+                onClick={() => navigate("/browse-job")}
+              >
+                <span>Start Earning</span>
                 <ArrowRightOutlined className="ml-2" />
-              </WalletMultiButton>
+              </Button>
               <Button
                 size="large"
                 className="!rounded-button bg-transparent text-white border-2 border-white hover:bg-green-500 hover:text-white text-lg h-12 px-8 flex items-center cursor-pointer whitespace-nowrap transition-all"

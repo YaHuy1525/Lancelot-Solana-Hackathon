@@ -101,8 +101,8 @@ const SearchSection: React.FC<SearchSectionProps> = ({
   return (
     <div className="bg-white py-8">
       <div className="w-full px-4">
-        <div className="bg-white shadow-lg rounded-xl p-6 -mt-16 relative z-20 mx-16">
-          <div className="flex flex-row gap-4" ref={searchRef}>
+        <div className="bg-white shadow-lg rounded-xl p-4 md:p-6 -mt-16 relative z-20 mx-4 md:mx-16">
+          <div className="flex flex-col md:flex-row gap-4" ref={searchRef}>
             <div className="relative flex-1">
               <Input
                 size="large"
@@ -123,25 +123,27 @@ const SearchSection: React.FC<SearchSectionProps> = ({
                 />
               )}
             </div>
-            <Input
-              size="large"
-              placeholder="Skills"
-              prefix={
-                <i className="fas fa-code text-gray-400 mr-2 custom-green-icon"></i>
-              }
-              className="md:w-64 border-gray-300 rounded-lg"
-              value={skills}
-              onChange={(e) => handleInputChange(e.target.value, true)}
-              onKeyPress={handleKeyPress}
-            />
-            <Button
-              type="primary"
-              size="large"
-              className="!rounded-button bg-green-500 border-none hover:bg-green-600 h-10 px-8 flex items-center justify-center cursor-pointer whitespace-nowrap"
-              onClick={handleSearch}
-            >
-              Search
-            </Button>
+            <div className="flex flex-col md:flex-row gap-4 md:w-auto">
+              <Input
+                size="large"
+                placeholder="Skills"
+                prefix={
+                  <i className="fas fa-code text-gray-400 mr-2 custom-green-icon"></i>
+                }
+                className="w-full md:w-64 border-gray-300 rounded-lg"
+                value={skills}
+                onChange={(e) => handleInputChange(e.target.value, true)}
+                onKeyPress={handleKeyPress}
+              />
+              <Button
+                type="primary"
+                size="large"
+                className="!rounded-button bg-green-500 border-none hover:bg-green-600 h-10 px-8 flex items-center justify-center cursor-pointer whitespace-nowrap w-full md:w-auto"
+                onClick={handleSearch}
+              >
+                Search
+              </Button>
+            </div>
           </div>
         </div>
       </div>

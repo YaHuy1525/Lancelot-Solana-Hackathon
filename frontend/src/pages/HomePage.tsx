@@ -117,7 +117,7 @@ const HomePage: React.FC = () => {
         <div className="w-full px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Why Choose SolanceWork
+              Why Choose Lancelot
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Our platform combines the best of Web3 technology with freelancing
@@ -571,12 +571,6 @@ const HomePage: React.FC = () => {
               onClick={handleFindWork}
             >
               <i className="fas fa-search mr-2"></i> Find Work
-            </Button>
-            <Button
-              size="large"
-              className="!rounded-button bg-white text-black border-none hover:bg-gray-100 text-lg h-12 px-8 flex items-center justify-center cursor-pointer whitespace-nowrap"
-            >
-              <i className="fas fa-user-plus mr-2"></i> Hire Talent
             </Button>
           </div>
         </div>
