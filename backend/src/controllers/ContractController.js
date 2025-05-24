@@ -4,7 +4,7 @@ const PaymentModel = require('../models/PaymentModel');
 
 exports.getAllContracts = async (req, res) => {
   try{
-    const contracts = ContractModel.find();
+    const contracts = await ContractModel.find();
     res.status(200).json(contracts)
   }
   catch(err){
@@ -14,7 +14,7 @@ exports.getAllContracts = async (req, res) => {
 
 exports.getContractById = async (req, res) => {
   try{
-    const contract = ContractModel.findById(req.params.id);
+    const contract = await ContractModel.findById(req.params.id);
     res.status(200).json(contract)
   }
   catch(err){
@@ -24,7 +24,7 @@ exports.getContractById = async (req, res) => {
 
 exports.getUserContracts = async (req, res) => {
   try{
-    const contracts = ContractModel.find({user_id: req.params.id});
+    const contracts = await ContractModel.find({user_id: req.params.id});
     res.status(200).json(contracts)
   }
   catch(err){
@@ -34,7 +34,7 @@ exports.getUserContracts = async (req, res) => {
 
 exports.deleteContract = async (req, res) => {
   try{
-    const contract = ContractModel.find({contract_id: req.params.id}).deleteOne()
+    const contract = await ContractModel.find({contract_id: req.params.id}).deleteOne()
     res.status(200).json(contract + 'has been deleted')
   }
   catch(err){

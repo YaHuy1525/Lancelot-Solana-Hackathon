@@ -6,11 +6,6 @@ if (mongoose.models.Proposal) {
 }
 
 const ProposalSchema = new mongoose.Schema({
-  client_id: {
-    type: String,
-    ref: 'User',
-    required: true
-  },
   freelancer_id: {
     type: String,
     ref: 'User',

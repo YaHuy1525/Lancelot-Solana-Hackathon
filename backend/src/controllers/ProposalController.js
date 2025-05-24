@@ -1,4 +1,4 @@
-const ProposalModel = require('../models/proposalModel');
+const ProposalModel = require('../models/ProposalModel');
 
 exports.getAllProposals = async (req, res) => {
     try {
