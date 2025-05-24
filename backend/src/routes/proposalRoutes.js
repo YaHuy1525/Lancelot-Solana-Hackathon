@@ -10,5 +10,7 @@ router.get("/user/:id", proposalController.getUserProposals);
 router.delete("/:id", proposalController.deleteProposal);
 // Update proposal
 router.put("/:id", proposalController.updateProposal);
+// Post proposal
+router.post("/", proposalController.postProposal);
 
 module.exports = router;

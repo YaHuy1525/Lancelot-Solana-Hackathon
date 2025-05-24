@@ -58,8 +58,6 @@ exports.updateJob = async (req, res) => {
   }
 }
 
-
-
 exports.deleteAllData = async (req, res) => {
   try {
     // Warning: This deletes ALL jobs and ALL users!
@@ -72,7 +70,7 @@ exports.deleteAllData = async (req, res) => {
   }
 };
 
-exports.creataJob = async (req, res) => {
+exports.postJob = async (req, res) => {
   try{
     const{
       title,
