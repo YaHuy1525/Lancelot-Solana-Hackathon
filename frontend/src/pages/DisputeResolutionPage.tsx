@@ -32,6 +32,19 @@ const DisputeResolutionPage: React.FC = () => {
   const [showAllJury, setShowAllJury] = React.useState(false);
   const [jurySelectionStarted, setJurySelectionStarted] = React.useState(false);
   const [selectedCount, setSelectedCount] = React.useState(0);
+  const [evidenceProgress, setEvidenceProgress] = React.useState(0);
+  const [evidenceDescription, setEvidenceDescription] = React.useState("");
+  const [votingProgress, setVotingProgress] = React.useState(0);
+  const [freelancerVotes, setFreelancerVotes] = React.useState(0);
+  const [employerVotes, setEmployerVotes] = React.useState(0);
+  const [needMoreInfoVotes, setNeedMoreInfoVotes] = React.useState(0);
+  const [resolutionProgress, setResolutionProgress] = React.useState(0);
+  const [releasingFunds, setReleasingFunds] = React.useState(false);
+  const [updatingReputation, setUpdatingReputation] = React.useState(false);
+  const [recordingOnChain, setRecordingOnChain] = React.useState(false);
+  const [resolutionDescription, setResolutionDescription] = React.useState("");
+  const [isAppealed, setIsAppealed] = React.useState(false);
+  const [isCompleted, setIsCompleted] = React.useState(false);
 
   // Mock data for the dispute
   const disputeData = {
@@ -68,6 +81,172 @@ const DisputeResolutionPage: React.FC = () => {
     }
     return () => clearTimeout(timer);
   }, [jurySelectionStarted, selectedCount, disputeData.juryMembers.length]);
+
+  // Add effect for evidence collection animation
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (currentStep === 1) {
+      // Evidence Collection step
+      setEvidenceProgress(0);
+      setEvidenceDescription("Initializing evidence collection...");
+
+      const descriptions = [
+        "Analyzing submitted documents...",
+        "Verifying timestamps and metadata...",
+        "Cross-referencing with blockchain records...",
+        "Preparing evidence summary...",
+      ];
+
+      let currentDescIndex = 0;
+
+      timer = setInterval(() => {
+        setEvidenceProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(timer);
+            return 100;
+          }
+          return prev + 2;
+        });
+
+        if (currentDescIndex < descriptions.length) {
+          setEvidenceDescription(descriptions[currentDescIndex]);
+          currentDescIndex++;
+        }
+      }, 50);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [currentStep]);
+
+  // Add effect for voting period animation
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (currentStep === 3) {
+      // Voting Period step
+      setVotingProgress(0);
+      setFreelancerVotes(0);
+      setEmployerVotes(0);
+      setNeedMoreInfoVotes(0);
+
+      let voteCount = 0;
+      const totalVotes = 7; // 5 freelancer + 1 employer + 1 need more info
+      let voteTimer = 0;
+
+      timer = setInterval(() => {
+        setVotingProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(timer);
+            return 100;
+          }
+          return prev + 2;
+        });
+
+        // Increment votes more gradually
+        voteTimer += 50;
+        if (voteCount < totalVotes && voteTimer >= 350) {
+          // New vote every 350ms
+          voteCount++;
+          voteTimer = 0;
+          if (voteCount <= 5) {
+            setFreelancerVotes(voteCount);
+          } else if (voteCount === 6) {
+            setEmployerVotes(1);
+          } else if (voteCount === 7) {
+            setNeedMoreInfoVotes(1);
+          }
+        }
+      }, 50);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [currentStep]);
+
+  // Add effect for resolution phase animation
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (currentStep === 4) {
+      // Resolution step
+      setResolutionProgress(0);
+      setReleasingFunds(false);
+      setUpdatingReputation(false);
+      setRecordingOnChain(false);
+      setResolutionDescription("Initializing resolution process...");
+
+      const descriptions = [
+        "Preparing to release funds...",
+        "Calculating final amounts...",
+        "Updating reputation scores...",
+        "Recording transaction on blockchain...",
+        "Finalizing resolution...",
+      ];
+
+      let currentDescIndex = 0;
+      let stepTimer = 0;
+
+      timer = setInterval(() => {
+        setResolutionProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(timer);
+            // Set all checkmarks to green when complete
+            setReleasingFunds(true);
+            setUpdatingReputation(true);
+            setRecordingOnChain(true);
+            return 100;
+          }
+          return prev + 2;
+        });
+
+        // Update status based on progress
+        stepTimer += 50;
+        if (stepTimer >= 500) {
+          // Change status every 500ms
+          stepTimer = 0;
+          if (resolutionProgress < 30) {
+            setResolutionDescription(descriptions[0]);
+          } else if (resolutionProgress < 50) {
+            setResolutionDescription(descriptions[1]);
+          } else if (resolutionProgress < 70) {
+            setResolutionDescription(descriptions[2]);
+          } else if (resolutionProgress < 90) {
+            setResolutionDescription(descriptions[3]);
+          } else {
+            setResolutionDescription(descriptions[4]);
+          }
+        }
+      }, 50);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [currentStep]);
+
+  const handleAppealSubmit = () => {
+    setIsAppealed(true);
+    setIsCompleted(false);
+    message.success({
+      content:
+        "Appeal submitted successfully! The case is now under review by the DAO council.",
+      duration: 5,
+      style: {
+        marginTop: "20vh",
+      },
+    });
+  };
+
+  const handleNoAppeal = () => {
+    setIsCompleted(true);
+    setIsAppealed(false);
+    message.success({
+      content:
+        "Case marked as completed. Thank you for using our dispute resolution system.",
+      duration: 5,
+      style: {
+        marginTop: "20vh",
+      },
+    });
+  };
 
   const steps = [
     {
@@ -115,18 +294,16 @@ const DisputeResolutionPage: React.FC = () => {
             <div className="flex justify-between items-center">
               <h4 className="font-medium">Evidence Progress</h4>
               <Tag color="blue">
-                {disputeData.evidenceSubmitted}/
+                {Math.round(evidenceProgress / 25)}/
                 {disputeData.totalEvidenceRequired} Submitted
               </Tag>
             </div>
             <Progress
-              percent={Math.round(
-                (disputeData.evidenceSubmitted /
-                  disputeData.totalEvidenceRequired) *
-                  100
-              )}
-              status="active"
+              percent={evidenceProgress}
+              status={evidenceProgress === 100 ? "success" : "active"}
+              strokeColor={evidenceProgress === 100 ? "#52c41a" : undefined}
             />
+            <p className="text-gray-600 italic">{evidenceDescription}</p>
             <Upload>
               <Button icon={<UploadOutlined />}>Upload Evidence</Button>
             </Upload>
@@ -212,31 +389,31 @@ const DisputeResolutionPage: React.FC = () => {
             <div className="flex justify-between items-center">
               <h4 className="font-medium">Voting Progress</h4>
               <Tag color="blue">
-                {disputeData.votingProgress}/{disputeData.totalVotes} Votes
+                {Math.round(votingProgress / 14.28)}/{disputeData.totalVotes}{" "}
+                Votes
               </Tag>
             </div>
             <Progress
-              percent={Math.round(
-                (disputeData.votingProgress / disputeData.totalVotes) * 100
-              )}
-              status="active"
+              percent={votingProgress}
+              status={votingProgress === 100 ? "success" : "active"}
+              strokeColor={votingProgress === 100 ? "#52c41a" : undefined}
             />
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center">
                 <Tag color="green" className="text-lg">
-                  3
+                  {freelancerVotes}
                 </Tag>
                 <p className="text-sm text-gray-600">For Freelancer</p>
               </div>
               <div className="text-center">
                 <Tag color="red" className="text-lg">
-                  1
+                  {employerVotes}
                 </Tag>
                 <p className="text-sm text-gray-600">For Employer</p>
               </div>
               <div className="text-center">
                 <Tag color="gold" className="text-lg">
-                  0
+                  {needMoreInfoVotes}
                 </Tag>
                 <p className="text-sm text-gray-600">Need More Info</p>
               </div>
@@ -252,22 +429,36 @@ const DisputeResolutionPage: React.FC = () => {
         <Card className="mt-4">
           <div className="space-y-4">
             <h4 className="font-medium">Resolution in Progress</h4>
-            <p className="text-gray-600">
-              Smart contract is executing the final decision
-            </p>
-            <Progress percent={80} status="active" />
+            <p className="text-gray-600 italic">{resolutionDescription}</p>
+            <Progress
+              percent={resolutionProgress}
+              status={resolutionProgress === 100 ? "success" : "active"}
+              strokeColor={resolutionProgress === 100 ? "#52c41a" : undefined}
+            />
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span>Releasing funds</span>
-                <CheckCircleOutlined className="text-green-500" />
+                {releasingFunds ? (
+                  <CheckCircleOutlined className="text-green-500" />
+                ) : (
+                  <ClockCircleOutlined className="text-blue-500" />
+                )}
               </div>
               <div className="flex justify-between">
                 <span>Updating reputation</span>
-                <ClockCircleOutlined className="text-blue-500" />
+                {updatingReputation ? (
+                  <CheckCircleOutlined className="text-green-500" />
+                ) : (
+                  <ClockCircleOutlined className="text-blue-500" />
+                )}
               </div>
               <div className="flex justify-between">
                 <span>Recording on-chain</span>
-                <ClockCircleOutlined className="text-blue-500" />
+                {recordingOnChain ? (
+                  <CheckCircleOutlined className="text-green-500" />
+                ) : (
+                  <ClockCircleOutlined className="text-blue-500" />
+                )}
               </div>
             </div>
           </div>
@@ -289,13 +480,36 @@ const DisputeResolutionPage: React.FC = () => {
               <h5 className="font-medium mb-2">Appeal Requirements:</h5>
               <ul className="list-disc list-inside text-gray-600">
                 <li>New evidence not previously considered</li>
-                <li>Appeal fee: 0.5 SOL</li>
+                <li>Appeal fee: 0.005 SOL</li>
                 <li>Must be submitted within 24 hours</li>
               </ul>
             </div>
-            <Button type="primary" danger>
-              Submit Appeal
-            </Button>
+            {isAppealed ? (
+              <div className="flex items-center space-x-2">
+                <Tag color="orange">Under Appeal</Tag>
+                <span className="text-gray-600">
+                  Appeal submitted and under review
+                </span>
+              </div>
+            ) : isCompleted ? (
+              <div className="flex items-center space-x-2">
+                <Tag color="green">Completed</Tag>
+                <span className="text-gray-600">Case has been resolved</span>
+              </div>
+            ) : (
+              <div className="flex space-x-4">
+                <Button type="primary" danger onClick={handleAppealSubmit}>
+                  Submit Appeal
+                </Button>
+                <Button
+                  type="primary"
+                  style={{ backgroundColor: "#52c41a", borderColor: "#52c41a" }}
+                  onClick={handleNoAppeal}
+                >
+                  Do Not Appeal
+                </Button>
+              </div>
+            )}
           </div>
         </Card>
       ),
@@ -325,7 +539,13 @@ const DisputeResolutionPage: React.FC = () => {
               </div>
               <Space>
                 <Tag color="red">{disputeData.issue}</Tag>
-                <Tag color="blue">{disputeData.status}</Tag>
+                {isAppealed ? (
+                  <Tag color="orange">Under Appeal</Tag>
+                ) : isCompleted ? (
+                  <Tag color="green">Completed</Tag>
+                ) : (
+                  <Tag color="blue">{disputeData.status}</Tag>
+                )}
               </Space>
             </div>
             <Divider />

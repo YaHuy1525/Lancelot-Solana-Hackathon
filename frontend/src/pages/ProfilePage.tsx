@@ -41,7 +41,7 @@ const ProfilePage: React.FC = () => {
       key: "1",
       title: "Solana dApp Development",
       client: "0x1234...5678",
-      budget: "5.0 SOL",
+      budget: "0.86 SOL",
       deadline: "2024-04-15",
       status: "In Progress",
     },
@@ -49,7 +49,7 @@ const ProfilePage: React.FC = () => {
       key: "2",
       title: "NFT Marketplace Integration",
       client: "0x8765...4321",
-      budget: "3.5 SOL",
+      budget: "0.5 SOL",
       deadline: "2024-04-20",
       status: "In Progress",
     },
@@ -61,7 +61,7 @@ const ProfilePage: React.FC = () => {
       key: "1",
       title: "Smart Contract Audit",
       client: "0x9876...5432",
-      budget: "4.0 SOL",
+      budget: "0.62 SOL",
       completedDate: "2024-03-01",
       rating: 5,
     },
@@ -69,7 +69,7 @@ const ProfilePage: React.FC = () => {
       key: "2",
       title: "DeFi Protocol Development",
       client: "0x2468...1357",
-      budget: "8.0 SOL",
+      budget: "0.9 SOL",
       completedDate: "2024-02-15",
       rating: 4,
     },
@@ -81,7 +81,7 @@ const ProfilePage: React.FC = () => {
       key: "1",
       title: "Frontend Development",
       client: "0x1357...2468",
-      budget: "2.5 SOL",
+      budget: "0.8 SOL",
       issue: "Payment Delayed",
       status: "Under Review",
     },
@@ -195,7 +195,7 @@ const ProfilePage: React.FC = () => {
       type: "payment",
       title: "Payment Received",
       description: "Received payment for Smart Contract Development",
-      amount: "2.5 SOL",
+      amount: "0.68 SOL",
       time: "2 hours ago",
       icon: <DollarOutlined className="text-green-500" />,
     },
@@ -217,7 +217,7 @@ const ProfilePage: React.FC = () => {
       type: "payment",
       title: "Payment Received",
       description: "Received payment for Frontend Development",
-      amount: "1.8 SOL",
+      amount: "0.3 SOL",
       time: "3 days ago",
       icon: <DollarOutlined className="text-green-500" />,
     },
@@ -280,7 +280,7 @@ const ProfilePage: React.FC = () => {
                     title={
                       <span className="text-gray-600">Wallet Balance</span>
                     }
-                    value="0.00"
+                    value="6.86"
                     precision={2}
                     suffix="SOL"
                     valueStyle={{ color: "#111827" }}
@@ -305,7 +305,7 @@ const ProfilePage: React.FC = () => {
                     title={
                       <span className="text-gray-600">Jobs Completed</span>
                     }
-                    value={0}
+                    value={2}
                     valueStyle={{ color: "#111827" }}
                     prefix={<ClockCircleOutlined className="text-green-500" />}
                   />
@@ -315,7 +315,7 @@ const ProfilePage: React.FC = () => {
                 <Card className="bg-white border-gray-200 shadow-sm">
                   <Statistic
                     title={<span className="text-gray-600">Total Earned</span>}
-                    value="0.00"
+                    value="0.98"
                     precision={2}
                     suffix="SOL"
                     valueStyle={{ color: "#111827" }}
