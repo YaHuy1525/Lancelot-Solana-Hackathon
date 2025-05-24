@@ -90,20 +90,27 @@ const DisputeResolutionPage: React.FC = () => {
         "Preparing evidence summary...",
       ];
 
-      let currentDescIndex = 0;
-
+      let progress = 0;
       timer = setInterval(() => {
-        setEvidenceProgress((prev) => {
-          if (prev >= 100) {
-            clearInterval(timer);
-            return 100;
-          }
-          return prev + 2;
-        });
+        progress += 2;
+        if (progress >= 100) {
+          clearInterval(timer);
+          setEvidenceProgress(100);
+          setEvidenceDescription(descriptions[3]);
+          return;
+        }
 
-        if (currentDescIndex < descriptions.length) {
-          setEvidenceDescription(descriptions[currentDescIndex]);
-          currentDescIndex++;
+        setEvidenceProgress(progress);
+
+        // Update description based on progress
+        if (progress < 25) {
+          setEvidenceDescription(descriptions[0]);
+        } else if (progress < 50) {
+          setEvidenceDescription(descriptions[1]);
+        } else if (progress < 75) {
+          setEvidenceDescription(descriptions[2]);
+        } else {
+          setEvidenceDescription(descriptions[3]);
         }
       }, 50);
     }
@@ -175,7 +182,7 @@ const DisputeResolutionPage: React.FC = () => {
         "Finalizing resolution...",
       ];
 
-      let currentDescIndex = 0;
+      // let currentDescIndex = 0;
       let stepTimer = 0;
 
       timer = setInterval(() => {
