@@ -16,6 +16,10 @@ const JobSchema = new mongoose.Schema({
   //   ref: 'User',
   //   default: null
   // },
+  job_id: {
+    type: String,
+    required: true
+  },
   title: {
     type: String,
     required: true

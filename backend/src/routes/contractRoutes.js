@@ -12,3 +12,5 @@ router.get("/user/:id", contractController.getUserContracts);
 router.delete("/:id", contractController.deleteContract);
 // Update contract
 router.put("/:id", contractController.updateContract);
+
+module.exports = router;

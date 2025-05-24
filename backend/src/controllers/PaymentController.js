@@ -21,4 +21,3 @@ exports.getUserPayments = async (req, res) => {
     }
 }
 
-module.exports = exports

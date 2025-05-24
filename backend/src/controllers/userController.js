@@ -28,13 +28,12 @@ exports.getUserById = async(req, res) => {
 exports.getUsersByRole = async (req, res) => {
   try {
     const role = req.params.role;
-    const users = await User.find({ role });
+    const users = await UserModel.find({ role });
     res.json(users);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-};
-
+}
 
 exports.updateProfile = async(req, res) => {
     try{
@@ -56,5 +55,3 @@ exports.updateProfile = async(req, res) => {
         res.status(500).json({message: err.message}) 
     }
 }
-
-module.exports = exports

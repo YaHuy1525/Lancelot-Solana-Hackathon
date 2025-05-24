@@ -22,6 +22,19 @@ exports.getAllJobs = async (req, res) => {
   }
 };
 
+exports.getJobById = async (req, res) => {
+  try {
+    const job = await JobModel.findById(req.params.id);
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+    const transformedJob = await transformJob(job);
+    res.status(200).json(transformedJob);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 exports.getJobsByClient = async (req, res) => {
   try {
     const jobs = await JobModel.find({ client_id: req.params.clientId });
@@ -51,9 +64,8 @@ exports.updateJob = async (req, res) => {
     job.updated_at = new Date()
     await job.save()
     res.status(200).json(job)
-  }
-  catch (err){
-    res.status(500).json({message: err.message}) 
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating job', error: error.message })
   }
 }
 
@@ -64,6 +76,18 @@ exports.deleteAllData = async (req, res) => {
     await UserModel.deleteMany({});
 
     res.status(200).json({ message: "All jobs and users have been deleted." });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.deleteJob = async (req, res) => {
+  try {
+    const job = await JobModel.findByIdAndDelete(req.params.id);
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+    res.status(200).json({ message: 'Job deleted successfully' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -107,6 +131,3 @@ exports.postJob = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 }
-
-
-module.exports = exports
