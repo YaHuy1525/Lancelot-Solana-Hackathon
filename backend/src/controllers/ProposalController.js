@@ -11,4 +11,15 @@ exports.getAllProposals = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
+exports.getProposalsForJob = async (req, res) => {
+  try {
+    const proposals = await Proposal.find({ job_id: req.params.jobId })
+      .populate('freelancer_id', 'username email rating');
+    res.json(proposals);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = exports

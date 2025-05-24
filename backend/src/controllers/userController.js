@@ -24,6 +24,18 @@ exports.getUserById = async(req, res) => {
     }
 }
 
+// Get users by role
+exports.getUsersByRole = async (req, res) => {
+  try {
+    const role = req.params.role;
+    const users = await User.find({ role });
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
 exports.updateProfile = async(req, res) => {
     try{
         const user = await UserModel.findById(req.params.id)
