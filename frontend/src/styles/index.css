@@ -91,3 +91,25 @@ html {
   scroll-behavior: smooth;
 }
 
+.custom-dispute-steps .ant-steps-item {
+  margin-right: 36px !important;
+  min-width: 140px;
+}
+.custom-dispute-steps .ant-steps-item:last-child {
+  margin-right: 0 !important;
+}
+.custom-dispute-steps .ant-steps-item .ant-steps-item-title {
+  white-space: normal !important;
+  font-size: 1.08rem;
+}
+.custom-dispute-steps .ant-steps-item .ant-steps-item-description {
+  white-space: normal !important;
+  font-size: 0.98rem;
+}
+
+@media (max-width: 900px) {
+  .custom-dispute-steps .ant-steps-item {
+    min-width: 110px;
+    margin-right: 18px !important;
+  }
+}
