@@ -22,16 +22,15 @@ exports.getAllJobs = async (req, res) => {
   }
 };
 
-exports.getJobById = async (req, res) => {
-  try{
-    const job = await JobModel.findById(req.params.id);
-    const transformedJob = await transformJob(job);
-    res.status(200).json(transformedJob);
+exports.getJobsByClient = async (req, res) => {
+  try {
+    const jobs = await JobModel.find({ client_id: req.params.clientId });
+    const transformedJobs = await Promise.all(jobs.map(job => transformJob(job)));
+    res.status(200).json(transformedJobs);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
-  catch (err){
-    res.status(500).json({message: err.message}) 
-  }
-}
+};
 
 exports.updateJob = async (req, res) => {
   try{

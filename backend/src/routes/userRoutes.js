@@ -6,5 +6,8 @@ const userController = require("../controllers/userController");
 router.get("/", userController.getAllUsers);
 // Get a single user
 router.get('/:id', userController.getUserById) 
+
+router.get("/role/:role", userController.getUsersByRole);
+
 module.exports = router;
 
