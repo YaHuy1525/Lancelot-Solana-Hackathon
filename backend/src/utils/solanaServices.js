@@ -209,11 +209,132 @@ const getNetworkInfo = async () => {
   }
 };
 
-module.exports = {
-  connection,
-  getEscrowBalance,
-  getTokenBalance,
-  getTransactionHistory,
-  verifyTransaction,
-  getNetworkInfo
-};
+class SolanaService {
+  constructor() {
+    // Initialize connection to Solana cluster
+    this.connection = null;
+    this.cluster = process.env.SOLANA_CLUSTER || 'devnet'; // devnet, testnet, or mainnet-beta
+    this.rpcUrl = process.env.SOLANA_RPC_URL || clusterApiUrl(this.cluster);
+  }
+
+  // Initialize connection
+  async initConnection() {
+    try {
+      this.connection = new Connection(this.rpcUrl, 'confirmed');
+      console.log(`🔗 Solana connection initialized to ${this.cluster}`);
+      return this.connection;
+    } catch (error) {
+      console.error('Failed to initialize Solana connection:', error);
+      throw error;
+    }
+  }
+
+  // Test connection by getting version
+  async testConnection() {
+    try {
+      if (!this.connection) {
+        await this.initConnection();
+      }
+
+      const version = await this.connection.getVersion();
+      const slot = await this.connection.getSlot();
+      const blockHeight = await this.connection.getBlockHeight();
+      
+      return {
+        connected: true,
+        cluster: this.cluster,
+        rpcUrl: this.rpcUrl,
+        version: version,
+        currentSlot: slot,
+        blockHeight: blockHeight,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      console.error('Solana connection test failed:', error);
+      return {
+        connected: false,
+        cluster: this.cluster,
+        rpcUrl: this.rpcUrl,
+        error: error.message,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+
+  // Get account balance
+  async getBalance(publicKeyString) {
+    try {
+      if (!this.connection) {
+        await this.initConnection();
+      }
+
+      const publicKey = new PublicKey(publicKeyString);
+      const balance = await this.connection.getBalance(publicKey);
+      
+      return {
+        publicKey: publicKeyString,
+        balance: balance,
+        balanceSOL: balance / 1000000000, // Convert lamports to SOL
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      console.error('Failed to get balance:', error);
+      throw error;
+    }
+  }
+
+  // Get account info
+  async getAccountInfo(publicKeyString) {
+    try {
+      if (!this.connection) {
+        await this.initConnection();
+      }
+
+      const publicKey = new PublicKey(publicKeyString);
+      const accountInfo = await this.connection.getAccountInfo(publicKey);
+      
+      return {
+        publicKey: publicKeyString,
+        exists: accountInfo !== null,
+        accountInfo: accountInfo ? {
+          lamports: accountInfo.lamports,
+          owner: accountInfo.owner.toString(),
+          executable: accountInfo.executable,
+          rentEpoch: accountInfo.rentEpoch,
+          dataLength: accountInfo.data.length
+        } : null,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      console.error('Failed to get account info:', error);
+      throw error;
+    }
+  }
+
+  // Get recent blockhash
+  async getRecentBlockhash() {
+    try {
+      if (!this.connection) {
+        await this.initConnection();
+      }
+
+      const { blockhash, feeCalculator } = await this.connection.getRecentBlockhash();
+      
+      return {
+        blockhash,
+        feeCalculator,
+        timestamp: new Date().toISOString()
+      };
+    } catch (error) {
+      console.error('Failed to get recent blockhash:', error);
+      throw error;
+    }
+  }
+
+  // Get connection object for other services
+  getConnection() {
+    return this.connection;
+  }
+}
+
+module.exports = new SolanaService();
