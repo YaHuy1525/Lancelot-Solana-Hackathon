@@ -20,6 +20,54 @@ import {
 } from "@ant-design/icons";
 import Navbar from "../components/Navbar";
 
+// Custom hook for countdown timer
+const useCountdownTimer = (initialTimeInSeconds: number) => {
+  const [timeRemaining, setTimeRemaining] =
+    React.useState(initialTimeInSeconds);
+  const [isRunning, setIsRunning] = React.useState(true);
+
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    if (isRunning && timeRemaining > 0) {
+      timer = setInterval(() => {
+        setTimeRemaining((prev) => {
+          if (prev <= 1) {
+            setIsRunning(false);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [isRunning, timeRemaining]);
+
+  const stopTimer = () => {
+    setIsRunning(false);
+  };
+
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+      2,
+      "0"
+    )}:${String(remainingSeconds).padStart(2, "0")}`;
+  };
+
+  return {
+    timeRemaining: formatTime(timeRemaining),
+    stopTimer,
+    isRunning,
+  };
+};
+
 const DisputeResolutionPage: React.FC = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = React.useState(0);
@@ -39,6 +87,9 @@ const DisputeResolutionPage: React.FC = () => {
   const [isAppealed, setIsAppealed] = React.useState(false);
   const [isCompleted, setIsCompleted] = React.useState(false);
 
+  // Initialize countdown timer with 24 hours in seconds
+  const { timeRemaining, stopTimer } = useCountdownTimer(24 * 60 * 60);
+
   // Mock data for the dispute
   const disputeData = {
     jobTitle: "Frontend Development",
@@ -50,7 +101,7 @@ const DisputeResolutionPage: React.FC = () => {
     totalEvidenceRequired: 3,
     votingProgress: 4,
     totalVotes: 7,
-    timeRemaining: "23:45:12",
+    timeRemaining,
     juryMembers: [
       "0xA1B2...C3D4",
       "0xE5F6...7890",
@@ -222,6 +273,7 @@ const DisputeResolutionPage: React.FC = () => {
   }, [currentStep]);
 
   const handleAppealSubmit = () => {
+    stopTimer(); // Stop the timer when appeal is submitted
     setIsAppealed(true);
     setIsCompleted(false);
     message.success({
@@ -235,6 +287,7 @@ const DisputeResolutionPage: React.FC = () => {
   };
 
   const handleNoAppeal = () => {
+    stopTimer(); // Stop the timer when no appeal is submitted
     setIsCompleted(true);
     setIsAppealed(false);
     message.success({
