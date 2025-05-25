@@ -73,9 +73,9 @@ exports.deleteAllData = async (req, res) => {
   try {
     // Warning: This deletes ALL jobs and ALL users!
     await JobModel.deleteMany({});
-    await UserModel.deleteMany({});
+    
 
-    res.status(200).json({ message: "All jobs and users have been deleted." });
+    res.status(200).json({ message: "All jobs have been deleted." });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
