@@ -107,10 +107,7 @@ const AboutPage: React.FC = () => {
       </div>
 
       {/* How It Works Section */}
-      <div
-        id="how-it-work"
-        className="py-10 bg-white-700 w-full pt-50"
-      >
+      <div id="how-it-work" className="py-10 bg-white-700 w-full pt-50">
         <div className="w-full px-4 ">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-extrabold text-center mb-10 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent pt-4">
