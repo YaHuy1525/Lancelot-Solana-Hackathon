@@ -39,6 +39,13 @@ type UIJob = BackendJob & {
   budgetDisplay: string;
 };
 
+interface PhantomWallet {
+  connect: () => Promise<{ publicKey: { toString: () => string } }>;
+  disconnect: () => Promise<void>;
+  isConnected: boolean;
+  publicKey: { toString: () => string } | null;
+}
+
 const BrowseJob: React.FC = () => {
   const [jobs, setJobs] = useState<UIJob[]>([]);
   const [selectedJob, setSelectedJob] = useState<ModalJob | null>(null);
