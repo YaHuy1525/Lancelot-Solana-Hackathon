@@ -120,10 +120,17 @@ const CreateContract: React.FC = () => {
     }
   };
 
-  const steps = [
-    {
-      title: "Job Details",
-      content: (
+  const stepsData = [
+    { title: "Job Details" },
+    { title: "Your Proposal" },
+    { title: "Review & Submit" },
+  ];
+
+  // Always render all form fields, but hide those not in the current step
+  const renderStepContent = (step: number) => (
+    <>
+      {/* Step 0: Job Details */}
+      <div style={{ display: step === 0 ? 'block' : 'none' }}>
         <div className="space-y-6">
           <div className="relative h-64 rounded-lg overflow-hidden">
             <img
@@ -178,11 +185,9 @@ const CreateContract: React.FC = () => {
             </ul>
           </Card>
         </div>
-      ),
-    },
-    {
-      title: "Your Proposal",
-      content: (
+      </div>
+      {/* Step 1: Your Proposal */}
+      <div style={{ display: step === 1 ? 'block' : 'none' }}>
         <div className="space-y-6">
           <Form.Item
             name="proposal"
@@ -219,11 +224,9 @@ const CreateContract: React.FC = () => {
             />
           </Form.Item>
         </div>
-      ),
-    },
-    {
-      title: "Review & Submit",
-      content: (
+      </div>
+      {/* Step 2: Review & Submit */}
+      <div style={{ display: step === 2 ? 'block' : 'none' }}>
         <div className="space-y-6">
           <Card className="bg-gray-50">
             <h4 className="font-semibold mb-4">Contract Terms</h4>
@@ -259,14 +262,34 @@ const CreateContract: React.FC = () => {
             </ul>
           </div>
         </div>
-      ),
-    },
-  ];
+      </div>
+    </>
+  );
 
   const next = () => {
-    form.validateFields().then(() => {
+    let fieldsToValidate: string[] = [];
+    if (currentStep === 1) { // "Your Proposal" step
+      fieldsToValidate = ['proposal', 'estimatedTime', 'availability'];
+    }
+
+    // If there are specific fields to validate for the current step, validate them.
+    // Otherwise, (e.g., moving from "Job Details"), just proceed.
+    if (fieldsToValidate.length > 0) {
+      form.validateFields(fieldsToValidate)
+        .then(() => {
+          setCurrentStep(currentStep + 1);
+        })
+        .catch(info => {
+          console.log('Validation Failed:', info);
+          // Optionally, provide user feedback about validation errors
+          notification.error({
+            message: "Validation Failed",
+            description: "Please fill in all required fields for the current step.",
+          });
+        });
+    } else {
       setCurrentStep(currentStep + 1);
-    });
+    }
   };
 
   const prev = () => {
@@ -289,7 +312,7 @@ const CreateContract: React.FC = () => {
           </h1>
 
           <Steps current={currentStep} className="mb-8">
-            {steps.map((item) => (
+            {stepsData.map((item: { title: string }) => (
               <Step key={item.title} title={item.title} />
             ))}
           </Steps>
@@ -300,7 +323,8 @@ const CreateContract: React.FC = () => {
             onFinish={handleSubmit}
             className="bg-white rounded-lg shadow-lg p-6"
           >
-            {steps[currentStep].content}
+            {/* Always render all fields, but only show the current step */}
+            {renderStepContent(currentStep)}
 
             <div className="flex justify-between mt-8">
               {currentStep > 0 && (
@@ -312,7 +336,7 @@ const CreateContract: React.FC = () => {
                   Previous
                 </Button>
               )}
-              {currentStep < steps.length - 1 ? (
+              {currentStep < stepsData.length - 1 ? (
                 <Button
                   type="primary"
                   size="large"

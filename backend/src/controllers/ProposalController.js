@@ -43,6 +43,10 @@ const createProposal = async (req, res) => {
 
   } catch (error) {
     console.error('Error creating proposal:', error);
+    // Handle Mongoose validation errors
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: 'Validation error: ' + error.message });
+    }
     res.status(500).json({ message: 'Failed to submit proposal.', error: error.message });
   }
 };
