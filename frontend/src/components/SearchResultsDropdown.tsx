@@ -2,11 +2,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 interface Job {
+  _id: string;
   title: string;
   skills: string[];
   budget: string;
   rating: number;
   image: string;
+  description?: string;
+  responsibilities?: string;
+  requirements?: string;
+  jobType?: string;
+  experienceLevel?: string;
+  duration?: string;
 }
 
 interface SearchResultsDropdownProps {

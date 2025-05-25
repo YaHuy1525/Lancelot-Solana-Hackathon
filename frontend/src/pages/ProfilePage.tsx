@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { message } from "antd";
 import {
@@ -35,7 +35,7 @@ const ProfilePage: React.FC = () => {
   const { publicKey, connected } = useWallet();
   const [modalVisible, setModalVisible] = useState<string | null>(null);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading] = useState<boolean>(false);
 
   interface LocalProposal {
     _id: string;
@@ -144,7 +144,7 @@ const ProfilePage: React.FC = () => {
     },
   ];
 
-  const [proposals, setProposals] = useState<LocalProposal[]>(mockProposals);
+  const [proposals] = useState<LocalProposal[]>(mockProposals);
 
   // Mock data for ongoing jobs
   const ongoingJobs = [

@@ -5,11 +5,18 @@ import { useNavigate } from "react-router-dom";
 import SearchResultsDropdown from "./SearchResultsDropdown";
 
 interface Job {
+  _id: string;
   title: string;
   skills: string[];
   budget: string;
   rating: number;
   image: string;
+  description?: string;
+  responsibilities?: string;
+  requirements?: string;
+  jobType?: string;
+  experienceLevel?: string;
+  duration?: string;
 }
 
 interface SearchSectionProps {
