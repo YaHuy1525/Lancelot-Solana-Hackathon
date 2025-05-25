@@ -123,6 +123,7 @@ exports.postJob = async (req, res) => {
       experience_level,
       duration,
       image,
+      client_id
     } = req.body;
 
     // Count existing jobs to generate the next job_id
@@ -144,7 +145,7 @@ exports.postJob = async (req, res) => {
       experience_level,
       duration,
       image,
-      client_id: "client1", // default
+      client_id,
       created_at: createdAt,
       deadline: deadline,
     });
