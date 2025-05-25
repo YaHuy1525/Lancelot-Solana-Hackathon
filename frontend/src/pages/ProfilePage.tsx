@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import React, { useState, useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { message } from "antd";
 import {
@@ -445,16 +444,6 @@ const ProfilePage: React.FC = () => {
               Job Management
             </h2>
             <Card className="bg-white border-gray-200 shadow-sm">
-              <div className="grid grid-cols-5 gap-3">
-                <Button
-                  type="primary"
-                  icon={<FileTextOutlined />}
-                  className="h-28 flex flex-col items-center justify-center !bg-indigo-500 hover:!bg-indigo-600 text-center p-2"
-                  onClick={() => setModalVisible("proposals")}
-                >
-                  <span className="text-lg font-medium">My Proposals</span>
-                  <span className="text-sm opacity-80">View All Proposals</span>
-                </Button>
               <div className="grid grid-cols-5 gap-3">
                 <Button
                   type="primary"
