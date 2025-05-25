@@ -51,7 +51,9 @@ const CreateContract: React.FC = () => {
     return null;
   }
 
-  const handleSubmit = async (values: ContractFormData) => {
+  const handleSubmit = async (formValues: ContractFormData) => {
+    console.log('Form values received:', formValues);
+    
     if (!publicKey || !jobDetails?._id) {
       notification.error({
         message: "Application Failed",
@@ -63,32 +65,37 @@ const CreateContract: React.FC = () => {
     try {
       setIsSubmitting(true);
 
-      const proposalData: ProposalFormData = {
-        jobId: jobDetails._id,
-        freelancerId: publicKey.toString(),
-        proposalText: values.proposal, // This field was named 'proposal' in the form
-        estimatedTime: values.estimatedTime,
-        availability: values.availability,
+      // Map form field names to backend field names
+      const values = {
+        proposal: formValues.proposal || '',
+        estimatedTime: formValues.estimatedTime || '',
+        availability: formValues.availability || ''
       };
 
-      console.log("Submitting proposal with data:", proposalData);
-      
-      // Add validation for required fields
-      const requiredFields = {
-        jobId: proposalData.jobId,
-        freelancerId: proposalData.freelancerId,
-        proposalText: proposalData.proposalText,
-        estimatedTime: proposalData.estimatedTime,
-        availability: proposalData.availability
-      };
-      
-      const missingFields = Object.entries(requiredFields)
-        .filter(([_, value]) => !value)
-        .map(([key]) => key);
-      
-      if (missingFields.length > 0) {
-        throw new Error(`Missing required fields: ${missingFields.join(', ')}`);
+      console.log('Processed values:', values);
+
+      // Simple validation - just check if fields have any content
+      const errors = [];
+      if (!values.proposal.trim()) errors.push('proposal');
+      if (!values.estimatedTime.trim()) errors.push('estimated time');
+      if (!values.availability.trim()) errors.push('availability');
+
+      if (errors.length > 0) {
+        throw new Error(`Please fill in all required fields: ${errors.join(', ')}`);
       }
+
+      // Map to backend expected format
+      const proposalData = {
+        jobId: jobDetails._id,
+        freelancerId: publicKey.toString(),
+        proposalText: values.proposal.trim(),
+        estimatedTime: values.estimatedTime.trim(),
+        availability: values.availability.trim(),
+      };
+
+      console.log('Submitting proposal with data:', proposalData);
+
+      console.log("Submitting proposal with data:", proposalData);
 
       const response = await proposalService.createProposal(proposalData);
       console.log('Proposal created:', response);
@@ -185,6 +192,7 @@ const CreateContract: React.FC = () => {
             <TextArea
               rows={6}
               placeholder="Describe why you're the best fit for this job and how you plan to approach it"
+              allowClear
             />
           </Form.Item>
 
@@ -193,19 +201,21 @@ const CreateContract: React.FC = () => {
             label="Estimated Time to Complete"
             rules={[{ required: true, message: "Please enter estimated time" }]}
           >
-            <Input placeholder="e.g., 2 weeks, 1 month" />
+            <Input 
+              placeholder="e.g., 2 weeks, 1 month, 3 days, etc." 
+              allowClear
+            />
           </Form.Item>
 
           <Form.Item
             name="availability"
             label="Your Availability"
-            rules={[
-              { required: true, message: "Please enter your availability" },
-            ]}
+            rules={[{ required: true, message: "Please enter your availability" }]}
           >
             <TextArea
               rows={3}
               placeholder="Describe your availability and working hours"
+              allowClear
             />
           </Form.Item>
         </div>

@@ -21,8 +21,7 @@ const app = express();
 // Middleware
 const allowedOrigins = [
   process.env.CLIENT_URL || "http://localhost:3000",
-  "http://localhost:5173",  // Vite dev server
-  "http://127.0.0.1:5173"   // Sometimes browsers use this instead
+  "http://localhost:5173", 
 ];
 
 app.use(
