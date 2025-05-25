@@ -1,4 +1,4 @@
-const ProposalModel = require('../models/ProposalModel');
+const ProposalModel = require('../models/proposalModel');
 const JobModel = require('../models/JobModel');
 
 // Create a new proposal
@@ -54,16 +54,34 @@ const createProposal = async (req, res) => {
 const getAllProposals = async (req, res) => {
   try {
     const proposals = await ProposalModel.find()
-      .populate('jobId', 'title description budget')
-      .populate('freelancerId', 'name');
+      .populate('jobId', 'title description budget status')
+      .populate('freelancerId', 'username')
+      .sort({ createdAt: -1 });
+
+    // Format the response to include relevant information
+    const formattedProposals = proposals.map(proposal => ({
+      id: proposal._id,
+      jobTitle: proposal.jobId?.title,
+      jobDescription: proposal.jobId?.description,
+      budget: proposal.jobId?.budget,
+      status: proposal.status,
+      freelancer: proposal.freelancerId?.username,
+      estimatedTime: proposal.estimatedTime,
+      availability: proposal.availability,
+      submittedAt: proposal.submittedAt
+    }));
 
     res.status(200).json({
       success: true,
-      data: proposals
+      data: formattedProposals
     });
   } catch (error) {
     console.error('Error fetching proposals:', error);
-    res.status(500).json({ message: 'Failed to fetch proposals', error: error.message });
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to fetch proposals', 
+      error: error.message 
+    });
   }
 };
 // Get all proposals for a specific job
@@ -178,5 +196,5 @@ module.exports = {
   getProposalsByFreelancer,
   updateProposalStatus,
   getProposalById,
-  deleteAllProposals
+  deleteAllProposals,
 };

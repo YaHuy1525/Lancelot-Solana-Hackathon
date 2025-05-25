@@ -109,6 +109,19 @@ const proposalService = {
       console.error('Error checking if user has applied:', error);
       return false;
     }
+  },
+
+  /**
+   * Get all proposals
+   */
+  getAllProposals: async (): Promise<Proposal[]> => {
+    try {
+      const response: AxiosResponse<ApiResponse<Proposal[]>> = await api.get('/proposals');
+      return response.data.data;
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to fetch proposals';
+      throw new Error(errorMessage);
+    }
   }
 };
 

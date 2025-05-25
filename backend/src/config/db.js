@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
 const User = require("../models/userModel");
 const Job = require("../models/JobModel");
-const Proposal = require("../models/ProposalModel");
+const Proposal = require("../models/proposalModel");
 const Contract = require("../models/ContractModel");
 
 const connectDB = async () => {
@@ -11,40 +11,40 @@ const connectDB = async () => {
     console.log(`MongoDB Connected: ${conn.connection.host}`);
 
     // Seed Users if none exist
-    const userCount = await User.countDocuments();
-    if (userCount === 0) {
-      console.log("No users found. Seeding users...");
+    // const userCount = await User.countDocuments();
+    // if (userCount === 0) {
+    //   console.log("No users found. Seeding users...");
 
-      await User.insertMany([
-        {
-          _id: uuidv4(),
-          wallet_address: "SoLana1111Client",
-          username: "clientuser",
-          email: "client@example.com",
-          bio: "I'm a client looking for great freelancers!",
-          profile_image_url: "https://example.com/client.png",
-          rating: 4.8,
-          total_earnings: 0,
-          role: "client",
-          created_at: new Date(),
-        },
-        {
-          _id: uuidv4(),
-          wallet_address: "SoLana2222Free",
-          username: "freelanceruser",
-          email: "freelancer@example.com",
-          bio: "Skilled freelancer for your projects.",
-          profile_image_url: "https://example.com/freelancer.png",
-          rating: 4.9,
-          total_earnings: 2000,
-          role: "freelancer",
-          created_at: new Date(),
-        },
-      ]);
-      console.log("Users seeded successfully.");
-    } else {
-      console.log("Users already exist. Skipping user seeding.");
-    }
+    //   await User.insertMany([
+    //     {
+    //       _id: uuidv4(),
+    //       wallet_address: "SoLana1111Client",
+    //       username: "clientuser",
+    //       email: "client@example.com",
+    //       bio: "I'm a client looking for great freelancers!",
+    //       profile_image_url: "https://example.com/client.png",
+    //       rating: 4.8,
+    //       total_earnings: 0,
+    //       role: "client",
+    //       created_at: new Date(),
+    //     },
+    //     {
+    //       _id: uuidv4(),
+    //       wallet_address: "SoLana2222Free",
+    //       username: "freelanceruser",
+    //       email: "freelancer@example.com",
+    //       bio: "Skilled freelancer for your projects.",
+    //       profile_image_url: "https://example.com/freelancer.png",
+    //       rating: 4.9,
+    //       total_earnings: 2000,
+    //       role: "freelancer",
+    //       created_at: new Date(),
+    //     },
+    //   ]);
+    //   console.log("Users seeded successfully.");
+    // } else {
+    //   console.log("Users already exist. Skipping user seeding.");
+    // }
 
     // Seed Jobs if none exist
     const jobCount = await Job.countDocuments();

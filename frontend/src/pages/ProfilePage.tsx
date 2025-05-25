@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { message } from "antd";
+import type { Proposal } from "../services/proposalService";
+import proposalService from "../services/proposalService";
 import {
   Card,
   Avatar,
@@ -34,6 +37,41 @@ const ProfilePage: React.FC = () => {
   const { publicKey, connected } = useWallet();
   const [modalVisible, setModalVisible] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  interface LocalProposal extends Omit<Proposal, 'jobId'> {
+    jobId: {
+      _id: string;
+      title?: string;
+      description?: string;
+      budget?: number;
+      status?: string;
+    };
+  }
+
+  const [proposals, setProposals] = useState<LocalProposal[]>([]);
+
+  // Fetch proposals when component mounts
+  useEffect(() => {
+    const fetchProposals = async () => {
+      if (!publicKey) return;
+      
+      try {
+        setLoading(true);
+        const data = await proposalService.getProposalsByFreelancer(publicKey.toString());
+        setProposals(data);
+      } catch (error: any) {
+        console.error('Error fetching proposals:', error);
+        message.error(error.message || 'Failed to load proposals');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (connected) {
+      fetchProposals();
+    }
+  }, [connected, publicKey]);
 
   // Mock data for ongoing jobs
   const ongoingJobs = [
@@ -333,11 +371,20 @@ const ProfilePage: React.FC = () => {
               Job Management
             </h2>
             <Card className="bg-white border-gray-200 shadow-sm">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-5 gap-3">
+                <Button
+                  type="primary"
+                  icon={<FileTextOutlined />}
+                  className="h-28 flex flex-col items-center justify-center !bg-indigo-500 hover:!bg-indigo-600 text-center p-2"
+                  onClick={() => setModalVisible("proposals")}
+                >
+                  <span className="text-lg font-medium">My Proposals</span>
+                  <span className="text-sm opacity-80">View All Proposals</span>
+                </Button>
                 <Button
                   type="primary"
                   icon={<HourglassOutlined />}
-                  className="h-32 flex flex-col items-center justify-center !bg-blue-500 hover:!bg-blue-600"
+                  className="h-28 flex flex-col items-center justify-center !bg-blue-500 hover:!bg-blue-600 text-center p-2"
                   onClick={() => setModalVisible("ongoing")}
                 >
                   <span className="text-lg font-medium">Ongoing Jobs</span>
@@ -346,7 +393,7 @@ const ProfilePage: React.FC = () => {
                 <Button
                   type="primary"
                   icon={<CheckCircleOutlined />}
-                  className="h-32 flex flex-col items-center justify-center !bg-green-500 hover:!bg-green-600"
+                  className="h-28 flex flex-col items-center justify-center !bg-green-500 hover:!bg-green-600 text-center p-2"
                   onClick={() => setModalVisible("completed")}
                 >
                   <span className="text-lg font-medium">Completed Jobs</span>
@@ -355,7 +402,7 @@ const ProfilePage: React.FC = () => {
                 <Button
                   type="primary"
                   icon={<HistoryOutlined />}
-                  className="h-32 flex flex-col items-center justify-center !bg-purple-500 hover:!bg-purple-600"
+                  className="h-28 flex flex-col items-center justify-center !bg-purple-500 hover:!bg-purple-600 text-center p-2"
                   onClick={() => setModalVisible("history")}
                 >
                   <span className="text-lg font-medium">Job History</span>
@@ -364,7 +411,7 @@ const ProfilePage: React.FC = () => {
                 <Button
                   type="primary"
                   icon={<AlertOutlined />}
-                  className="h-32 flex flex-col items-center justify-center !bg-red-500 hover:!bg-red-600"
+                  className="h-28 flex flex-col items-center justify-center !bg-red-500 hover:!bg-red-600 text-center p-2"
                   onClick={() => setModalVisible("disputes")}
                 >
                   <span className="text-lg font-medium">Disputes</span>
@@ -478,6 +525,63 @@ const ProfilePage: React.FC = () => {
           dataSource={disputes}
           columns={disputeColumns}
           pagination={false}
+        />
+      </Modal>
+
+      <Modal
+        title="My Proposals"
+        open={modalVisible === "proposals"}
+        onCancel={() => setModalVisible(null)}
+        footer={null}
+        width={1000}
+      >
+        <Table
+          dataSource={proposals}
+          columns={[
+            {
+              title: 'Job Title',
+              dataIndex: 'jobId',
+              key: 'jobTitle',
+              render: (jobId: LocalProposal['jobId']) => jobId?.title || 'N/A',
+            },
+            {
+              title: 'Status',
+              dataIndex: 'status',
+              key: 'status',
+              render: (status: string) => (
+                <Tag color={
+                  status === 'accepted' ? 'green' : 
+                  status === 'rejected' ? 'red' : 
+                  status === 'withdrawn' ? 'orange' : 'blue'
+                }>
+                  {status.charAt(0).toUpperCase() + status.slice(1)}
+                </Tag>
+              ),
+            },
+            {
+              title: 'Budget',
+              dataIndex: 'jobId',
+              key: 'budget',
+              render: (jobId: LocalProposal['jobId']) => jobId?.budget ? `$${jobId.budget}` : 'N/A',
+            },
+            {
+              title: 'Submitted At',
+              dataIndex: 'submittedAt',
+              key: 'submittedAt',
+              render: (date: string) => date ? new Date(date).toLocaleDateString() : 'N/A',
+            },
+            {
+              title: 'Estimated Time',
+              dataIndex: 'estimatedTime',
+              key: 'estimatedTime',
+            },
+          ]}
+          loading={loading}
+          rowKey="_id"
+          pagination={{
+            pageSize: 5,
+            showSizeChanger: true,
+          }}
         />
       </Modal>
     </div>
