@@ -161,6 +161,15 @@ const getProposalById = async (req, res) => {
   }
 };
 
+const deleteAllProposals = async (req, res) => {
+  try {
+    await ProposalModel.deleteMany({});
+    res.status(200).json({ message: 'All proposals have been deleted.' });
+  } catch (error) {
+    console.error('Error deleting proposals:', error);
+    res.status(500).json({ message: 'Failed to delete proposals', error: error.message });
+  }
+}
 // Export all controller functions
 module.exports = {
   createProposal,
@@ -168,5 +177,6 @@ module.exports = {
   getProposalsByJob,
   getProposalsByFreelancer,
   updateProposalStatus,
-  getProposalById
+  getProposalById,
+  deleteAllProposals
 };

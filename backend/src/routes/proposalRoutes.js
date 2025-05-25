@@ -9,6 +9,7 @@ const proposalController = require("../controllers/ProposalController");
 // Create a new proposal
 router.post("/", proposalController.createProposal);
 router.get("/", proposalController.getAllProposals);
+router.delete("/delete-all", proposalController.deleteAllProposals);
 // Get all proposals for a specific job
 router.get("/job/:jobId", proposalController.getProposalsByJob);
 
