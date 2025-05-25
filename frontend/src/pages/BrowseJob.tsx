@@ -26,6 +26,12 @@ interface ModalJob {
   budget: string;
   rating: number;
   image: string;
+  description?: string;
+  responsibilities?: string;
+  requirements?: string;
+  jobType?: string;
+  experienceLevel?: string;
+  duration?: string;
 }
 
 /**
@@ -37,14 +43,13 @@ type UIJob = BackendJob & {
   image: string;
   skills: string[];
   budgetDisplay: string;
+  // Add backend-specific fields that might be coming from the API
+  required_skills?: string[];
+  job_type?: string;
+  experience_level?: string;
+  jobType?: string;
+  experienceLevel?: string;
 };
-
-interface PhantomWallet {
-  connect: () => Promise<{ publicKey: { toString: () => string } }>;
-  disconnect: () => Promise<void>;
-  isConnected: boolean;
-  publicKey: { toString: () => string } | null;
-}
 
 const BrowseJob: React.FC = () => {
   const [jobs, setJobs] = useState<UIJob[]>([]);
@@ -67,13 +72,49 @@ const BrowseJob: React.FC = () => {
         console.log("Fetched backendJobs:", backendJobs);
         
         // Map backend jobs to UIJob type
-        const mappedJobs: UIJob[] = backendJobs.map((job) => ({
-          ...job,
-          image: job.image || "https://readdy.ai/api/search-image?query=blockchain%20job&width=400&height=250",
-          // Use skills if available, otherwise default to empty array
-          skills: Array.isArray(job.skills) ? job.skills : [],
-          budgetDisplay: typeof job.budget === "number" ? `${job.budget} SOL` : "N/A",
-        }));
+        const mappedJobs: UIJob[] = backendJobs.map((job: any) => {
+          // Type assertion to handle backend data structure
+          const jobData = job as any;
+          
+          // Handle skills - check both required_skills and skills
+          const skills = Array.isArray(jobData.required_skills) 
+            ? jobData.required_skills 
+            : (Array.isArray(jobData.skills) ? jobData.skills : []);
+            
+          // Format the budget
+          const budgetValue = typeof jobData.budget === 'number' 
+            ? jobData.budget 
+            : (typeof jobData.budget === 'string' ? parseFloat(jobData.budget) : 0);
+            
+          // Get job type and experience level with fallbacks
+          const jobType = jobData.job_type || jobData.jobType || 'Full-time';
+          const experienceLevel = jobData.experience_level || jobData.experienceLevel || 'Intermediate';
+            
+          return {
+            ...jobData,
+            // Use the job's image or generate one based on title
+            image: jobData.image || `https://readdy.ai/api/search-image?query=${encodeURIComponent(jobData.title || 'blockchain job')}&width=400&height=250`,
+            // Map skills
+            skills: skills,
+            // Format budget for display
+            budget: budgetValue,
+            budgetDisplay: `${budgetValue} SOL`,
+            // Ensure rating exists
+            rating: jobData.rating || 0,
+            // Map other fields
+            jobType: jobType,
+            job_type: jobType,
+            experienceLevel: experienceLevel,
+            experience_level: experienceLevel,
+            // Add missing required fields with defaults
+            responsibilities: jobData.responsibilities || 'Not specified',
+            requirements: jobData.requirements || 'Not specified',
+            description: jobData.description || 'No description provided',
+            duration: jobData.duration || 'Not specified',
+            // Ensure required_skills is set
+            required_skills: skills
+          };
+        });
         
         console.log("Mapped UI jobs:", mappedJobs);
         setJobs(mappedJobs);
@@ -124,7 +165,7 @@ const BrowseJob: React.FC = () => {
   };
 
   const handleJobClick = (job: UIJob) => {
-    // Map UIJob to ModalJob type
+    // Map UIJob to ModalJob type with all necessary fields
     const modalJob: ModalJob = {
       _id: job._id, // Pass the original job ID
       title: job.title,
@@ -132,6 +173,13 @@ const BrowseJob: React.FC = () => {
       budget: job.budgetDisplay,
       rating: job.rating,
       image: job.image,
+      // Add the additional fields needed by the modal
+      description: job.description,
+      responsibilities: job.responsibilities,
+      requirements: job.requirements,
+      jobType: job.jobType || job.job_type,
+      experienceLevel: job.experienceLevel || job.experience_level,
+      duration: job.duration
     };
     setSelectedJob(modalJob);
     setIsModalVisible(true);
