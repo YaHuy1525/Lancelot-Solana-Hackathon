@@ -44,7 +44,7 @@ const TeamCardContainer = () => {
         {teamMembers.map((member, index) => (
           <div
             key={index}
-            className="flex-1 relative overflow-hidden group transition-all duration-300 relative"
+            className="flex-1 relative overflow-hidden group transition-all duration-300"
           >
             <img
               src={member.image}
