@@ -92,10 +92,27 @@ exports.deleteJob = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+// Utility to add months based on duration string
+function calculateDeadline(createdAt, duration) {
+  const date = new Date(createdAt);
+  switch (duration) {
+    case 'Less than 1 month':
+      date.setDate(date.getDate() + 25); break;
+    case '1-3 months':
+      date.setMonth(date.getMonth() + 2); break;
+    case '3-6 months':
+      date.setMonth(date.getMonth() + 4); break;
+    case 'More than 6 months':
+      date.setMonth(date.getMonth() + 7); break;
+    default:
+      date.setMonth(date.getMonth() + 1);
+  }
+  return date;
+} 
 
 exports.postJob = async (req, res) => {
-  try{
-    const{
+  try {
+    const {
       title,
       description,
       responsibilities,
@@ -106,9 +123,18 @@ exports.postJob = async (req, res) => {
       experience_level,
       duration,
       image,
-      client_id,
+      client_id
     } = req.body;
+
+    // Count existing jobs to generate the next job_id
+    const count = await JobModel.countDocuments();
+    const jobId = `job${count + 1}`;
+
+    const createdAt = new Date();
+    const deadline = calculateDeadline(createdAt, duration);
+
     const job = new JobModel({
+      job_id: jobId,
       title,
       description,
       responsibilities,
@@ -120,14 +146,20 @@ exports.postJob = async (req, res) => {
       duration,
       image,
       client_id,
+      created_at: createdAt,
+      deadline: deadline,
     });
-    const newjob = await job.save();
+
+    const newJob = await job.save();
+
     res.status(201).json({
       success: true,
       message: 'Job created successfully',
-      data: newjob  
+      data: newJob
     });
+
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: err.message });
   }
-}
+};

@@ -14,11 +14,14 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { StarFilled } from "@ant-design/icons";
 import Navbar from "../components/Navbar";
 import WalletConnectionAlert from "../components/WalletConnectionAlert";
+import proposalService from "../services/proposalService"; // Import proposal service
 
 const { TextArea } = Input;
 const { Step } = Steps;
 
 interface Job {
+  // This is the type for jobDetails received from navigation state
+  _id: string; // Added to access the job's ID
   title: string;
   skills: string[];
   budget: string;
@@ -27,7 +30,8 @@ interface Job {
 }
 
 interface ContractFormData {
-  proposal: string;
+  [key: string]: any; // Add index signature to allow string indexing
+  proposal: string; // This will be mapped to proposalText in the API call
   estimatedTime: string;
   availability: string;
 }
@@ -35,7 +39,7 @@ interface ContractFormData {
 const CreateContract: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { connected } = useWallet();
+  const { connected, publicKey } = useWallet(); // Get publicKey for freelancerId
   const [currentStep, setCurrentStep] = useState(0);
   const [form] = Form.useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,16 +52,57 @@ const CreateContract: React.FC = () => {
     return null;
   }
 
-  const handleSubmit = async (values: ContractFormData) => {
+  const handleSubmit = async (formValues: ContractFormData) => {
+    console.log("Form values received:", formValues);
+
+    if (!publicKey || !jobDetails?._id) {
+      notification.error({
+        message: "Application Failed",
+        description: "User not connected or job details are missing.",
+      });
+      return;
+    }
+
     try {
       setIsSubmitting(true);
-      // TODO: Implement smart contract creation logic here
-      console.log("Creating contract with values:", values);
 
-      // Simulate contract creation
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Map form field names to backend field names
+      const values = {
+        proposal: formValues.proposal || "",
+        estimatedTime: formValues.estimatedTime || "",
+        availability: formValues.availability || "",
+      };
 
-      // Show success notification
+      console.log("Processed values:", values);
+
+      // Simple validation - just check if fields have any content
+      const errors = [];
+      if (!values.proposal.trim()) errors.push("proposal");
+      if (!values.estimatedTime.trim()) errors.push("estimated time");
+      if (!values.availability.trim()) errors.push("availability");
+
+      if (errors.length > 0) {
+        throw new Error(
+          `Please fill in all required fields: ${errors.join(", ")}`
+        );
+      }
+
+      // Map to backend expected format
+      const proposalData = {
+        jobId: jobDetails._id,
+        freelancerId: publicKey.toString(),
+        proposalText: values.proposal.trim(),
+        estimatedTime: values.estimatedTime.trim(),
+        availability: values.availability.trim(),
+      };
+
+      console.log("Submitting proposal with data:", proposalData);
+
+      console.log("Submitting proposal with data:", proposalData);
+
+      const response = await proposalService.createProposal(proposalData);
+      console.log("Proposal created:", response);
+
       notification.success({
         message: "Application Submitted Successfully!",
         description:
@@ -67,10 +112,12 @@ const CreateContract: React.FC = () => {
 
       // Navigate back to browse jobs
       navigate("/browse-job");
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Error submitting proposal:", error);
       notification.error({
         message: "Application Failed",
         description:
+          error.message ||
           "There was an error submitting your application. Please try again.",
         duration: 5,
       });
@@ -79,10 +126,17 @@ const CreateContract: React.FC = () => {
     }
   };
 
-  const steps = [
-    {
-      title: "Job Details",
-      content: (
+  const stepsData = [
+    { title: "Job Details" },
+    { title: "Your Proposal" },
+    { title: "Review & Submit" },
+  ];
+
+  // Always render all form fields, but hide those not in the current step
+  const renderStepContent = (step: number) => (
+    <>
+      {/* Step 0: Job Details */}
+      <div style={{ display: step === 0 ? "block" : "none" }}>
         <div className="space-y-6">
           <div className="relative h-64 rounded-lg overflow-hidden">
             <img
@@ -137,11 +191,9 @@ const CreateContract: React.FC = () => {
             </ul>
           </Card>
         </div>
-      ),
-    },
-    {
-      title: "Your Proposal",
-      content: (
+      </div>
+      {/* Step 1: Your Proposal */}
+      <div style={{ display: step === 1 ? "block" : "none" }}>
         <div className="space-y-6">
           <Form.Item
             name="proposal"
@@ -151,6 +203,7 @@ const CreateContract: React.FC = () => {
             <TextArea
               rows={6}
               placeholder="Describe why you're the best fit for this job and how you plan to approach it"
+              allowClear
             />
           </Form.Item>
 
@@ -159,7 +212,10 @@ const CreateContract: React.FC = () => {
             label="Estimated Time to Complete"
             rules={[{ required: true, message: "Please enter estimated time" }]}
           >
-            <Input placeholder="e.g., 2 weeks, 1 month" />
+            <Input
+              placeholder="e.g., 2 weeks, 1 month, 3 days, etc."
+              allowClear
+            />
           </Form.Item>
 
           <Form.Item
@@ -172,14 +228,13 @@ const CreateContract: React.FC = () => {
             <TextArea
               rows={3}
               placeholder="Describe your availability and working hours"
+              allowClear
             />
           </Form.Item>
         </div>
-      ),
-    },
-    {
-      title: "Review & Submit",
-      content: (
+      </div>
+      {/* Step 2: Review & Submit */}
+      <div style={{ display: step === 2 ? "block" : "none" }}>
         <div className="space-y-6">
           <Card className="bg-gray-50">
             <h4 className="font-semibold mb-4">Contract Terms</h4>
@@ -215,14 +270,37 @@ const CreateContract: React.FC = () => {
             </ul>
           </div>
         </div>
-      ),
-    },
-  ];
+      </div>
+    </>
+  );
 
   const next = () => {
-    form.validateFields().then(() => {
+    let fieldsToValidate: string[] = [];
+    if (currentStep === 1) {
+      // "Your Proposal" step
+      fieldsToValidate = ["proposal", "estimatedTime", "availability"];
+    }
+
+    // If there are specific fields to validate for the current step, validate them.
+    // Otherwise, (e.g., moving from "Job Details"), just proceed.
+    if (fieldsToValidate.length > 0) {
+      form
+        .validateFields(fieldsToValidate)
+        .then(() => {
+          setCurrentStep(currentStep + 1);
+        })
+        .catch((info) => {
+          console.log("Validation Failed:", info);
+          // Optionally, provide user feedback about validation errors
+          notification.error({
+            message: "Validation Failed",
+            description:
+              "Please fill in all required fields for the current step.",
+          });
+        });
+    } else {
       setCurrentStep(currentStep + 1);
-    });
+    }
   };
 
   const prev = () => {
@@ -245,7 +323,7 @@ const CreateContract: React.FC = () => {
           </h1>
 
           <Steps current={currentStep} className="mb-8">
-            {steps.map((item) => (
+            {stepsData.map((item: { title: string }) => (
               <Step key={item.title} title={item.title} />
             ))}
           </Steps>
@@ -256,7 +334,8 @@ const CreateContract: React.FC = () => {
             onFinish={handleSubmit}
             className="bg-white rounded-lg shadow-lg p-6"
           >
-            {steps[currentStep].content}
+            {/* Always render all fields, but only show the current step */}
+            {renderStepContent(currentStep)}
 
             <div className="flex justify-between mt-8">
               {currentStep > 0 && (
@@ -268,7 +347,7 @@ const CreateContract: React.FC = () => {
                   Previous
                 </Button>
               )}
-              {currentStep < steps.length - 1 ? (
+              {currentStep < stepsData.length - 1 ? (
                 <Button
                   type="primary"
                   size="large"

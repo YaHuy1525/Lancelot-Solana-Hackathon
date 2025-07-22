@@ -3,12 +3,19 @@ import { Modal, Button, Tag, Divider } from "antd";
 import { StarFilled } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
-interface Job {
+interface Job { // This is the type used by JobDetailsModal internally and for its props
+  _id: string; // Added to align with ModalJob and for navigation state
   title: string;
   skills: string[];
   budget: string;
   rating: number;
   image: string;
+  description?: string;
+  responsibilities?: string;
+  requirements?: string;
+  jobType?: string;
+  experienceLevel?: string;
+  duration?: string;
 }
 
 interface JobDetailsModalProps {
@@ -83,31 +90,60 @@ const JobDetailsModal: React.FC<JobDetailsModalProps> = ({
 
           <div>
             <h3 className="text-lg font-semibold mb-3">Job Description</h3>
-            <p className="text-gray-600">
-              We are looking for a skilled {job.title} to join our team. The
-              ideal candidate should have experience in {job.skills.join(", ")}{" "}
-              and be passionate about blockchain technology.
+            <p className="text-gray-600 whitespace-pre-line">
+              {job.description || `We are looking for a skilled ${job.title} to join our team. The
+              ideal candidate should have experience in ${job.skills.join(", ")}
+              and be passionate about blockchain technology.`}
             </p>
           </div>
 
-          <div>
-            <h3 className="text-lg font-semibold mb-3">Responsibilities</h3>
-            <ul className="list-disc list-inside text-gray-600 space-y-2">
-              <li>Develop and maintain blockchain-based applications</li>
-              <li>Write clean, efficient, and well-documented code</li>
-              <li>Collaborate with cross-functional teams</li>
-              <li>Participate in code reviews and technical discussions</li>
-            </ul>
-          </div>
+          {job.responsibilities && (
+            <div>
+              <h3 className="text-lg font-semibold mb-3">Responsibilities</h3>
+              <ul className="list-disc list-inside text-gray-600 space-y-2">
+                {job.responsibilities
+                  .split('\n')
+                  .filter(item => item.trim() !== '')
+                  .map((item, index) => (
+                    <li key={index}>{item.trim()}</li>
+                  ))}
+              </ul>
+            </div>
+          )}
 
-          <div>
-            <h3 className="text-lg font-semibold mb-3">Requirements</h3>
-            <ul className="list-disc list-inside text-gray-600 space-y-2">
-              <li>Strong experience with {job.skills.join(", ")}</li>
-              <li>Understanding of blockchain technology and Web3</li>
-              <li>Experience with smart contract development</li>
-              <li>Good communication and problem-solving skills</li>
-            </ul>
+          {job.requirements && (
+            <div>
+              <h3 className="text-lg font-semibold mb-3">Requirements</h3>
+              <ul className="list-disc list-inside text-gray-600 space-y-2">
+                {job.requirements
+                  .split('\n')
+                  .filter(item => item.trim() !== '')
+                  .map((item, index) => (
+                    <li key={index}>{item.trim()}</li>
+                  ))}
+              </ul>
+            </div>
+          )}
+
+          <div className="grid grid-cols-2 gap-4">
+            {job.jobType && (
+              <div>
+                <h4 className="font-medium text-gray-700">Job Type</h4>
+                <p className="text-gray-600">{job.jobType}</p>
+              </div>
+            )}
+            {job.experienceLevel && (
+              <div>
+                <h4 className="font-medium text-gray-700">Experience Level</h4>
+                <p className="text-gray-600">{job.experienceLevel}</p>
+              </div>
+            )}
+            {job.duration && (
+              <div>
+                <h4 className="font-medium text-gray-700">Duration</h4>
+                <p className="text-gray-600">{job.duration}</p>
+              </div>
+            )}
           </div>
 
           <div className="flex justify-end space-x-4 pt-4">
