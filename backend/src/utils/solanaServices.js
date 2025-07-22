@@ -335,6 +335,91 @@ class SolanaService {
   getConnection() {
     return this.connection;
   }
+
+  // ----------------------------------------------------------------
+  // Job Contract Interactions
+  // ----------------------------------------------------------------
+
+  /**
+   * Create a new job listing on the blockchain.
+   * @param {object} jobData - The data for the job.
+   * @param {string} jobData.title - The title of the job.
+   * @param {string} jobData.description - The description of the job.
+   * @param {number} jobData.price - The price of the job in SOL.
+   * @param {string} employerPublicKey - The public key of the employer.
+   * @returns {Promise<string>} The transaction signature.
+   */
+  async createJob(jobData, employerPublicKey) {
+    // Note: This is a placeholder implementation.
+    // Full implementation requires a deployed contract and its ABI.
+    console.log("Creating job:", jobData, "for employer:", employerPublicKey);
+    //
+    // Example of what the implementation might look like:
+    //
+    // const transaction = new Transaction().add(
+    //   SystemProgram.transfer({
+    //     fromPubkey: new PublicKey(employerPublicKey),
+    //     toPubkey: new PublicKey(this.contractAddress),
+    //     lamports: jobData.price * 1000000000,
+    //   })
+    // );
+    //
+    // const signature = await sendAndConfirmTransaction(this.connection, transaction, [
+    //   /* signer */
+    // ]);
+    //
+    // return signature;
+    return "dummy_signature_for_createJob";
+  }
+
+  /**
+   * Get the details of a job from the blockchain.
+   * @param {number} jobId - The ID of the job to retrieve.
+   * @returns {Promise<object>} The job details.
+   */
+  async getJob(jobId) {
+    // Note: This is a placeholder implementation.
+    console.log("Getting job with ID:", jobId);
+    //
+    // Example of what the implementation might look like:
+    //
+    // const job = await this.jobContract.methods.jobs(jobId).call();
+    // return job;
+    return {
+      id: jobId,
+      title: "Sample Job",
+      description: "This is a sample job description.",
+      price: 1.5,
+      employer: "dummy_employer_public_key",
+      contractor: null,
+      completed: false,
+      paid: false,
+    };
+  }
+
+  /**
+   * Mark a job as complete.
+   * @param {number} jobId - The ID of the job to complete.
+   * @param {string} employerPublicKey - The public key of the employer.
+   * @returns {Promise<string>} The transaction signature.
+   */
+  async completeJob(jobId, employerPublicKey) {
+    // Note: This is a placeholder implementation.
+    console.log("Completing job with ID:", jobId, "by employer:", employerPublicKey);
+    return "dummy_signature_for_completeJob";
+  }
+
+  /**
+   * Pay the contractor for a completed job.
+   * @param {number} jobId - The ID of the job to pay for.
+   * @param {string} employerPublicKey - The public key of the employer.
+   * @returns {Promise<string>} The transaction signature.
+   */
+  async payContractor(jobId, employerPublicKey) {
+    // Note: This is a placeholder implementation.
+    console.log("Paying for job with ID:", jobId, "by employer:", employerPublicKey);
+    return "dummy_signature_for_payContractor";
+  }
 }
 
 module.exports = new SolanaService();

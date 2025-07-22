@@ -144,4 +144,55 @@ router.get('/health', async (req, res) => {
   }
 });
 
+// ----------------------------------------------------------------
+// Job Contract Routes
+// ----------------------------------------------------------------
+
+// Create a new job
+router.post('/job', async (req, res) => {
+  try {
+    const { title, description, price, employerPublicKey } = req.body;
+    const jobData = { title, description, price };
+    const signature = await solanaService.createJob(jobData, employerPublicKey);
+    res.status(201).json({ success: true, signature });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Get a job by ID
+router.get('/job/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const job = await solanaService.getJob(id);
+    res.status(200).json({ success: true, data: job });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Complete a job
+router.post('/job/:id/complete', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { employerPublicKey } = req.body;
+    const signature = await solanaService.completeJob(id, employerPublicKey);
+    res.status(200).json({ success: true, signature });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Pay a contractor for a job
+router.post('/job/:id/pay', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { employerPublicKey } = req.body;
+    const signature = await solanaService.payContractor(id, employerPublicKey);
+    res.status(200).json({ success: true, signature });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 module.exports = router;
