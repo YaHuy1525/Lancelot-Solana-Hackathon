@@ -110,7 +110,8 @@ pipeline {
                 echo 'STAGE 5: AUTOMATED STAGING ENVIRONMENT DEPLOYMENT'
                 script {
                     echo "Spinning up Staging environment using Docker Compose..."
-                    sh 'docker-compose -f docker-compose.staging.yml up -d --build'
+                    sh 'docker-compose -f docker-compose.staging.yml down --remove-orphans || true'
+                    sh 'docker-compose -f docker-compose.staging.yml up -d --build --remove-orphans'
                     
                     echo "Waiting for staging backend health check..."
                     sleep 5
@@ -131,7 +132,8 @@ pipeline {
                 echo 'STAGE 6: PRODUCTION RELEASE & PROMOTION'
                 script {
                     echo "Promoting verified build to Production environment..."
-                    sh 'docker-compose -f docker-compose.prod.yml up -d --build'
+                    sh 'docker-compose -f docker-compose.prod.yml down --remove-orphans || true'
+                    sh 'docker-compose -f docker-compose.prod.yml up -d --build --remove-orphans'
                     
                     echo "Applying release tag v1.0.${BUILD_NUMBER}..."
                     sh "echo 'Release v1.0.${BUILD_NUMBER} deployed at \$(date)' > release-version.txt"
