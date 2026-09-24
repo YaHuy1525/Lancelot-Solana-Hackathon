@@ -23,12 +23,12 @@ pipeline {
                 script {
                     echo "Installing backend dependencies..."
                     dir('backend') {
-                        sh 'npm ci'
+                        sh 'npm install'
                     }
 
                     echo "Installing frontend dependencies and building web bundle..."
                     dir('frontend') {
-                        sh 'npm ci'
+                        sh 'npm install'
                         sh 'npm run build'
                     }
 
