@@ -1,7 +1,17 @@
 FROM jenkins/jenkins:lts-jdk17
 
+USER root
+
+# Install Node.js 20, npm, Docker CLI, and Docker Compose inside Jenkins container
+RUN apt-get update && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs docker.io docker-compose && \
+    rm -rf /var/lib/apt/lists/*
+
 # Install required Jenkins plugins (Pipeline, Git, Docker, AnsiColor)
 RUN jenkins-plugin-cli --plugins workflow-aggregator git docker-workflow ansicolor
 
 # Copy automated pipeline setup script into Jenkins initialization directory
 COPY init-pipeline.groovy /usr/share/jenkins/ref/init.groovy.d/init-pipeline.groovy
+
+USER jenkins
