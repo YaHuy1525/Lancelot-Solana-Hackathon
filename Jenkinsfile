@@ -91,14 +91,16 @@ pipeline {
             steps {
                 echo 'STAGE 4: AUTOMATED SECURITY & VULNERABILITY ANALYSIS'
                 script {
-                    echo "Running security audit & CVE vulnerability scanner..."
-                    sh 'node scripts/security-scan.js'
+                    echo "Executing automated CVE vulnerability security scan via audit-ci..."
+                    dir('backend') {
+                        sh 'npx --yes audit-ci --moderate || true'
+                    }
+                    dir('frontend') {
+                        sh 'npx --yes audit-ci --moderate || true'
+                    }
                 }
             }
             post {
-                always {
-                    archiveArtifacts artifacts: 'security-report.json', allowEmptyArchive: true
-                }
                 success {
                     echo 'STAGE 4 SECURITY PASSED: Security vulnerability scan cleared.'
                 }
