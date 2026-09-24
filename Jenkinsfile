@@ -117,7 +117,7 @@ pipeline {
                     sleep 5
                     
                     echo "Verifying Staging Health Endpoint..."
-                    sh 'node -e "require(\'http\').get(\'http://localhost:5000/health\', (res) => { if (res.statusCode === 200) process.exit(0); else process.exit(1); })"'
+                    sh 'node -e "const http=require(\'http\'); const get=(u)=>new Promise((res)=>{http.get(u,r=>res(r.statusCode)).on(\'error\',()=>res(500))}); (async()=>{ const s1=await get(\'http://host.docker.internal:5000/health\'); if(s1===200)process.exit(0); const s2=await get(\'http://localhost:5000/health\'); if(s2===200)process.exit(0); process.exit(1); })()"'
                 }
             }
             post {

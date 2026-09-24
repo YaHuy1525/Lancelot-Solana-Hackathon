@@ -9,13 +9,13 @@ const path = require('path');
 
 console.log('STAGE 7: REAL-TIME MONITORING & ALERTING SYSTEM\n');
 
-const TARGET_HOST = process.env.MONITOR_HOST || 'localhost';
-const TARGET_PORT = process.env.MONITOR_PORT || 5000;
+const DEFAULT_HOST = process.env.MONITOR_HOST || 'host.docker.internal';
+const TARGET_PORT = process.env.MONITOR_PORT || 5001;
 
-function fetchEndpoint(endpointPath) {
-  return new Promise((resolve, reject) => {
+function fetchEndpointFromHost(targetHost, endpointPath) {
+  return new Promise((resolve) => {
     const req = http.get({
-      host: TARGET_HOST,
+      host: targetHost,
       port: TARGET_PORT,
       path: endpointPath,
       timeout: 3000
@@ -39,11 +39,22 @@ function fetchEndpoint(endpointPath) {
   });
 }
 
+async function fetchEndpoint(endpointPath) {
+  const hostsToTry = [DEFAULT_HOST, 'localhost', '127.0.0.1'];
+  for (const h of hostsToTry) {
+    const res = await fetchEndpointFromHost(h, endpointPath);
+    if (res.statusCode === 200) {
+      return res;
+    }
+  }
+  return await fetchEndpointFromHost(DEFAULT_HOST, endpointPath);
+}
+
 async function runMonitoringCheck() {
-  console.log(`Polling Health Endpoint (http://${TARGET_HOST}:${TARGET_PORT}/health)...`);
+  console.log(`Polling Health Endpoint (http://${DEFAULT_HOST}:${TARGET_PORT}/health)...`);
   const healthRes = await fetchEndpoint('/health');
   
-  console.log(`Polling Metrics Endpoint (http://${TARGET_HOST}:${TARGET_PORT}/metrics)...`);
+  console.log(`Polling Metrics Endpoint (http://${DEFAULT_HOST}:${TARGET_PORT}/metrics)...`);
   const metricsRes = await fetchEndpoint('/metrics');
 
   const healthOK = healthRes.statusCode === 200 && (healthRes.body.status === 'healthy' || healthRes.body.status === 'ok');
