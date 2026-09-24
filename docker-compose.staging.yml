@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend-staging:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: lancelot-backend:staging
+    container_name: lancelot-backend-staging
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=staging
+      - PORT=5000
+      - CLIENT_URL=http://localhost:3000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:5000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  frontend-staging:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: lancelot-frontend:staging
+    container_name: lancelot-frontend-staging
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend-staging
+    restart: unless-stopped

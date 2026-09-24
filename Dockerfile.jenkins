@@ -1,0 +1,7 @@
+FROM jenkins/jenkins:lts-jdk17
+
+# Install required Jenkins plugins (Pipeline, Git, Docker, AnsiColor)
+RUN jenkins-plugin-cli --plugins workflow-aggregator git docker-workflow ansicolor
+
+# Copy automated pipeline setup script into Jenkins initialization directory
+COPY init-pipeline.groovy /usr/share/jenkins/ref/init.groovy.d/init-pipeline.groovy

@@ -2,12 +2,17 @@ const mongoose = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
 const User = require("../models/userModel");
 const Job = require("../models/JobModel");
-const Proposal = require("../models/ProposalModel");
+const Proposal = require("../models/proposalModel");
 const Contract = require("../models/ContractModel");
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI);
+    const mongoUri = process.env.MONGODB_URI || process.env.MONGO_URI;
+    if (!mongoUri) {
+      console.warn("MongoDB URI not provided. Running in standalone mode without database connection.");
+      return;
+    }
+    const conn = await mongoose.connect(mongoUri);
     console.log(`MongoDB Connected: ${conn.connection.host}`);
 
     // Seed Users if none exist

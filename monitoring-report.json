@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-09-22T14:19:07.949Z",
+  "stage": "Stage 7 - Monitoring & Alerting",
+  "status": "HEALTHY",
+  "healthCheck": {
+    "statusCode": 200,
+    "body": {
+      "status": "healthy",
+      "timestamp": "2026-09-22T14:19:07.914Z",
+      "uptime": 18.888877052,
+      "service": "lancelot-backend"
+    }
+  },
+  "metrics": {
+    "statusCode": 200,
+    "body": {
+      "uptime_seconds": 18.893954667,
+      "memory_heap_used_bytes": 21195968,
+      "memory_heap_total_bytes": 22560768,
+      "memory_rss_bytes": 74338304,
+      "status_code": 200
+    }
+  },
+  "alertsTriggered": []
+}

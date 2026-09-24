@@ -28,9 +28,25 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
  
-// Routes
+// Health and metrics routes
 app.get("/health", (req, res) => {
-  res.status(200).json({ status: "ok" });
+  res.status(200).json({ 
+    status: "healthy", 
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    service: "lancelot-backend"
+  });
+});
+
+app.get("/metrics", (req, res) => {
+  const memoryUsage = process.memoryUsage();
+  res.status(200).json({
+    uptime_seconds: process.uptime(),
+    memory_heap_used_bytes: memoryUsage.heapUsed,
+    memory_heap_total_bytes: memoryUsage.heapTotal,
+    memory_rss_bytes: memoryUsage.rss,
+    status_code: 200
+  });
 });
 
 // API routes
@@ -48,6 +64,10 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+module.exports = app;

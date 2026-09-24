@@ -1,3 +1,11 @@
+jest.mock('@solana/web3.js', () => ({
+  Connection: jest.fn().mockImplementation(() => ({
+    getBalance: jest.fn().mockResolvedValue(1000000000),
+  })),
+  PublicKey: jest.fn().mockImplementation((key) => key),
+  clusterApiUrl: jest.fn().mockReturnValue('https://api.devnet.solana.com'),
+}));
+
 const request = require('supertest');
 const express = require('express');
 const solanaRoutes = require('../routes/solanaRoutes');
