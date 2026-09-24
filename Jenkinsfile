@@ -6,7 +6,7 @@ pipeline {
         IMAGE_TAG = "${BUILD_NUMBER}"
         BACKEND_IMAGE = "lancelot-backend:${BUILD_NUMBER}"
         FRONTEND_IMAGE = "lancelot-frontend:${BUILD_NUMBER}"
-        DISCORD_WEBHOOK_URL = credentials('discord-webhook-url') // Optional Jenkins credentials hook
+        DISCORD_WEBHOOK_URL = ''
     }
 
     options {
